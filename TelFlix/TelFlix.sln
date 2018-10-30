@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2041
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelFlix.Data", "TelFlix.Data\TelFlix.Data.csproj", "{D041DE44-6286-419A-A19C-C3BE9C613739}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelFlix.Services", "TelFlix.Services\TelFlix.Services.csproj", "{4697427F-C265-485D-B0F2-4286CB11AF8C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelFlix.App", "TelFlix.App\TelFlix.App.csproj", "{5CAE6371-B5A0-4393-89C8-8635D705F53A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelFlix.Data.Models", "TelFlix.Data.Models\TelFlix.Data.Models.csproj", "{8AC9821F-F931-4AD5-9763-4FC7D978B92E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D041DE44-6286-419A-A19C-C3BE9C613739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D041DE44-6286-419A-A19C-C3BE9C613739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D041DE44-6286-419A-A19C-C3BE9C613739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D041DE44-6286-419A-A19C-C3BE9C613739}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4697427F-C265-485D-B0F2-4286CB11AF8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4697427F-C265-485D-B0F2-4286CB11AF8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4697427F-C265-485D-B0F2-4286CB11AF8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4697427F-C265-485D-B0F2-4286CB11AF8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CAE6371-B5A0-4393-89C8-8635D705F53A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CAE6371-B5A0-4393-89C8-8635D705F53A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CAE6371-B5A0-4393-89C8-8635D705F53A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CAE6371-B5A0-4393-89C8-8635D705F53A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AC9821F-F931-4AD5-9763-4FC7D978B92E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AC9821F-F931-4AD5-9763-4FC7D978B92E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AC9821F-F931-4AD5-9763-4FC7D978B92E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AC9821F-F931-4AD5-9763-4FC7D978B92E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {45697AF8-539B-4D6C-81E4-53FB29881474}
+	EndGlobalSection
+EndGlobal

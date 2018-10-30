@@ -1,0 +1,47 @@
+﻿@model IEnumerable<TelFlix.Data.Models.Movie>
+@*@using TelFlix.App.Models*@
+
+
+<br /><br />
+
+
+<form asp-controller="Home" asp-action="SearchMovie" method="get" class="form-control-static bg-primary">
+    <p>
+        Title: <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control">
+        <input type="submit" value="Search" class="btn btn-danger " />
+    </p>
+</form>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Trailer</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Description</td>
+                    <td>
+                        <a href="@item.TrailerUrl">Watch trailer</a>
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                        <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                         |
+                        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

@@ -1,0 +1,13 @@
+﻿@using TelFlix.Services.ViewModels.MovieViewModels
+@model IEnumerable<TelFlix.Services.Models.Movie.ListMovieModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>TOTAL MOVIES: @Model.Count()</h1>
+
+@foreach (var m in Model)
+{
+    <p>@m.Title</p>
+}

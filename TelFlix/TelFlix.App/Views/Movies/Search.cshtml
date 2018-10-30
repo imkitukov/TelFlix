@@ -1,0 +1,54 @@
+﻿@model ApiSearchMovieViewModel
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h2>Admin search movie page</h2>
+
+<form asp-controller="Movies" asp-action="Search" method="POST">
+
+    <p>
+        Search for: <input asp-for="SearchString" class="form-control">
+        <input type="submit" value="Search" class="btn btn-danger" />
+    </p>
+
+</form>
+
+<div class="search-results">
+    @if (!Model.FoundMovies.Any())
+    {
+        <h1>
+            Nothing found !
+        </h1>
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>  Title  </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var m in Model.FoundMovies)
+                {
+                    <tr>
+                        <td>
+                            @m.Title
+                        </td>
+                        <td>
+                            <a asp-controller="Movies" asp-action="AddToDb" asp-route-id="@m.ApiMovieId" class="btn btn-success">
+                                Add movie to our DB
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+</div>
+

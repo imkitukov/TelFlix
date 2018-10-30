@@ -1,0 +1,122 @@
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace TelFlix.App.HttpClients
+{
+    public class TheMovieDbClient 
+    {
+        private const string apiKey = "207de229486742b95fba944e0d0509be";
+        private readonly string ApiKeyPostFix = "?api_key={0}";
+
+        private const string BaseUri = "https://api.themoviedb.org/3/";
+        private const string MovieDetailsUri = "movie/{0}{1}{2}";
+
+        private const string SearchMovieUri = "search/movie{0}&query={1}";
+        private const string AppendVideosPostFix = "&append_to_response=videos";
+
+        private const string ListAllGenresUri = "genre/movie/list{0}";        
+        private const string CastMovieUri = "movie/{0}/credits{1}";
+
+        private readonly HttpClient client;
+
+        public TheMovieDbClient(HttpClient client)
+        {
+            this.client = client;
+            this.client.BaseAddress = new Uri(BaseUri);
+
+            this.ApiKeyPostFix = string.Format(ApiKeyPostFix, apiKey);
+        }
+
+        public async Task<string> GetMovieDetails(int movieId)
+        {
+            try
+            {
+                // https://api.themoviedb.org/3/movie/550?api_key=207de229486742b95fba944e0d0509be&append_to_response=videos
+
+                //Here we are making the assumption that our HttpClient instance
+                //has already had its base address set.
+                string requestUri = string.Format(MovieDetailsUri, movieId, ApiKeyPostFix, AppendVideosPostFix);
+
+                var response = await this.client.GetAsync(requestUri);
+
+                response.EnsureSuccessStatusCode();
+
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch (HttpRequestException ex)
+            {
+
+                //_logger.LogError($"An error occured connecting to values API {ex.ToString()}");
+                return "ERROR";
+            }
+        }
+
+        public async Task<string> SearchMovie(string searchTerm)
+        {
+            try
+            {
+                // https://api.themoviedb.org/3/search/movie?api_key=207de229486742b95fba944e0d0509be&query=Jack+Reacher
+
+                var searchQuery = searchTerm.Replace(" ", "+");
+
+                string requestUri = string.Format(SearchMovieUri, ApiKeyPostFix, searchQuery);
+
+                var response = await this.client.GetAsync(requestUri);
+
+                response.EnsureSuccessStatusCode();
+
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch (HttpRequestException ex)
+            {
+
+                //_logger.LogError($"An error occured connecting to values API {ex.ToString()}");
+                return "ERROR";
+            }
+        }
+
+        public async Task<string> ListAllGenres()
+        {
+            try
+            {
+                // https://api.themoviedb.org/3/genre/movie/list?api_key=207de229486742b95fba944e0d0509be
+
+                string requestUri = string.Format(ListAllGenresUri, ApiKeyPostFix);
+
+                var response = await this.client.GetAsync(requestUri);
+
+                response.EnsureSuccessStatusCode();
+
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch (HttpRequestException ex)
+            {
+                //_logger.LogError($"An error occured connecting to values API {ex.ToString()}");
+                return "ERROR";
+            }
+        }
+
+        public async Task<string> GetMovieActors(int movieId)
+        {
+            try
+            {
+                //https://api.themoviedb.org/3/movie/550/credits?api_key=207de229486742b95fba944e0d0509be
+                
+                string requestUri = string.Format(CastMovieUri, movieId, ApiKeyPostFix);
+
+                var response = await this.client.GetAsync(requestUri);
+
+                response.EnsureSuccessStatusCode();
+
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch (HttpRequestException ex)
+            {
+
+                //_logger.LogError($"An error occured connecting to values API {ex.ToString()}");
+                return "ERROR";
+            }
+        }
+    }
+}

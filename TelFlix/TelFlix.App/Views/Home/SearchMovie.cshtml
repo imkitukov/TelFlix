@@ -1,17 +1,12 @@
 ﻿@model IEnumerable<TelFlix.Data.Models.Movie>
 @*@using TelFlix.App.Models*@
 
-
-<br /><br />
-
-
-<form asp-controller="Home" asp-action="SearchMovie" method="get" class="form-control-static bg-primary">
+<form asp-controller="Home" asp-action="SearchMovie" method="get" class="form-control-static">
     <p>
         Title: <input type="text" name="searchString" value="@ViewBag.SearchString" class="form-control">
-        <input type="submit" value="Search" class="btn btn-danger " />
+        <input type="submit" value="Search" class="btn btn-success " />
     </p>
 </form>
-<br />
 
 <table class="table">
     <thead>
@@ -34,7 +29,7 @@
                         <a href="@item.TrailerUrl">Watch trailer</a>
                     </td>
                     <td>
-                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                         <a asp-controller="Movies" asp-action="Details" asp-route-id="@item.Id">Details</a>
                          |
                         @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })

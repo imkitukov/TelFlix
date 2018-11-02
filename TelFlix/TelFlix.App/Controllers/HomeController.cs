@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TelFlix.App.Models;
 using TelFlix.Services.Contracts;
+using TelFlix.Services.Models.Movie;
 
 namespace TelFlix.App.Controllers
 {
@@ -23,9 +24,14 @@ namespace TelFlix.App.Controllers
 
         public IActionResult Index()
         {
-            var movies = this.movieServices.ListAllMovies().ToList();
+            var movie = this.movieServices.ListAllMovies().ToList()[0];
+
+            var m = new ListMovieModel
+            {
+                SmallImageUrl = movie.SmallImageUrl
+            };
          
-            return View(movies);
+            return View(m);
         }
         
         [HttpGet]

@@ -7,12 +7,8 @@
 <h2>Admin search movie page</h2>
 
 <form asp-controller="Movies" asp-action="Search" method="POST">
-
-    <p>
-        Search for: <input asp-for="SearchString" class="form-control">
-        <input type="submit" value="Search" class="btn btn-danger" />
-    </p>
-
+    <input asp-for="SearchString" class="form-control" />
+    <input type="submit" value="Search" class="btn btn-success" />
 </form>
 
 <div class="search-results">

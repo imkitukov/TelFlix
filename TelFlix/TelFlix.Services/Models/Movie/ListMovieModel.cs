@@ -15,5 +15,7 @@ namespace TelFlix.Services.Models.Movie
         public DateTime? ReleaseDate { get; set; }
 
         public int? Duration { get; set; }
+
+        public string SmallImageUrl { get; set; }
     }
 }

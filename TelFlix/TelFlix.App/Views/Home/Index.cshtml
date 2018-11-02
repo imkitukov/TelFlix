@@ -1,13 +1,135 @@
 ﻿@using TelFlix.Services.ViewModels.MovieViewModels
-@model IEnumerable<TelFlix.Services.Models.Movie.ListMovieModel>
+@model TelFlix.Services.Models.Movie.ListMovieModel
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<h1>TOTAL MOVIES: @Model.Count()</h1>
+<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
 
-@foreach (var m in Model)
-{
-    <p>@m.Title</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <!-- 16:9 aspect ratio -->
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="" id="video" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h1>Welcome to TelFlix</h1>
+<h3>Top 5 Movies</h3>
+<hr>
+<div class="row justify-content-center">
+    <div class="col-md4">
+        <div class="card shadow">
+            <div class="inner">
+                <img class="card-img-top" src="images/the-matrix.jpg" alt="The Matrix Poster">
+            </div>
+            <div class="card-body text-center">
+                <h6 class="card-title">The Matrix</h6>
+                <p class="card-text"></p>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary video-btn" data-toggle="modal" data-src="https://www.youtube.com/embed/m8e-FF8MsqU" data-target="#videoModal">
+                    Watch
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md4">
+        <div class="card shadow">
+            <div class="inner">
+                <img class="card-img-top" src="images/the-lord-of-the-rings-the-fellowship-of-the-ring.jpg" alt="The Lord Of The Rings Poster">
+            </div>
+            <div class="card-body text-center">
+                <h6 class="card-title">The Lord Of The Rings</h6>
+                <p class="card-text"></p>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary video-btn" data-toggle="modal" data-src="https://www.youtube.com/embed/V75dMMIW2B4" data-target="#videoModal">
+                    Watch
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md4">
+        <div class="card shadow">
+            <div class="inner">
+                <img class="card-img-top" src="images/the-departed.jpg" alt="The Departed Poster">
+            </div>
+            <div class="card-body text-center">
+                <h6 class="card-title">The Departed</h6>
+                <p class="card-text"></p>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary video-btn" data-toggle="modal" data-src="https://www.youtube.com/embed/iQpb1LoeVUc" data-target="#videoModal">
+                    Watch
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md4">
+        <div class="card shadow">
+            <div class="inner">
+                <img class="card-img-top" src="images/i-robot.jpg" alt="I, Robot Poster">
+            </div>
+            <div class="card-body text-center">
+                <h6 class="card-title">I, Robot</h6>
+                <p class="card-text"></p>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary video-btn" data-toggle="modal" data-src="https://www.youtube.com/embed/rL6RRIOZyCM" data-target="#videoModal">
+                    Watch
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md4">
+        <div class="card shadow">
+            <div class="inner">
+                <img class="card-img-top" src="images/october-sky.jpg" alt="October Sky Poster">
+            </div>
+            <div class="card-body text-center">
+                <h6 class="card-title">October Sky</h6>
+                <p class="card-text"></p>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary video-btn" data-toggle="modal" data-src="https://www.youtube.com/embed/zxJQgYPXjN4" data-target="#videoModal">
+                    Watch
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            // Gets the video src from the data-src on each button
+
+            var $videoSrc;
+            $('.video-btn').click(function () {
+                $videoSrc = $(this).data("src");
+            });
+
+            console.log($videoSrc);
+
+            // when the modal is opened autoplay it
+            $('#videoModal').on('shown.bs.modal', function (e) {
+
+                // set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
+                $("#video").attr('src', $videoSrc + "?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1");
+            })
+
+
+            // stop playing the youtube video when I close the modal
+            $('#videoModal').on('hide.bs.modal', function (e) {
+                // a poor man's stop video
+                $("#video").attr('src', $videoSrc);
+            })
+        });
+    </script>
 }

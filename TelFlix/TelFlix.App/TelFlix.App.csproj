@@ -19,6 +19,10 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
+    <Folder Include="Areas\TestArea\Controllers\" />
+    <Folder Include="Areas\TestArea\Data\" />
+    <Folder Include="Areas\TestArea\Models\" />
+    <Folder Include="Areas\TestArea\Views\" />
   </ItemGroup>
 
 </Project>

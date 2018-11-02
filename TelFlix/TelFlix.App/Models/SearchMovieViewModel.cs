@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
 
 namespace TelFlix.App.Models
@@ -8,7 +7,8 @@ namespace TelFlix.App.Models
     {
         public SearchMovieViewModel()
         {
-            this.Movies = new List<MovieViewModel>();
+            this.ApiMovies = new List<MovieViewModel>();
+            this.DbMovies = new List<MovieViewModel>();
         }
 
         public string SearchString { get; set; }
@@ -17,6 +17,8 @@ namespace TelFlix.App.Models
 
         public string MovieGenre { get; set; }
 
-        public IEnumerable<MovieViewModel> Movies { get; set; }
+        public IEnumerable<MovieViewModel> ApiMovies { get; set; }
+
+        public IEnumerable<MovieViewModel> DbMovies { get; set; }
     }
 }

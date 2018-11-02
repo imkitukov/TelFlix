@@ -44,28 +44,19 @@ namespace TelFlix.App.Controllers
             //return View(await _context.Movies.ToListAsync());
         }
 
-        //GET: Movies/search
-        [HttpGet]
-        public IActionResult Search()
-        {
-            var vm = new ApiSearchMovieViewModel
-            {
-                SearchString = ""
-            };
-
-            return View(vm);
-        }
-
         // search movie at The Movie DB
         [HttpPost]
-        public async Task<IActionResult> Search(ApiSearchMovieViewModel model)
+        public async Task<IActionResult> Search(SearchMovieViewModel model)
         {
             var jsonResult = await this.client.SearchMovie(model.SearchString);
 
-            var foundMovies = this.jsonProvider.ExtractFoundMoviesFromSearchMovieJsonResult(jsonResult);
+            var apiMoviesFound = this.jsonProvider.ExtractFoundMoviesFromSearchMovieJsonResult(jsonResult);
 
-            model.FoundMovies = foundMovies
-                                    .Select(m => new MovieViewModel(m));
+            model.ApiMovies = apiMoviesFound.Select(m => new MovieViewModel(m));
+
+            var dbMoviesFound = this.movieService.SearchMovie(model.SearchString);
+
+            model.DbMovies = dbMoviesFound.Select(m => new MovieViewModel(m)); ;
 
             return View(model);
         }

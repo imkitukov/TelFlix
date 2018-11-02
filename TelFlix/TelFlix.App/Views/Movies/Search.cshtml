@@ -1,4 +1,4 @@
-﻿@model ApiSearchMovieViewModel
+﻿@model SearchMovieViewModel
 
 @{
     ViewData["Title"] = "Search";
@@ -6,13 +6,19 @@
 
 <h2>Admin search movie page</h2>
 
-<form asp-controller="Movies" asp-action="Search" method="POST">
-    <input asp-for="SearchString" class="form-control" />
-    <input type="submit" value="Search" class="btn btn-success" />
-</form>
+@*<form asp-controller="Movies" asp-action="Search" method="POST">
+
+        <p>
+            Search for: <input asp-for="SearchString" class="form-control">
+            <input type="submit" value="Search" class="btn btn-danger" />
+        </p>
+
+    </form>*@
 
 <div class="search-results">
-    @if (!Model.FoundMovies.Any())
+
+    <h1>DB results</h1>
+    @if (!Model.DbMovies.Any())
     {
         <h1>
             Nothing found !
@@ -29,7 +35,45 @@
             </thead>
             <tbody>
 
-                @foreach (var m in Model.FoundMovies)
+                @foreach (var m in Model.DbMovies)
+                {
+                    <tr>
+                        <td>
+                            @m.Title
+                        </td>
+                        <td>
+                            <a asp-controller="Movies" asp-action="Details" asp-route-id="@m.Id" class="btn btn-success">
+                                View existing movie details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+</div>
+
+<div class="search-results">
+    <h1>api results</h1>
+    @if (!Model.ApiMovies.Any())
+    {
+        <h1>
+            Nothing found !
+        </h1>
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>  Title  </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var m in Model.ApiMovies)
                 {
                     <tr>
                         <td>
@@ -47,4 +91,3 @@
 
     }
 </div>
-

@@ -43,7 +43,7 @@ namespace TelFlix.App.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -66,6 +66,7 @@ namespace TelFlix.App.Areas.Identity.Pages.Account
             {
                 var user = new User { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
@@ -78,6 +79,12 @@ namespace TelFlix.App.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    await _userManager.AddToRoleAsync(user, "RegularUser");
+                    var loggedUser = await this._userManager.FindByEmailAsync(user.Email);
+
+                    //return RedirectToAction("Index", "Home", new { Area = "Regular" });
+
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

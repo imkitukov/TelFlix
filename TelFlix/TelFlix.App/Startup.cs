@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using TelFlix.App.HttpClients;
+using TelFlix.App.Infrastructure.Extensions;
 using TelFlix.App.Infrastructure.Providers;
 using TelFlix.Data.Context;
 using TelFlix.Data.Models;
@@ -35,6 +36,14 @@ namespace TelFlix.App
             this.RegisterServices(services);
             this.RegisterInfrastructure(services);
 
+            services.AddAuthorization(options => 
+            {
+                options.AddPolicy("RequireAdministratorRole", policy =>
+                {
+                    policy.RequireRole("Administrator");
+                });
+            });
+
             //services.Configure<CookiePolicyOptions>(options =>
             //{
             //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -58,6 +67,8 @@ namespace TelFlix.App
             services.AddSingleton<IJsonProvider, JsonProvider>();
 
             services.AddScoped<UserManager<User>>();
+            //services.AddScoped<RoleManager<IdentityRole>>();
+            //services.AddScoped<SignInManager<User>>();
 
             services.AddTransient<IMovieServices, MovieServices>();
             services.AddTransient<IAddMovieService, AddMovieService>();
@@ -78,7 +89,7 @@ namespace TelFlix.App
         {
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<TFContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders();                ;
 
             if (this.Environment.IsDevelopment())
             {
@@ -103,6 +114,8 @@ namespace TelFlix.App
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseDatabaseMigration();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -119,6 +132,22 @@ namespace TelFlix.App
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //      name: "identity",
+            //      template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+            //    );
+            //});
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                  name: "areas",
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+            });
 
             app.UseMvc(routes =>
             {

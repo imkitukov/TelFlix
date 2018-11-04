@@ -18,11 +18,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Identity\Services\" />
+    <Folder Include="Areas\Regular\Data\" />
+    <Folder Include="Areas\Regular\Models\" />
     <Folder Include="Areas\TestArea\Controllers\" />
     <Folder Include="Areas\TestArea\Data\" />
     <Folder Include="Areas\TestArea\Models\" />
     <Folder Include="Areas\TestArea\Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Areas\Admin\Views\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Admin\Views\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Regular\Views\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using TelFlix.App.HttpClients;
+using TelFlix.App.Infrastructure.Extensions;
 using TelFlix.App.Infrastructure.Providers;
 using TelFlix.Data.Context;
 using TelFlix.Data.Models;
@@ -70,8 +71,11 @@ namespace TelFlix.App
 
         private void RegisterInfrastructure(IServiceCollection services)
         {
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc(options =>
+                            {
+                                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+                            })
+                    .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         private void RegisterAuthentication(IServiceCollection services)
@@ -103,6 +107,8 @@ namespace TelFlix.App
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            // Custom extension method to ensure the db is updated and you dont need to use Package manager console anymore
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

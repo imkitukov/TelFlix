@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using TelFlix.App.Models;
 using TelFlix.Services.Contracts;
 using TelFlix.Services.Models.Movie;
@@ -25,36 +23,14 @@ namespace TelFlix.App.Controllers
         public IActionResult Index()
         {
             var movie = this.movieServices.ListAllMovies().ToList()[0];
-
+            
             var m = new ListMovieModel
             {
                 SmallImageUrl = movie.SmallImageUrl
             };
-         
+
             return View(m);
         }
-        
-        [HttpGet]
-        public IActionResult SearchMovie()
-        {
-            var keyword = Request.Query["searchString"].ToString();
-
-            var movies = this.movieServices.SearchMovie(keyword);
-
-            this.ViewBag.SearchString = keyword;
-           
-            return View(movies);
-        }
-
-        //[HttpPost]
-        //public IActionResult SearchMovie(string keyword)
-        //{
-        //    var movies = this.movieServices.SearchMovie(keyword);
-
-        //    var vm = new SearchMovieViewModel { Movies = movies.Select(m => new MovieViewModel(m)) };
-
-        //    return View(vm);
-        //}
 
         public IActionResult About()
         {

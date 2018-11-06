@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using TelFlix.Data.Context;
 using TelFlix.Data.Models;
@@ -18,14 +19,16 @@ namespace TelFlix.Services
         {
             return this.Context
                        .Movies
+                       //.Include(m => m.MoviesGenres)
+                       //    .ThenInclude(lmg => lmg.Select(mg => mg.Genre))
                        .Select(m => new ListMovieModel
                        {
-                           Id = m.Id,
                            ApiMovieId= m.ApiMovieId,
                            Title = m.Title,
                            Duration = m.DurationInMinutes,
                            Rating = m.Rating,
-                           ReleaseDate = m.ReleaseDate
+                           ReleaseDate = m.ReleaseDate,
+                           Genres = m.MoviesGenres.Select(mg => mg.Genre).ToList()                           
                        })
                        .ToList();
         }

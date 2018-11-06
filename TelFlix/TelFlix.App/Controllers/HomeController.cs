@@ -29,7 +29,17 @@ namespace TelFlix.App.Controllers
                 SmallImageUrl = movie.SmallImageUrl
             };
 
-            return View(m);
+            return View();
+        }
+        
+        [HttpGet]
+        public IActionResult SearchMovie()
+        {
+            var keyword = Request.Query["searchString"].ToString();
+
+            var movies = this.movieServices.SearchMovie(keyword);
+
+            return View();
         }
 
         public IActionResult About()

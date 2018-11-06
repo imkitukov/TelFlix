@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TelFlix.App.HttpClients;
@@ -7,6 +8,7 @@ using TelFlix.App.Infrastructure.Providers;
 using TelFlix.App.Models;
 using TelFlix.App.Models.Movies;
 using TelFlix.Data.Models;
+using TelFlix.Data.UnitOfWorkCore;
 using TelFlix.Services.Contracts;
 using TelFlix.Services.Providers.Exceptions;
 
@@ -144,8 +146,8 @@ namespace TelFlix.App.Controllers
         // GET: Movies/Details/5
         public IActionResult Details(int id)
         {
-            Movie movie = this.movieService.GetMovieById(id);
-
+            var movie = this.movieService.GetMovieById(id);
+            
             if (movie == null)
             {
                 return NotFound();

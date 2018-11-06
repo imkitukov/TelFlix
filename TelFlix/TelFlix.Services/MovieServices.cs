@@ -23,17 +23,38 @@ namespace TelFlix.Services
                        //    .ThenInclude(lmg => lmg.Select(mg => mg.Genre))
                        .Select(m => new ListMovieModel
                        {
-                           ApiMovieId= m.ApiMovieId,
+                           ApiMovieId = m.ApiMovieId,
                            Title = m.Title,
                            Duration = m.DurationInMinutes,
                            Rating = m.Rating,
                            ReleaseDate = m.ReleaseDate,
-                           Genres = m.MoviesGenres.Select(mg => mg.Genre).ToList()                           
+                           Genres = m.MoviesGenres.Select(mg => mg.Genre).ToList()
                        })
                        .ToList();
         }
 
-        public Movie GetMovieById(int id) => this.Context.Movies.Find(id);
+        public MovieDetailModel GetMovieById(int id)
+        {
+            return this.Context
+                .Movies
+                .Select(m => new MovieDetailModel
+                {
+                    Id = m.Id,
+                    ApiMovieId = m.ApiMovieId,
+                    Actors = m.MoviesActors.Select( a => a.Actor),
+                    Genres = m.MoviesGenres.Select(g => g.Genre),
+                    Description = m.Description,
+                    DurationInMinutes = m.DurationInMinutes,
+                    MediumImageUrl = m.MediumImageUrl,
+                    Rating = m.Rating,
+                    ReleaseDate = m.ReleaseDate,
+                    Reviews = m.Reviews,
+                    SmallImageUrl = m.SmallImageUrl,
+                    Title = m.Title,
+                    TrailerUrl = m.TrailerUrl
+                })
+                .FirstOrDefault(m => m.Id == id);
+        }
 
         //public IEnumerable<ListMovieModel> ListMoviesInRange(int firstYear, int secondYear)
         //{

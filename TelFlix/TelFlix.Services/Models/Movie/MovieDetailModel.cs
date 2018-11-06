@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using TelFlix.Data.Models;
 
-namespace TelFlix.App.Models.Movies
+namespace TelFlix.Services.Models.Movie
 {
-    public class MovieDetailsViewmodel
+    public class MovieDetailModel
     {
+        public int Id { get; set; }
+
         public int ApiMovieId { get; set; }
 
         public string Title { get; set; }
@@ -14,14 +17,12 @@ namespace TelFlix.App.Models.Movies
 
         public int? DurationInMinutes { get; set; }
 
-        public ICollection<Actor> Actors { get; set; }
+        public IEnumerable<Actor> Actors { get; set; }
 
-        public ICollection<Genre> Genres { get; set; }
-
-        public ICollection<Director> Directors { get; set; }
+        public IEnumerable<Genre> Genres { get; set; }
         
-        public ICollection<Review> Reviews { get; set; }
-
+        public IEnumerable<Review> Reviews { get; set; }
+        
         public float? Rating { get; set; }
 
         public string Description { get; set; }

@@ -1,4 +1,4 @@
-﻿@model Movie
+﻿@model MovieDetailModel
 
 @{
     ViewData["Title"] = Model.Title;
@@ -10,11 +10,30 @@
 
 <div class="movie-wrapper">
     <div class="poster">
-        <img src="@Model.MediumImageUrl" alt="@Model.Title Poster" />
+        <img title="@Model.Title" src="@Model.MediumImageUrl" alt="@Model.Title Poster" />
     </div>
     <div class="details">
-        <p><strong>Director: </strong></p>
+        <p><strong>Rating: </strong> @Model.Rating.Value/10</p>
+        <p>
+            <strong>Actors: </strong>
+            @foreach (var actor in Model.Actors)
+            {
+                <a>@actor.FullName,</a>
+            }
+        </p>
         <p><strong>Released on: </strong>@Model.ReleaseDate.Value.ToShortDateString()</p>
         <p><strong>Plot: </strong>@Model.Description</p>
+        <p>
+            <strong>Genres: </strong>
+            @foreach (var genre in Model.Genres)
+            {
+                <a>@genre.Name,</a>
+            }
+        </p>
     </div>
 </div>
+
+
+
+
+

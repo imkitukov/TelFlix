@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Threading.Tasks;
 using TelFlix.App.Areas.Admin.Models;
@@ -86,6 +86,11 @@ namespace TelFlix.App.Areas.Admin.Controllers
 
                 var user = await this.userManager.FindByEmailAsync(model.Email);
 
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
                 await this.userManager.AddToRoleAsync(user, "RegularUser");
 
                 return RedirectToAction(nameof(Index));
@@ -116,26 +121,72 @@ namespace TelFlix.App.Areas.Admin.Controllers
         }
 
         // GET: User/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(string id)
         {
-            return View();
+            var user = await this.userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(new DeleteUserViewModel
+            {
+                Id = id,
+                Email = user.Email
+            });
         }
 
-        // POST: User/Delete/5
+        public async Task<ActionResult> Destroy(string id)
+        {
+            var user = await this.userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            await this.userManager.DeleteAsync(user);
+
+            this.TempData["SuccessMessage"] = $"User {user.Email} deleted successfully.";
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult AddToRole(string id)
+        {
+            var rolesSelectListItems = this.roleManager
+                .Roles
+                .Select(r => new SelectListItem
+                {
+                    Text = r.Name,
+                    Value = r.Name
+                })
+                .ToList();
+
+            if (rolesSelectListItems.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return View(rolesSelectListItems);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> AddToRole(string id, string role)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var user = await this.userManager.FindByIdAsync(id);
+            var roleExists = await this.roleManager.RoleExistsAsync(role);
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
+            if (user == null || !roleExists)
             {
-                return View();
+                return NotFound();
             }
+
+            await this.userManager.AddToRoleAsync(user, role);
+
+            TempData["SuccessMessage"] = $"User {user.Email} added successfully to {role} role.";
+            return RedirectToAction(nameof(Index));
         }
     }
 }

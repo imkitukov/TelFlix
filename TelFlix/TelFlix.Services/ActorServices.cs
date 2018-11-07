@@ -4,8 +4,8 @@ using TelFlix.Data.Context;
 using TelFlix.Data.Models;
 using TelFlix.Services.Abstract;
 using TelFlix.Services.Contracts;
+using TelFlix.Services.Models.Actors;
 using TelFlix.Services.Providers.Exceptions;
-using TelFlix.Services.ViewModels.ActorViewModels;
 
 namespace TelFlix.Services
 {
@@ -15,14 +15,17 @@ namespace TelFlix.Services
         {
         }
 
-        public ICollection<ListActorModel> ListAllActors()
+        public IEnumerable<ListActorModel> ListAllActors()
         {
             var actors = this.Context
                             .Actors
                             .Select(a => new ListActorModel
                             {
+                                Id = a.Id,
                                 FullName = a.FullName,
-                                MovieTitles = a.Movies.Select(m => m.Movie.Title).ToList()
+                                MovieTitles = a.Movies.Select(m => m.Movie.Title).ToList(),
+                                SmallImageUrl = a.SmallImageUrl
+                                
                             })
                             // todo add more actor info
                             .ToList();
@@ -71,6 +74,16 @@ namespace TelFlix.Services
 
             return actor;
         }
+        public Actor FindActorById(int id)
+        {
+            var actor = this.Context
+                .Actors
+                .FirstOrDefault(m => m.Id == id);
+
+            return actor;
+        }
+
+
 
         public Actor AddActor(Actor actor)
         {

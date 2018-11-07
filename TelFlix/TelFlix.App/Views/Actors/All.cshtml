@@ -1,0 +1,35 @@
+﻿@model IEnumerable<TelFlix.Services.Models.Actors.ListActorModel>
+
+@{
+    ViewData["Title"] = "All Actors";
+    int counter = 1;
+}
+<h2>AllActors</h2>
+
+<table class="table" border="1">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col" width="1%">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Movies</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var actor in Model)
+        {
+            <tr>
+                <th scope="row">@(counter++)</th>
+                <td scope="row">@actor.FullName</td>
+                <td scope="row">
+                    @foreach (var movie in actor.MovieTitles)
+                    {
+                        <a>@(movie),</a>
+                    }
+                </td>
+                <td><a asp-action="Details" asp-route-id="@actor.Id">Details</a></td>
+            </tr>
+        }
+
+    </tbody>
+</table>

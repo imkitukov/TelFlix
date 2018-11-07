@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using TelFlix.Data.Models;
 
 namespace TelFlix.Services.Models.Movie

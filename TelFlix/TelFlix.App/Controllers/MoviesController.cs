@@ -50,7 +50,6 @@ namespace TelFlix.App.Controllers
             var model = this.UpdateMovieIndexViewModel(page, genreId);
 
             //ViewBag.SelectedGenreId = genreId;
-            //model.GenreId = genreId;
 
             return PartialView("_GenreResults", model);
         }

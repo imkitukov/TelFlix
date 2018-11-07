@@ -34,7 +34,6 @@ namespace TelFlix.App.Areas.Identity.Pages.Account
             }
             else
             {
-                //return RedirectToPage("/Account/Logout", new { Area = "Identity" });
                 return RedirectToAction("Logout", "Account", new { Area = "Identity" });
             }
         }

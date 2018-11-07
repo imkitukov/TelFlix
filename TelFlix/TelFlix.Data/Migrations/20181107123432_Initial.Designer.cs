@@ -10,7 +10,7 @@ using TelFlix.Data.Context;
 namespace TelFlix.Data.Migrations
 {
     [DbContext(typeof(TFContext))]
-    [Migration("20181030153810_Initial")]
+    [Migration("20181107123432_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -140,9 +140,11 @@ namespace TelFlix.Data.Migrations
 
                     b.Property<int>("ApiActorId");
 
+                    b.Property<string>("Biography");
+
                     b.Property<DateTime?>("CreatedOn");
 
-                    b.Property<DateTime?>("DateOfBirth");
+                    b.Property<string>("DateOfBirth");
 
                     b.Property<DateTime?>("DeletedOn");
 
@@ -161,6 +163,8 @@ namespace TelFlix.Data.Migrations
                     b.Property<string>("MediumImageUrl");
 
                     b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<string>("PlaceOfBirth");
 
                     b.Property<string>("SmallImageUrl");
 

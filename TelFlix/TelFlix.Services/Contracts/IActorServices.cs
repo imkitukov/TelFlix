@@ -13,5 +13,7 @@ namespace TelFlix.Services.Contracts
         //void EditActor(Actor actor, string columnToChange, string newValue);
 
         Actor AddActor(Actor actor);
+
+        void AddActorDetails(Actor actor);
     }
 }

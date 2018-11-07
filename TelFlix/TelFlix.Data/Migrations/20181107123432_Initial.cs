@@ -24,9 +24,11 @@ namespace TelFlix.Data.Migrations
                     ModifiedOn = table.Column<DateTime>(nullable: true),
                     FullName = table.Column<string>(maxLength: 100, nullable: false),
                     ApiActorId = table.Column<int>(nullable: false),
+                    Biography = table.Column<string>(nullable: true),
+                    PlaceOfBirth = table.Column<string>(nullable: true),
                     ImdbId = table.Column<string>(nullable: true),
                     ImdbProfileUrl = table.Column<string>(nullable: true),
-                    DateOfBirth = table.Column<DateTime>(nullable: true),
+                    DateOfBirth = table.Column<string>(nullable: true),
                     SmallImageUrl = table.Column<string>(nullable: true),
                     MediumImageUrl = table.Column<string>(nullable: true),
                     LargeImageUrl = table.Column<string>(nullable: true)

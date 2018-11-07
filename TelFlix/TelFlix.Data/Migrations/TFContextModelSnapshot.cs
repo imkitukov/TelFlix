@@ -138,9 +138,11 @@ namespace TelFlix.Data.Migrations
 
                     b.Property<int>("ApiActorId");
 
+                    b.Property<string>("Biography");
+
                     b.Property<DateTime?>("CreatedOn");
 
-                    b.Property<DateTime?>("DateOfBirth");
+                    b.Property<string>("DateOfBirth");
 
                     b.Property<DateTime?>("DeletedOn");
 
@@ -159,6 +161,8 @@ namespace TelFlix.Data.Migrations
                     b.Property<string>("MediumImageUrl");
 
                     b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<string>("PlaceOfBirth");
 
                     b.Property<string>("SmallImageUrl");
 

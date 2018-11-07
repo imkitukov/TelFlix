@@ -14,5 +14,7 @@ namespace TelFlix.App.Infrastructure.Providers
         IEnumerable<(int GenreApiId, string GenreName)> ExtractGenresForMovie(string jsonAsString);
 
         IEnumerable<(Actor Actor, string MovieCharacter)> ExtractActorsFromMovieCastJsonResult(string jsonAsString);
+
+        Actor ExtractActorDetails(string actorDetailsJsonResult);
     }
 }

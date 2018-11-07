@@ -1,9 +1,7 @@
 @using Microsoft.AspNetCore.Identity
 @using TelFlix.Data.Models
-
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
-
 @*@if (SignInManager.IsSignedIn(User))*@
 @if (User.Identity.IsAuthenticated)
 {

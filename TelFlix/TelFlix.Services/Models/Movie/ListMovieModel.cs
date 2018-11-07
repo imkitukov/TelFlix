@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using TelFlix.Data.Models;
 
 namespace TelFlix.Services.Models.Movie
 {
@@ -17,5 +19,7 @@ namespace TelFlix.Services.Models.Movie
         public int? Duration { get; set; }
 
         public string SmallImageUrl { get; set; }
+
+        public IList<Genre> Genres { get; set; }
     }
 }

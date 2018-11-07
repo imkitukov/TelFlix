@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using TelFlix.App.HttpClients;
+using TelFlix.App.Hubs;
 using TelFlix.App.Infrastructure.Extensions;
 using TelFlix.App.Infrastructure.Providers;
 using TelFlix.Data.Context;
@@ -43,6 +44,15 @@ namespace TelFlix.App
                     policy.RequireRole("Administrator");
                 });
             });
+            
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = $"/Identity/Account/Login";
+                options.LogoutPath = $"/Identity/Account/Logout";
+                options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+            });
+
+            services.AddSignalR();
 
             //services.Configure<CookiePolicyOptions>(options =>
             //{
@@ -56,7 +66,8 @@ namespace TelFlix.App
         {
             services.AddDbContext<TFContext>(options =>
             {
-                var connectionString = this.Configuration.GetConnectionString("DevLocalDb");
+                //var connectionString = this.Configuration.GetConnectionString("DevLocalDb");
+                var connectionString = System.Environment.GetEnvironmentVariable("LocalDevDB", EnvironmentVariableTarget.User);
                 options.UseSqlServer(connectionString);
             });
         }
@@ -67,8 +78,8 @@ namespace TelFlix.App
             services.AddSingleton<IJsonProvider, JsonProvider>();
 
             services.AddScoped<UserManager<User>>();
-            //services.AddScoped<RoleManager<IdentityRole>>();
-            //services.AddScoped<SignInManager<User>>();
+            services.AddScoped<RoleManager<IdentityRole>>();
+            services.AddScoped<SignInManager<User>>();
 
             services.AddTransient<IMovieServices, MovieServices>();
             services.AddTransient<IAddMovieService, AddMovieService>();
@@ -81,8 +92,18 @@ namespace TelFlix.App
 
         private void RegisterInfrastructure(IServiceCollection services)
         {
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services
+                .AddMvc(options =>
+                {
+                    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddRazorPagesOptions(options =>
+                {
+                    options.AllowAreas = true;
+                    options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
+                    options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
+                });
         }
 
         private void RegisterAuthentication(IServiceCollection services)
@@ -127,18 +148,24 @@ namespace TelFlix.App
                 app.UseHsts();
             }
 
+            //app.UseStatusCodePagesWithRedirects("/Identity/Account/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //      name: "identity",
+            //      template: "{area:exists}/Account/{controller=Home}/{action=Index}/{id?}"
+            //    );
+            //});
+
+            app.UseSignalR(route =>
             {
-                routes.MapRoute(
-                  name: "identity",
-                  template: "{area:exists}/Account/{controller=Home}/{action=Index}/{id?}"
-                );
+                route.MapHub<NotificationsHub>("/notifications");
             });
 
             app.UseMvc(routes =>

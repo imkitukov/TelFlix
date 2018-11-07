@@ -92,6 +92,7 @@ namespace TelFlix.App.Areas.Admin.Controllers
                 }
 
                 await this.userManager.AddToRoleAsync(user, "RegularUser");
+                this.TempData["SuccessMessage"] = $"User {user.Email} created successfully.";
 
                 return RedirectToAction(nameof(Index));
             }

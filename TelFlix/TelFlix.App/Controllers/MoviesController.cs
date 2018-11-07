@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq;
 using System.Threading.Tasks;
 using TelFlix.App.HttpClients;
 using TelFlix.App.Infrastructure.Providers;
 using TelFlix.App.Models;
+using TelFlix.App.Models.Movies;
 using TelFlix.Data.Models;
 using TelFlix.Services.Contracts;
 using TelFlix.Services.Providers.Exceptions;
@@ -17,9 +19,10 @@ namespace TelFlix.App.Controllers
         private readonly IAddMovieService addMovieService;
         private readonly IMovieServices movieService;
         private readonly IActorServices actorServices;
+        private readonly IGenreServices genresServices;
 
         public MoviesController(IAddMovieService addMovieService, IMovieServices movieServices,
-            IActorServices actorServices,
+            IActorServices actorServices, IGenreServices genreServices,
             TheMovieDbClient client, IJsonProvider jsonProvider)
         {
             this.client = client;
@@ -27,23 +30,44 @@ namespace TelFlix.App.Controllers
             this.addMovieService = addMovieService;
             this.movieService = movieServices;
             this.actorServices = actorServices;
+            this.genresServices = genreServices;
         }
 
-        // used just for test the code 
         // GET: Movies
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            int movieId = 335983;
+            var vm = this.GetFullAndPartialViewModel();
 
-            var jsonResult = await this.client.GetMovieDetails(movieId);
-
-            var movie = this.jsonProvider.ExtractMovieFromMovieDetailsJsonResult(jsonResult);
-
-            return View(movie);
-
-            //return View(await _context.Movies.ToListAsync());
+            return View(vm);
         }
 
+        [HttpGet]
+        public IActionResult GetGenreMovies(string genreId)
+        {
+            var lookupId = int.Parse(genreId);
+            var model = this.GetFullAndPartialViewModel(lookupId);
+            return PartialView("_GenreResults", model);
+        }
+
+        private MovieIndexViewModel GetFullAndPartialViewModel(int genreId = 0)
+        {
+            // add service method GetMoviesByGenre
+            var movies = this.movieService.ListAllMovies();
+            var genres = this.genresServices.GetAll();
+
+            var vm = new MovieIndexViewModel();
+            vm.Movies = movies.Where(m => m.Genres.Any(g => g.Id == genreId));
+            //if (genreId != 0)
+            //{
+            //    movies = movies.Where(m => m.Id == genreId);
+            //}
+
+            //vm.Movies = movies;
+            vm.Genres = new SelectList(genres, "Id", "Name");
+
+            //return vm;
+            return vm;
+        }
         // search movie at The Movie DB
         [HttpPost]
         public async Task<IActionResult> Search(SearchMovieViewModel model)

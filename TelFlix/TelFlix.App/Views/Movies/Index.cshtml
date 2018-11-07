@@ -1,58 +1,33 @@
-﻿@model TelFlix.Data.Models.Movie
+﻿@model MovieIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Movies Index</h2>
+<div id="container">
+    @*<label for="ddlGenre"><strong>Select a genre</strong></label>*@
+    <select asp-for="GenreId" id="GenreId" asp-items="@Model.Genres">
+        <option>--Choose genre--</option>
+    </select>
+    @*@Html.DropDownListFor(m =>m.GenreId,
+        new SelectList(Model.Genres, "Id", "Name", Model.GenreId), new { id = "ddlGenre", @class = "test" })*@
+    <br /><br />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.ReleaseDate)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.DurationInMinutes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-<tr>
-            <td>
-                @Model.Title
-            </td>
-            @*<td>
-                @Model.ReleaseDate
-            </td>*@
-            <td>
-                @Model.DurationInMinutes
-            </td>
-            <td>
-                @Model.Rating
-            </td>
-            <td>
-                 @Model.Description
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@Model.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-            </td>
-        </tr>
+    <div id="dvGenreResults">
+        @Html.RenderPartialAsync("_GenreResults", @Model.Movies);
+    </div>
 
-    </tbody>
-</table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#GenreId").change(function () {
+            //alert('test');
+            var genreId = $("#GenreId").val();
+            var url = "@Url.Action("GetGenreMovies","Movies")?genreId=" + genreId;
+            console.log(url);
+            $("#dvGenreResults").load(url);
+        });
+    });
+</script>

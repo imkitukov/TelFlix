@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Linq;
 using TelFlix.App.Models;
 using TelFlix.Services.Contracts;
+using TelFlix.Services.Models.Movie;
 
 namespace TelFlix.App.Controllers
 {
@@ -34,16 +36,6 @@ namespace TelFlix.App.Controllers
 
             return View(movies);
         }
-
-        //[HttpPost]
-        //public IActionResult SearchMovie(string keyword)
-        //{
-        //    var movies = this.movieServices.SearchMovie(keyword);
-
-        //    var vm = new SearchMovieViewModel { Movies = movies.Select(m => new MovieViewModel(m)) };
-
-        //    return View(vm);
-        //}
 
         public IActionResult About()
         {

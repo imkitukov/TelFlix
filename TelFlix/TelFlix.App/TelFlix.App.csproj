@@ -27,12 +27,11 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Moderator\Data\" />
+    <Folder Include="Areas\Moderator\Models\" />
+    <Folder Include="Areas\Moderator\Views\" />
     <Folder Include="Areas\Regular\Data\" />
     <Folder Include="Areas\Regular\Models\" />
-    <Folder Include="Areas\TestArea\Controllers\" />
-    <Folder Include="Areas\TestArea\Data\" />
-    <Folder Include="Areas\TestArea\Models\" />
-    <Folder Include="Areas\TestArea\Views\" />
   </ItemGroup>
 
   <ItemGroup>

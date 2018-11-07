@@ -22,6 +22,7 @@ namespace TelFlix.App.Infrastructure.Extensions
 
                 var adminName = "Administrator";
                 var regularName = "RegularUser";
+                var moderatorRole = "Moderator";
 
                 // This allows us to call asynchronous code in a synchronous context and await it
                 Task.Run(async () =>
@@ -31,6 +32,14 @@ namespace TelFlix.App.Infrastructure.Extensions
                         await roleManager.CreateAsync(new IdentityRole
                         {
                             Name = regularName
+                        });
+                    }
+
+                    if (await roleManager.RoleExistsAsync(moderatorRole) == false)
+                    {
+                        await roleManager.CreateAsync(new IdentityRole
+                        {
+                            Name = moderatorRole
                         });
                     }
 
@@ -44,15 +53,15 @@ namespace TelFlix.App.Infrastructure.Extensions
                         });
                     }
 
-                    var adminEmail = "admin@admin.admin";
+                    var adminEmail = "a@a.a";
                     var adminUser = await userManager.FindByNameAsync(adminEmail);
 
                     if (adminUser == null)
                     {
                         adminUser = new User
                         {
-                            Email = "admin@admin.admin",
-                            UserName = "admin@admin.admin",
+                            Email = adminEmail,
+                            UserName = adminEmail,
                         };
 
                         await userManager.CreateAsync(adminUser, "admin");

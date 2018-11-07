@@ -33,34 +33,6 @@ namespace TelFlix.Services
             return actors;
         }
 
-        //public void EditActor(Actor actor, string columnToEdit, string newValue)
-        //{
-        //    if (columnToEdit == FirstNameColumn)
-        //    {
-        //        actor.FirstName = newValue;
-        //    }
-
-        //    if (columnToEdit == LastNameColumn)
-        //    {
-        //        actor.LastName = newValue;
-        //    }
-
-        //    if (columnToEdit == BirthdayColumn)
-        //    {
-        //        //06-12-1999
-        //        var isValid = DateTime.TryParseExact(newValue, "d-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result);
-
-        //        if (!isValid)
-        //        {
-        //            throw new InvalidDateFormatException();
-        //        }
-
-        //        actor.DateOfBirth = result;
-        //    }
-
-        //    this.UnitOfWork.SaveChanges();
-        //}
-
         public Actor FindActorByName(string fullname)
         {
             var actor = this.Context
@@ -110,6 +82,22 @@ namespace TelFlix.Services
             this.Context.SaveChanges();
 
             return actor;
+        }
+
+        public void AddActorDetails(Actor actorDto)
+        {
+            var existingActor = this.Context.Actors.FirstOrDefault(a => a.Id == actorDto.Id);
+
+            if (existingActor != null)
+            {
+                existingActor.DateOfBirth = actorDto.DateOfBirth;
+                existingActor.Biography = actorDto.Biography;
+                existingActor.ImdbProfileUrl = actorDto.ImdbProfileUrl;
+                existingActor.ImdbId = actorDto.ImdbId;
+                existingActor.PlaceOfBirth = actorDto.PlaceOfBirth;
+
+                this.Context.SaveChanges();
+            }
         }
     }
 }

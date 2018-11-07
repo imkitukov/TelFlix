@@ -19,9 +19,9 @@ namespace TelFlix.Services.Models.Movie
         public IEnumerable<Actor> Actors { get; set; }
 
         public IEnumerable<Genre> Genres { get; set; }
-        
+
         public IEnumerable<Review> Reviews { get; set; }
-        
+
         public float? Rating { get; set; }
 
         public string Description { get; set; }

@@ -2,32 +2,90 @@
 
 @{
     ViewData["Title"] = "Index";
+    var queryId = Context.Request.Query["genre"];
 }
 
 <h2>Movies Index</h2>
 <div id="container">
-    @*<label for="ddlGenre"><strong>Select a genre</strong></label>*@
-    <select asp-for="GenreId" id="GenreId" asp-items="@Model.Genres">
-        <option>--Choose genre--</option>
+    <select asp-for="GenreId" asp-items="@Model.Genres">
+        <option value="0">--Select genre--</option>
     </select>
-    @*@Html.DropDownListFor(m =>m.GenreId,
-        new SelectList(Model.Genres, "Id", "Name", Model.GenreId), new { id = "ddlGenre", @class = "test" })*@
     <br /><br />
 
-    <div id="dvGenreResults">
-        @Html.RenderPartialAsync("_GenreResults", @Model.Movies);
+    <div id="genreResults">
+        <partial name="_GenreResults" model="@Model" />
     </div>
 
 </div>
 
+
+<ul class="pagination">
+    <li class="page-item">
+        @{ var genreSelected = Context.Request.Query["genre"]; }
+        <a class="page-link" id="prevPage" @*href="/Movies/GetGenreMovies?genre=@( Context.Request.Query[" genre"] )&page=@Model.PreviousPage"*@ aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+        </a>
+    </li>
+    @for (int i = 1; i < Model.TotalPages; i++)
+    {
+        Model.CurrentPage = @i;
+
+        <li class="page-item">
+            <a class="page-link" id="concretePage" @*href="/Movies/GetGenreMovies?genre=@Model.GenreId&page=@i" *@>@i</a>
+        </li>
+    }
+    <li class="page-item">
+        <a class="page-link" id="nextPage" @*href="/Movies/GetGenreMovies?genre==@( Context.Request.Query[" genre"] )&page=@Model.NextPage"*@ aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+        </a>
+    </li>
+</ul>
+
+
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("#GenreId").change(function () {
-            //alert('test');
-            var genreId = $("#GenreId").val();
-            var url = "@Url.Action("GetGenreMovies","Movies")?genreId=" + genreId;
+            let genreId = $("#GenreId").val();
+
+            let url = "@Url.Action("GetGenreMovies","Movies")?genre=" + genreId + "&page=" + @Model.CurrentPage;
+
             console.log(url);
-            $("#dvGenreResults").load(url);
+            $("#genreResults").load(url);
+        });
+    });
+    $(document).ready(function () {
+          $("#prevPage").click(function () {
+            let genreId = $("#GenreId").val();
+
+            let url = "@Url.Action("GetGenreMovies","Movies")?genre=" + genreId + "&page=" + @Model.PreviousPage;
+
+            console.log(url);
+            $("#genreResults").load(url);
+        });
+    });
+
+     $(document).ready(function () {
+          $("#nextPage").click(function () {
+            let genreId = $("#GenreId").val();
+
+            let url = "@Url.Action("GetGenreMovies","Movies")?genre=" + genreId + "&page=" + @Model.NextPage;
+
+            console.log(url);
+            $("#genreResults").load(url);
+        });
+    });
+
+     $(document).ready(function () {
+         $("#concretePage").click(function () {
+            let genreId = $("#GenreId").val();
+
+            let url = "@Url.Action("GetGenreMovies","Movies")?genre=" + genreId + "&page=" + @Model.CurrentPage;
+
+            console.log(url);
+            $("#genreResults").load(url);
         });
     });
 </script>

@@ -8,11 +8,15 @@ namespace TelFlix.Services.Contracts
     {
         MovieDetailModel GetMovieById(int id);
 
-        IEnumerable<ListMovieModel> ListAllMovies();
+        IEnumerable<ListMovieModel> ListAllMovies(int genreId = 0, int page = 1, int pageSize = 3);
 
         IEnumerable<Movie> SearchMovie(string searchString);
 
         IEnumerable<Movie> ListTopTenMovies();
+
+        int Count();
+
+        int TotalMoviesInGenre(int genreId);
 
         //IEnumerable<ListMoviesByGenreViewModel> ListMoviesByGenre(string stringToSearch);
 

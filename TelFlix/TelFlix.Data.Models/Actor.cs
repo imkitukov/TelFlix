@@ -13,11 +13,15 @@ namespace TelFlix.Data.Models
 
         public int ApiActorId { get; set; }
 
+        public string Biography { get; set; }
+
+        public string PlaceOfBirth { get; set; }
+
         public string ImdbId { get; set; }
 
         public string ImdbProfileUrl { get; set; }
 
-        public DateTime? DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
 
         public ICollection<MoviesActors> Movies { get; set; }
 

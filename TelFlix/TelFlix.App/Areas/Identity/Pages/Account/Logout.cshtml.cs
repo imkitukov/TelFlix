@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 using TelFlix.Data.Models;
 
 namespace TelFlix.App.Areas.Identity.Pages.Account
@@ -37,7 +34,8 @@ namespace TelFlix.App.Areas.Identity.Pages.Account
             }
             else
             {
-                return Page();
+                //return RedirectToPage("/Account/Logout", new { Area = "Identity" });
+                return RedirectToAction("Logout", "Account", new { Area = "Identity" });
             }
         }
     }

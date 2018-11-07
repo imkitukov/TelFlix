@@ -136,13 +136,13 @@ namespace TelFlix.App
 
             app.UseAuthentication();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                  name: "identity",
-                  template: "{area:exists}/Account/{controller=Home}/{action=Index}/{id?}"
-                );
-            });
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //      name: "identity",
+            //      template: "{area:exists}/Account/{controller=Home}/{action=Index}/{id?}"
+            //    );
+            //});
 
             app.UseMvc(routes =>
             {

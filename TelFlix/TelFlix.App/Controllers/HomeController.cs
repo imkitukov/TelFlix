@@ -22,13 +22,6 @@ namespace TelFlix.App.Controllers
 
         public IActionResult Index()
         {
-            var movie = this.movieServices.ListAllMovies().ToList()[0];
-            
-            var m = new ListMovieModel
-            {
-                SmallImageUrl = movie.SmallImageUrl
-            };
-
             return View();
         }
         

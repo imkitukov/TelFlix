@@ -134,7 +134,7 @@ namespace TelFlix.App.Controllers
             try
             {
                 var actorsCast = this.jsonProvider.ExtractActorsFromMovieCastJsonResult(castJsonResult);
-             
+
                 var movieActors = this.addMovieService.AddActorsToMovie(addedMovie, actorsCast);
 
                 //add actor details
@@ -165,7 +165,7 @@ namespace TelFlix.App.Controllers
         // GET: Movies/Details/5
         public IActionResult Details(int id)
         {
-            Movie movie = this.movieService.GetMovieById(id);
+            var movie = this.movieService.GetMovieById(id);
 
             if (movie == null)
             {

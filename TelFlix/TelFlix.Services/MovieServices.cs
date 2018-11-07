@@ -44,7 +44,28 @@ namespace TelFlix.Services
 
         public int Count() => this.Context.Movies.Count();
 
-        public Movie GetMovieById(int id) => this.Context.Movies.Find(id);
+        public MovieDetailModel GetMovieById(int id)
+        {
+            return this.Context
+                .Movies
+                .Select(m => new MovieDetailModel
+                {
+                    Id = m.Id,
+                    ApiMovieId = m.ApiMovieId,
+                    Actors = m.MoviesActors.Select(a => a.Actor),
+                    Genres = m.MoviesGenres.Select(g => g.Genre),
+                    Description = m.Description,
+                    DurationInMinutes = m.DurationInMinutes,
+                    MediumImageUrl = m.MediumImageUrl,
+                    Rating = m.Rating,
+                    ReleaseDate = m.ReleaseDate,
+                    Reviews = m.Reviews,
+                    SmallImageUrl = m.SmallImageUrl,
+                    Title = m.Title,
+                    TrailerUrl = m.TrailerUrl
+                })
+                .FirstOrDefault(m => m.Id == id);
+        }
 
         //public IEnumerable<ListMovieModel> ListMoviesInRange(int firstYear, int secondYear)
         //{

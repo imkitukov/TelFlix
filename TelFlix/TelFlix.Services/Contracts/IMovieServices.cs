@@ -6,7 +6,7 @@ namespace TelFlix.Services.Contracts
 {
     public interface IMovieServices
     {
-        Movie GetMovieById(int id);
+        MovieDetailModel GetMovieById(int id);
 
         IEnumerable<ListMovieModel> ListAllMovies(int genreId = 0, int page = 1, int pageSize = 3);
 

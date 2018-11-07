@@ -17,7 +17,7 @@ namespace TelFlix.App.Controllers
             this.actorServices = actorServices;
         }
 
-        public IActionResult All()
+        public IActionResult Index()
         {
             var actor = actorServices.ListAllActors();
 

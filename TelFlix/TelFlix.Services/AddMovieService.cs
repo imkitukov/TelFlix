@@ -77,11 +77,15 @@ namespace TelFlix.Services
             this.Context.SaveChanges();
         }
 
-        public void AddActorsToMovie(Movie movie, IEnumerable<(Actor Actor, string MovieCharacter)> actorsCast)
+        public IEnumerable<Actor> AddActorsToMovie(
+            Movie movie,
+            IEnumerable<(Actor Actor, string MovieCharacter)> actorsCast)
         {
+            var movieActors = new List<Actor>();
+
             foreach (var currentActor in actorsCast)
             {
-                var actor = this.Context.Actors.SingleOrDefault(a =>a.ApiActorId == currentActor.Actor.ApiActorId);
+                var actor = this.Context.Actors.SingleOrDefault(a => a.ApiActorId == currentActor.Actor.ApiActorId);
 
                 var moviesActors = new MoviesActors()
                 {
@@ -92,6 +96,7 @@ namespace TelFlix.Services
                 if (actor != null)
                 {
                     moviesActors.ActorId = actor.Id;
+                    movieActors.Add(actor);
                 }
                 else
                 {
@@ -99,12 +104,16 @@ namespace TelFlix.Services
                                          .AddActor(currentActor.Actor);
 
                     moviesActors.ActorId = addedActor.Id;
-                }
 
+                    movieActors.Add(addedActor);
+                }
+             
                 this.Context.MoviesActors.Add(moviesActors);
             }
 
             this.Context.SaveChanges();
+
+            return movieActors;
         }
     }
 }

@@ -9,6 +9,6 @@ namespace TelFlix.Services.Contracts
 
         void AddGenresToMovie(Movie movie, IEnumerable<(int GenreApiId, string GenreName)> genresApiIds);
 
-        void AddActorsToMovie(Movie movie, IEnumerable<(Actor Actor, string MovieCharacter)> actorsCast);
+        IEnumerable<Actor> AddActorsToMovie(Movie movie, IEnumerable<(Actor Actor, string MovieCharacter)> actorsCast);
     }
 }

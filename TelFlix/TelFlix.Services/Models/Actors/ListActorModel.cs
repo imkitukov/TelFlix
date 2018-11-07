@@ -1,34 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using TelFlix.Data.Models.Abstract;
+using System.Text;
 
-namespace TelFlix.Data.Models
+namespace TelFlix.Services.Models.Actors
 {
-    public class Actor : BaseEntity
+    public class ListActorModel
     {
-        [Required]
-        [MaxLength(100)]
+        public int Id { get; set; }
+
         public string FullName { get; set; }
+        
+        public IEnumerable<string> MovieTitles { get; set; }
 
         public int ApiActorId { get; set; }
-
-        public string Biography { get; set; }
-
-        public string PlaceOfBirth { get; set; }
 
         public string ImdbId { get; set; }
 
         public string ImdbProfileUrl { get; set; }
 
-        public string DateOfBirth { get; set; }
-
-        public ICollection<MoviesActors> Movies { get; set; }
-
+        public DateTime? DateOfBirth { get; set; }
+        
         public string SmallImageUrl { get; set; }
 
         public string MediumImageUrl { get; set; }
 
         public string LargeImageUrl { get; set; }
+
+        //public ICollection<MoviesActors> MoviesTitles { get; set; }
     }
 }

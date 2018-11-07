@@ -17,6 +17,8 @@ namespace TelFlix.App.Infrastructure.Providers
         private const string MediumImageBaseUri = "http://image.tmdb.org/t/p/w342";
         private const string LargeImageBaseUri = "http://image.tmdb.org/t/p/w500";
         private const string DefaultActorImage = "https://ih1.redbubble.net/image.11241105.4427/ra%2Cunisex_tshirt%2Cx925%2C5e504c%3A7bf03840f4%2Cfront-c%2C217%2C190%2C210%2C230-bg%2Cf8f8f8.lite-1.jpg";
+        private const string ImdbNameBaseUrl = "https://www.imdb.com/name/";
+
 
         public JsonProvider()
         {
@@ -185,6 +187,23 @@ namespace TelFlix.App.Infrastructure.Providers
             }
 
             return actorsCast;
+        }
+
+        public Actor ExtractActorDetails(string actorDetailsJsonResult)
+        {
+            var json = JObject.Parse(actorDetailsJsonResult);
+            var imdbKey = json["imdb_id"].ToString();
+
+            var actorDTO = new Actor
+            {
+                DateOfBirth = json["birthday"].ToString(),
+                PlaceOfBirth = json["place_of_birth"].ToString(),
+                Biography = json["biography"].ToString(),
+                ImdbId = imdbKey,
+                ImdbProfileUrl = ImdbNameBaseUrl + imdbKey
+            };
+
+            return actorDTO;
         }
     }
 }

@@ -66,7 +66,6 @@ namespace TelFlix.App
         {
             services.AddDbContext<TFContext>(options =>
             {
-                //var connectionString = this.Configuration.GetConnectionString("DevLocalDb");
                 var connectionString = System.Environment.GetEnvironmentVariable("LocalDevDB", EnvironmentVariableTarget.User);
                 options.UseSqlServer(connectionString);
             });
@@ -148,20 +147,11 @@ namespace TelFlix.App
                 app.UseHsts();
             }
 
-            //app.UseStatusCodePagesWithRedirects("/Identity/Account/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
             app.UseAuthentication();
-
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //      name: "identity",
-            //      template: "{area:exists}/Account/{controller=Home}/{action=Index}/{id?}"
-            //    );
-            //});
 
             app.UseSignalR(route =>
             {

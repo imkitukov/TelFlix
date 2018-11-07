@@ -17,6 +17,7 @@ namespace TelFlix.App.HttpClients
 
         private const string ListAllGenresUri = "genre/movie/list{0}";        
         private const string CastMovieUri = "movie/{0}/credits{1}";
+        private const string ActorDetailsUri = "person/{0}{1}";
 
         private readonly HttpClient client;
 
@@ -104,6 +105,28 @@ namespace TelFlix.App.HttpClients
                 //https://api.themoviedb.org/3/movie/550/credits?api_key=207de229486742b95fba944e0d0509be
                 
                 string requestUri = string.Format(CastMovieUri, movieId, ApiKeyPostFix);
+
+                var response = await this.client.GetAsync(requestUri);
+
+                response.EnsureSuccessStatusCode();
+
+                return response.Content.ReadAsStringAsync().Result;
+            }
+            catch (HttpRequestException ex)
+            {
+
+                //_logger.LogError($"An error occured connecting to values API {ex.ToString()}");
+                return "ERROR";
+            }
+        }
+
+        public async Task<string> GetActorDetails(int actorId)
+        {
+            try
+            {
+                //https://api.themoviedb.org/3/person/550?api_key=207de229486742b95fba944e0d0509be
+
+                string requestUri = string.Format(ActorDetailsUri, actorId, ApiKeyPostFix);
 
                 var response = await this.client.GetAsync(requestUri);
 

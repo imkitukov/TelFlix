@@ -1,0 +1,18 @@
+﻿@*@model IEnumerable<TelFlix.Services.Models.Actors.ListActorModel>*@
+@model ActorViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>@Model.FullName</h2>
+
+<div class="actor-wrapper">
+    <div class="actor-poster">
+        <img title="@Model.FullName" src="@Model.MediumImageUrl" alt="@Model.FullName"/>
+    </div>
+    <div class="actor-details">
+
+    </div>
+
+</div>

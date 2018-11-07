@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelFlix.Services", "TelFlix
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelFlix.App", "TelFlix.App\TelFlix.App.csproj", "{5CAE6371-B5A0-4393-89C8-8635D705F53A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelFlix.Data.Models", "TelFlix.Data.Models\TelFlix.Data.Models.csproj", "{8AC9821F-F931-4AD5-9763-4FC7D978B92E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelFlix.Data.Models", "TelFlix.Data.Models\TelFlix.Data.Models.csproj", "{8AC9821F-F931-4AD5-9763-4FC7D978B92E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

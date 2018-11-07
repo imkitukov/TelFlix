@@ -80,7 +80,7 @@ namespace TelFlix.App.Areas.Identity.Pages.Account
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    await _userManager.AddToRoleAsync(user, "RegularUser");
+                    //await _userManager.AddToRoleAsync(user, "RegularUser");
                     var loggedUser = await this._userManager.FindByEmailAsync(user.Email);
 
                     //return RedirectToAction("Index", "Home", new { Area = "Regular" });

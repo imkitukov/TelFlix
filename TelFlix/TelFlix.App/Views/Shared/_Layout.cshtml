@@ -23,15 +23,13 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-
-                <li class="nav-item active"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Profile</a></li>
-                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Movies" asp-action="Index">Movies</a></li>
-
                 @if (User.IsInRole("RegularUser"))
                 {
                     <li class="nav-item active"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Profile</a></li>
                 }
 
+                <li class="nav-item active"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Profile</a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Movies" asp-action="Index">Movies</a></li>
                 <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Actors" asp-action="Index">Actors</a></li>
 
                 @if (User.IsInRole("Administrator"))
@@ -41,15 +39,13 @@
                             Users
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">All</a>
+                            <a class="dropdown-item" href="/Admin/Users/Index">All</a>
                             <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Find">Find</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </li>
                 }
-
-
             </ul>
             <partial name="_SearchMovies" , model="new SearchMovieViewModel()" />
             <partial name="_LoginPartial" />
@@ -65,7 +61,8 @@
             <p>&copy; 2018 - TelFlix</p>
         </footer>
     </div>
-
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/notifications.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

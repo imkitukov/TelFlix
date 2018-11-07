@@ -24,7 +24,7 @@ namespace TelFlix.App.Controllers
         {
             return View();
         }
-        
+
         [HttpGet]
         public IActionResult SearchMovie()
         {
@@ -32,7 +32,9 @@ namespace TelFlix.App.Controllers
 
             var movies = this.movieServices.SearchMovie(keyword);
 
-            return View();
+            this.ViewBag.SearchString = keyword;
+
+            return View(movies);
         }
 
         public IActionResult About()

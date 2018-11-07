@@ -60,9 +60,16 @@ h1 {
     width: 1000px;
     overflow: hidden; /* will contain if #first is longer than #second */
 }
+.actor-wrapper {
+    width: 1000px;
+    overflow: hidden;
+}
 
 .poster {
     margin-right: 20px;
     float: left; /* add this */
+}
+.actor-image {
+    width:20px;
 }
 

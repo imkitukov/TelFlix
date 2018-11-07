@@ -10,7 +10,7 @@ namespace TelFlix.Services.Contracts
 
         Actor FindActorByName(string fullname);
 
-        Actor FindActorById(int id);
+        ActorDetailModel FindActorById(int id);
 
         //void EditActor(Actor actor, string columnToChange, string newValue);
 

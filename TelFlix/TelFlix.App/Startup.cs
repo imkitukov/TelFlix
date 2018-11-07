@@ -56,6 +56,7 @@ namespace TelFlix.App
         {
             services.AddDbContext<TFContext>(options =>
             {
+
                 var connectionString = System.Environment.GetEnvironmentVariable("LocalDevDB", EnvironmentVariableTarget.User);
                 options.UseSqlServer(connectionString);
             });

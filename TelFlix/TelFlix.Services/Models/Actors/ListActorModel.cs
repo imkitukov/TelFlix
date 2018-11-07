@@ -25,7 +25,5 @@ namespace TelFlix.Services.Models.Actors
         public string MediumImageUrl { get; set; }
 
         public string LargeImageUrl { get; set; }
-
-        //public ICollection<MoviesActors> MoviesTitles { get; set; }
     }
 }

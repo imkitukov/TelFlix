@@ -1,15 +1,16 @@
 ﻿@model MovieIndexViewModel
 
 @{
-    ViewData["Title"] = "Index";
-    var queryId = Context.Request.Query["genre"];
+    ViewData["Title"] = "Movies Index";
 }
 
-<h2>Movies Index</h2>
+<h2>@ViewData["Title"]</h2>
+
 <div id="container">
     <select asp-for="GenreId" asp-items="@Model.Genres">
         <option value="0">--Select genre--</option>
     </select>
+
     <br /><br />
 
     <div id="genreResults">
@@ -19,73 +20,47 @@
 </div>
 
 
-<ul class="pagination">
-    <li class="page-item">
-        @{ var genreSelected = Context.Request.Query["genre"]; }
-        <a class="page-link" id="prevPage" @*href="/Movies/GetGenreMovies?genre=@( Context.Request.Query[" genre"] )&page=@Model.PreviousPage"*@ aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
-        </a>
-    </li>
-    @for (int i = 1; i < Model.TotalPages; i++)
-    {
-        Model.CurrentPage = @i;
-
-        <li class="page-item">
-            <a class="page-link" id="concretePage" @*href="/Movies/GetGenreMovies?genre=@Model.GenreId&page=@i" *@>@i</a>
-        </li>
-    }
-    <li class="page-item">
-        <a class="page-link" id="nextPage" @*href="/Movies/GetGenreMovies?genre==@( Context.Request.Query[" genre"] )&page=@Model.NextPage"*@ aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
-        </a>
-    </li>
-</ul>
-
-
-
 <script type="text/javascript">
+
     $(document).ready(function () {
+        const firstPage = 1;
+        reloadSelectedGenre(firstPage);
+
+        $('#genreResults' > '#prevPage' ).click(function () {
+            loadGenreResultsPartial( @Model.PreviousPage);
+             @*changePage("#prevPage", @Model.PreviousPage);*@
+        });
+
+        $('#genreResults').click('#nextPage', function () {
+             loadGenreResultsPartial( @Model.NextPage);
+
+             @*changePage("#nextPage", @Model.NextPage);*@
+        });
+    });
+
+     @*$(document).ready(function () {
+        changePage("#prevPage", @Model.PreviousPage);
+        changePage("#nextPage", @Model.NextPage);
+    });*@
+
+    const changePage = function (tagId, pageTarget) {
+        $(tagId).click(function () {
+            loadGenreResultsPartial(pageTarget);
+        });
+    }
+
+    const loadGenreResultsPartial = function (page) {
+        let genreId = $("#GenreId").val();
+        let url = "@Url.Action("GetGenreMovies","Movies")?genre=" + genreId + "&page=" + page;
+        console.log(url);
+
+        $("#genreResults").load(url);
+    }
+
+    const reloadSelectedGenre = function(pageTarget) {
         $("#GenreId").change(function () {
-            let genreId = $("#GenreId").val();
-
-            let url = "@Url.Action("GetGenreMovies","Movies")?genre=" + genreId + "&page=" + @Model.CurrentPage;
-
-            console.log(url);
-            $("#genreResults").load(url);
+             loadGenreResultsPartial(pageTarget);
         });
-    });
-    $(document).ready(function () {
-          $("#prevPage").click(function () {
-            let genreId = $("#GenreId").val();
+    }
 
-            let url = "@Url.Action("GetGenreMovies","Movies")?genre=" + genreId + "&page=" + @Model.PreviousPage;
-
-            console.log(url);
-            $("#genreResults").load(url);
-        });
-    });
-
-     $(document).ready(function () {
-          $("#nextPage").click(function () {
-            let genreId = $("#GenreId").val();
-
-            let url = "@Url.Action("GetGenreMovies","Movies")?genre=" + genreId + "&page=" + @Model.NextPage;
-
-            console.log(url);
-            $("#genreResults").load(url);
-        });
-    });
-
-     $(document).ready(function () {
-         $("#concretePage").click(function () {
-            let genreId = $("#GenreId").val();
-
-            let url = "@Url.Action("GetGenreMovies","Movies")?genre=" + genreId + "&page=" + @Model.CurrentPage;
-
-            console.log(url);
-            $("#genreResults").load(url);
-        });
-    });
 </script>

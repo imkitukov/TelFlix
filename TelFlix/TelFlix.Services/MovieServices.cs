@@ -10,8 +10,11 @@ namespace TelFlix.Services
 {
     public class MovieServices : BaseService, IMovieServices
     {
-        public MovieServices(TFContext context) : base(context)
+        private readonly IGenreServices genreServices;
+
+        public MovieServices(TFContext context, IGenreServices genreServices) : base(context)
         {
+            this.genreServices = genreServices;
         }
 
         public IEnumerable<ListMovieModel> ListAllMovies(int genreId = 0, int page = 1, int pageSize = 3)
@@ -52,8 +55,8 @@ namespace TelFlix.Services
                 {
                     Id = m.Id,
                     ApiMovieId = m.ApiMovieId,
-                    Actors = m.MoviesActors.Select(a => a.Actor),
-                    Genres = m.MoviesGenres.Select(g => g.Genre),
+                    Actors = m.MoviesActors.Select(a => a.Actor).ToList(),
+                    Genres = m.MoviesGenres.Where(g => g.IsDeleted == false).Select(g => g.Genre).ToList(),
                     Description = m.Description,
                     DurationInMinutes = m.DurationInMinutes,
                     MediumImageUrl = m.MediumImageUrl,
@@ -94,16 +97,6 @@ namespace TelFlix.Services
             return result;
         }
 
-        //public IEnumerable<ListGenresViewModel> ListGenres()
-        //{
-        //    var result = this.movieRepo
-        //        .GetAll()
-        //        .Select(g => new ListGenresViewModel { Id = g.Id, Genres = g.Name })
-        //        .ToList();
-
-        //    return result;
-        //}
-
         public IEnumerable<Movie> SearchMovie(string searchString)
         {
             var movies = this.Context
@@ -111,6 +104,32 @@ namespace TelFlix.Services
                 .Where(m => m.Title.ToLower().Contains(searchString.ToLower()));
 
             return movies;
+        }
+
+        public void Edit(
+            int movieId,
+            string title,
+            string description,
+            int? durationInMinutes,
+            string trailerUrl,
+            IEnumerable<int> selectedGenresIds,
+            IEnumerable<int> genresIdsToRemove)
+        {
+            var movie = this.Context.Movies.Find(movieId);
+
+            if (movie == null)
+            {
+                return;
+            }
+
+            movie.Title = title;
+            movie.Description = description;
+            movie.DurationInMinutes = durationInMinutes;
+            movie.TrailerUrl = trailerUrl;
+
+            genreServices.UpdateMovieGenres(movieId, selectedGenresIds, genresIdsToRemove);
+
+            this.Context.SaveChanges();
         }
 
         //public IEnumerable<ListMoviesByGenreViewModel> ListMoviesByGenre(string genreName)

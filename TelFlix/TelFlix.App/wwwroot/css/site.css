@@ -76,3 +76,7 @@ h1 {
     width: 50%;
 }
 
+a.disabled {
+    color: gray;
+    pointer-events: none;
+}

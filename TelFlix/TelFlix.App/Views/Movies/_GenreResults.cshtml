@@ -1,5 +1,21 @@
 ﻿@model MovieIndexViewModel
 
+<ul class="pagination">
+    <li class="page-item">
+        <a class="page-link" id="prevPage" @*href="/Movies/GetGenreMovies?genre=@Model.GenreId&page=@Model.PreviousPage"*@ aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+        </a>
+    </li>
+
+    <li class="page-item">
+        <a class="page-link" id="nextPage" @*href="/Movies/GetGenreMovies?genre=@Model.GenreId&page=@Model.NextPage"*@ aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+        </a>
+    </li>
+</ul>
+
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -35,9 +51,28 @@
                 </td>
                 <td>
                     @*TODO add movie id*@
-                    <a asp-action="Details" asp-route-id="@movie.Id">Details</a>
+                    <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary">Details</a>
+                    @if (User.IsInRole("Moderator"))
+                    {
+                        <a asp-area="Moderator" asp-controller="Movie" asp-action="Edit" asp-route-id="@movie.Id" role="button" class="btn btn-warning">Edit</a>
+                        <a asp-area="Moderator" asp-controller="Movie" asp-action="Delete" asp-route-id="@movie.Id" role="button" class="btn btn-danger">Delete</a>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+
+<script>
+     @*$(document).ready(function () {
+        changePage("#prevPage", @Model.PreviousPage);
+        changePage("#nextPage", @Model.NextPage);
+    });*@
+
+    //const changePage = function (tagId, pageTarget) {
+    //    $(tagId).click(function () {
+    //        loadGenreResultsPartial(pageTarget);
+    //    });
+    //}
+</script>

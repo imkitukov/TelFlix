@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Linq;
 using TelFlix.App.Models;
@@ -19,7 +20,7 @@ namespace TelFlix.App.Controllers
             this.movieServices = movieServices;
             this.genreServices = genreServices;
         }
-
+        
         public IActionResult Index()
         {
             return View();

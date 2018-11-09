@@ -4,6 +4,7 @@
     ViewData["Title"] = "All Actors";
     int counter = 1;
 }
+
 <h2>All Actors</h2>
 
 @{
@@ -49,6 +50,7 @@
                     <td>
                         <div>
                             <a asp-action="Details" asp-route-id="@actor.Id" class="text-info">
+                                <img class="actor-image" src="@actor.SmallImageUrl" />
                                 @actor.FullName
                             </a>
                         </div>

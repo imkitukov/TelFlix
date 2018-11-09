@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using TelFlix.Data.Context;
 using TelFlix.Data.Models;
@@ -36,10 +37,27 @@ namespace TelFlix.Services
                         .Actors
                         .FirstOrDefault(m => m.FullName == fullname);
 
-        public Actor FindActorById(int id)
-                => this.Context
-                        .Actors
-                        .FirstOrDefault(m => m.Id == id);
+
+        public ActorDetailModel FindActorById(int id)
+        {
+            var actor = this.Context
+                .Actors
+                .Where(m => m.Id == id)
+                .Select(a => new ActorDetailModel
+                {
+                    FullName = a.FullName,
+                    MediumImageUrl = a.MediumImageUrl,
+                    ApiActorId = a.ApiActorId,
+                    Biography = a.Biography,
+                    DateOfBirth = a.DateOfBirth,
+                    ImdbProfileUrl = a.ImdbProfileUrl,
+                    PlaceOfBirth = a.PlaceOfBirth,
+                    Movies = a.Movies.Select(m => m.Movie).ToList()
+                })
+                .FirstOrDefault();
+
+            return actor;
+        }
 
         public Actor AddActor(Actor actor)
         {

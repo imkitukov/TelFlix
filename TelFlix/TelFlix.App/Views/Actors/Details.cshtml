@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<TelFlix.Services.Models.Actors.ListActorModel>*@
-@model ActorViewModel
+﻿@model ActorDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -8,11 +7,23 @@
 <h2>@Model.FullName</h2>
 
 <div class="actor-wrapper">
-    <div class="actor-poster">
-        <img title="@Model.FullName" src="@Model.MediumImageUrl" alt="@Model.FullName"/>
+    <div class="poster">
+        <img title="@Model.FullName" src="@Model.MediumImageUrl" alt="@Model.FullName" />
     </div>
-    <div class="actor-details">
+    <div class="details">
+        <p>
+            <strong>IMDB page: </strong>
+            <a href="@Model.ImdbProfileUrl">@Model.FullName</a>
+        </p>
+        <p><strong>Place of birth: </strong>@Model.PlaceOfBirth</p>
+        <p><strong>Date of birth: </strong>@Model.DateOfBirth</p>
+        <p><strong>Movies:</strong></p>
+        @foreach (var movie in Model.Movies)
+        {
+            <p><a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">@movie.Title</a></p>
+        }
 
+
+        <p><strong>Something more: </strong>@Model.Biography</p>
     </div>
-
 </div>

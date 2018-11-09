@@ -30,6 +30,7 @@
     <Folder Include="Areas\Moderator\Data\" />
     <Folder Include="Areas\Regular\Data\" />
     <Folder Include="Areas\Regular\Models\" />
+    <Folder Include="Views\Reviews\" />
   </ItemGroup>
 
   <ItemGroup>

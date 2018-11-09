@@ -37,10 +37,16 @@ namespace TelFlix.App.Controllers
         {
             var actor = actorServices.FindActorById(id);
 
-            var model = new ActorViewModel
+            var model = new ActorDetailsViewModel
             {
                 FullName = actor.FullName,
-                MediumImageUrl = actor.MediumImageUrl
+                MediumImageUrl = actor.MediumImageUrl,
+                ApiActorId = actor.ApiActorId,
+                Biography = actor.Biography,
+                DateOfBirth = actor.DateOfBirth,
+                ImdbProfileUrl = actor.ImdbProfileUrl,
+                PlaceOfBirth = actor.PlaceOfBirth,
+                Movies = actor.Movies,
             };
 
             return View(model);

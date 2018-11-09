@@ -24,7 +24,7 @@ namespace TelFlix.App.Areas.Admin.Controllers
         }
 
         // GET: User
-        public ActionResult Index()
+        public IActionResult Index()
         {
             var users = this.userManager
                 .Users

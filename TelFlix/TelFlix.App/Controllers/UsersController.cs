@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TelFlix.App.Areas.Regular.Controllers
+namespace TelFlix.App.Controllers
 {
-
-    [Area("Regular")]
-    [Authorize(Roles = "RegularUser")]
-    public class HomeController : Controller
+    public class UsersController : Controller
     {
+        [Authorize]
         public IActionResult Index()
         {
             return View();

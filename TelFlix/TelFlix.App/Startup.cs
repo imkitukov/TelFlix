@@ -37,14 +37,14 @@ namespace TelFlix.App
             this.RegisterServices(services);
             this.RegisterInfrastructure(services);
 
-            services.AddAuthorization(options => 
+            services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireAdministratorRole", policy =>
                 {
                     policy.RequireRole("Administrator");
                 });
             });
-            
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = $"/Identity/Account/Login";
@@ -66,6 +66,7 @@ namespace TelFlix.App
         {
             services.AddDbContext<TFContext>(options =>
             {
+
                 var connectionString = System.Environment.GetEnvironmentVariable("LocalDevDB", EnvironmentVariableTarget.User);
                 options.UseSqlServer(connectionString);
             });
@@ -109,7 +110,7 @@ namespace TelFlix.App
         {
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<TFContext>()
-                .AddDefaultTokenProviders();                ;
+                .AddDefaultTokenProviders(); ;
 
             if (this.Environment.IsDevelopment())
             {

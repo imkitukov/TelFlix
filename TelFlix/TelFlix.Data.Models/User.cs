@@ -8,6 +8,12 @@ namespace TelFlix.Data.Models
 {
     public class User : IdentityUser, IDeletable
     {
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public decimal AccountBalance { get; set; }
+
         public bool IsDeleted { get; set; }
 
         [DataType(DataType.DateTime)]
@@ -18,6 +24,14 @@ namespace TelFlix.Data.Models
 
         [DataType(DataType.DateTime)]
         public DateTime? ModifiedOn { get; set; }
+
+        public ICollection<Message> ReceivedMessages { get; set; }
+
+        public ICollection<Message> SentMessages { get; set; }
+
+        public ICollection<CreditCard> CreditCards { get; set; }
+
+        public ICollection<Purchase> Purchases { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
 

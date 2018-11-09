@@ -27,10 +27,9 @@ namespace TelFlix.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                // service method pass comment, movieid, userid
                 var userId = this.userManager.GetUserId(User);
-                //return RedirectToAction("Details", "Movies", new { id = id });
-                reviewService.AddReview(userId, id, model.ToString());
+
+                reviewService.AddReview(userId, id, model.Comment);
             }
 
             return NoContent();

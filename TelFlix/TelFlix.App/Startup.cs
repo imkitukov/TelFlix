@@ -85,6 +85,7 @@ namespace TelFlix.App
             services.AddTransient<IAddMovieService, AddMovieService>();
             services.AddTransient<IGenreServices, GenreServices>();
             services.AddTransient<IActorServices, ActorServices>();
+            services.AddTransient<IReviewService, ReviewService>();
 
             //services.AddScoped<IModifyMovieServices, ModifyMovieServices>();
             //services.AddScoped<ISeedDatabaseService, SeedDatabaseService>();

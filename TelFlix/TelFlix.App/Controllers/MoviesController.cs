@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TelFlix.App.HttpClients;
@@ -8,6 +10,7 @@ using TelFlix.App.Models;
 using TelFlix.App.Models.Movies;
 using TelFlix.Data.Models;
 using TelFlix.Services.Contracts;
+using TelFlix.Services.Models.Movie;
 using TelFlix.Services.Providers.Exceptions;
 
 namespace TelFlix.App.Controllers
@@ -49,25 +52,32 @@ namespace TelFlix.App.Controllers
             var genreId = int.Parse(genre);
             var model = this.UpdateMovieIndexViewModel(page, genreId);
 
-            //ViewBag.SelectedGenreId = genreId;
-
             return PartialView("_GenreResults", model);
         }
 
+        //private MovieIndexViewModel LoadInitialIndexModel()
+        //{
+        //    var genres = this.genresServices.GetAll();
+
+        //    return new MovieIndexViewModel()
+        //    {
+        //        Genres = new SelectList(genres, "Id", "Name")
+        //    };
+        //}
+
         private MovieIndexViewModel UpdateMovieIndexViewModel(int page = 1, int genreId = 0)
         {
-            // add service method GetMoviesByGenre
             var movies = this.movieService.ListAllMovies(genreId, page, PageSize);
             var genres = this.genresServices.GetAll();
 
             var totalMoviesInGenre = this.movieService.TotalMoviesInGenre(genreId);
 
-            var model = new MovieIndexViewModel(totalMoviesInGenre, PageSize)
+            var model = new MovieIndexViewModel()
             {
                 Movies = movies,
                 Genres = new SelectList(genres, "Id", "Name"),
                 CurrentPage = page,
-                //TotalPages = (int)Math.Ceiling(totalMoviesInGenre / (double)PageSize),
+                TotalPages = (int)Math.Ceiling(totalMoviesInGenre / (double)PageSize),
                 GenreId = genreId
             };
 

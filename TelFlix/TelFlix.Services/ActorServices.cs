@@ -6,6 +6,7 @@ using TelFlix.Services.Abstract;
 using TelFlix.Services.Contracts;
 using TelFlix.Services.Models.Actors;
 using TelFlix.Services.Providers.Exceptions;
+using TelFlix.Services.ViewModels.MovieViewModels;
 
 namespace TelFlix.Services
 {
@@ -15,47 +16,30 @@ namespace TelFlix.Services
         {
         }
 
-        public IEnumerable<ListActorModel> ListAllActors()
-        {
-            var actors = this.Context
-                            .Actors
-                            .Select(a => new ListActorModel
-                            {
-                                Id = a.Id,
-                                FullName = a.FullName,
-                                MovieTitles = a.Movies.Select(m => m.Movie.Title).ToList(),
-                                SmallImageUrl = a.SmallImageUrl
-                                
-                            })
-                            // todo add more actor info
-                            .ToList();
-
-            return actors;
-        }
+        public IEnumerable<ListActorModel> ListAllActors(int page = 1, int pageSize = 10)
+                 => this.Context
+                        .Actors
+                        .OrderBy(a => a.FullName)
+                        .Skip((page - 1) * pageSize)
+                        .Take(pageSize)
+                        .Select(a => new ListActorModel
+                        {
+                            Id = a.Id,
+                            FullName = a.FullName,
+                            Movies = a.Movies.Select(m => new MovieActorListModel(m.Movie.Id, m.Movie.Title)).ToList(),
+                            SmallImageUrl = a.SmallImageUrl
+                        })
+                        .ToList();
 
         public Actor FindActorByName(string fullname)
-        {
-            var actor = this.Context
-                            .Actors
-                            .FirstOrDefault(m => m.FullName == fullname);
+                 => this.Context
+                        .Actors
+                        .FirstOrDefault(m => m.FullName == fullname);
 
-            //if (actor == null)
-            //{
-            //    throw new InexistingEntityException(nameof(Actor), firstName + " " + lastName);
-            //}
-
-            return actor;
-        }
         public Actor FindActorById(int id)
-        {
-            var actor = this.Context
-                .Actors
-                .FirstOrDefault(m => m.Id == id);
-
-            return actor;
-        }
-
-
+                => this.Context
+                        .Actors
+                        .FirstOrDefault(m => m.Id == id);
 
         public Actor AddActor(Actor actor)
         {
@@ -99,5 +83,7 @@ namespace TelFlix.Services
                 this.Context.SaveChanges();
             }
         }
+
+        public int Count() => this.Context.Actors.Count();
     }
 }

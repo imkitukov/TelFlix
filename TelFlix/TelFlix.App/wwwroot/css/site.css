@@ -66,3 +66,7 @@ h1 {
     float: left; /* add this */
 }
 
+a.disabled {
+    color: gray;
+    pointer-events: none;
+}

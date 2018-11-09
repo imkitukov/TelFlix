@@ -18,6 +18,15 @@ namespace TelFlix.Services.Contracts
 
         int TotalMoviesInGenre(int genreId);
 
+        void Edit(
+            int id,
+            string title,
+            string description,
+            int? durationInMinutes,
+            string trailerUrl,
+            IEnumerable<int> selectedGenresIds,
+            IEnumerable<int> genresIdsToRemove);
+
         //IEnumerable<ListMoviesByGenreViewModel> ListMoviesByGenre(string stringToSearch);
 
         //IEnumerable<ListGenresViewModel> ListGenres();

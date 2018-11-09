@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using TelFlix.Data.Models;
+using TelFlix.Services.Models.Genres;
 
 namespace TelFlix.Services.Contracts
 {
@@ -9,8 +10,10 @@ namespace TelFlix.Services.Contracts
 
         Genre FindByName(string genreName);
 
-        IEnumerable<Genre> GetAll();
+        IEnumerable<GenreModel> GetAll();
 
         bool GenreExists(string genreName);
+
+        void UpdateMovieGenres(int movieId, IEnumerable<int> selectedGenreIds, IEnumerable<int> genresIdsToRemove);
     }
 }

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 using TelFlix.Data.Models;
 
 namespace TelFlix.App.Areas.Identity.Pages.Account
@@ -86,10 +85,16 @@ namespace TelFlix.App.Areas.Identity.Pages.Account
                         logger.LogInformation("Administrator logged in.");
                         return RedirectToAction("Index", "Home", new { Area = "Admin" });
                     }
-                    else
+                    else if (roles.Any(r => r == "Moderator"))
+                    {
+                        logger.LogInformation("Moderator user logged in.");
+                        return RedirectToAction("Index", "Home", new { Area = "Moderator" });
+                    }
+                    else //if (!roles.Any())
                     {
                         logger.LogInformation("Regular user logged in.");
-                        return RedirectToAction("Index", "Home", new { Area = "Regular" });
+                        //return LocalRedirect(returnUrl);
+                        return RedirectToAction("Index", "Home");
                     }
                 }
                 if (result.RequiresTwoFactor)

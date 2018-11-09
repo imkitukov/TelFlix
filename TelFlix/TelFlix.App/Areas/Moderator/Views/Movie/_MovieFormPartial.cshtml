@@ -1,0 +1,55 @@
+﻿@model EditMovieFormModel
+
+
+<form asp-action="Edit" method="post">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-row">
+        <div class="form-group col-lg-7">
+            
+            <div class="form-group">
+                <label asp-for="Title" class="control-label h4 text-primary font-weight-bold"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DurationInMinutes" class="control-label h4 text-primary font-weight-bold"></label>
+                <input asp-for="DurationInMinutes" class="form-control" />
+                <span asp-validation-for="DurationInMinutes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label h4 text-primary font-weight-bold"></label>
+                <textarea asp-for="Description" rows="10" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrailerUrl" class="control-label h4 text-primary font-weight-bold"></label>
+                <input asp-for="TrailerUrl" type="url" class="form-control" />
+                <span asp-validation-for="TrailerUrl" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group col-sm-1"></div>
+        <div class="form-group col-md-4">
+            <label asp-for="Genres" class="control-label h4 text-primary font-weight-bold"></label>
+            <ul>
+                @for (var i = 0; i < Model.Genres.Count(); i++)
+                {
+                    <li>
+                        <input type="checkbox" class="custom-control-input" asp-for="@Model.Genres[i].Selected" />
+                        <label asp-for="@Model.Genres[i].Selected" class="custom-control-label">@Model.Genres[i].Name</label>
+                        <input type="hidden" asp-for="@Model.Genres[i].Id" />
+                        <input type="hidden" asp-for="@Model.Genres[i].Name" />
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group btn-group-justified">
+        <input type="submit" value="Update movie" class="btn btn-danger btn-lg" />
+        
+        <a asp-area="" asp-controller="Movies" asp-action="Index">Back to List</a>
+        
+    </div>
+
+</form>

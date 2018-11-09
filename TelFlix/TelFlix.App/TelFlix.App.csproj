@@ -28,8 +28,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Moderator\Data\" />
-    <Folder Include="Areas\Moderator\Models\" />
-    <Folder Include="Areas\Moderator\Views\" />
     <Folder Include="Areas\Regular\Data\" />
     <Folder Include="Areas\Regular\Models\" />
   </ItemGroup>
@@ -54,6 +52,12 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Admin\Views\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Moderator\Views\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Moderator\Views\_ViewStart.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Regular\Views\_ViewStart.cshtml">

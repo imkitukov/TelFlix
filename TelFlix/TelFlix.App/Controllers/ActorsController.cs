@@ -1,15 +1,16 @@
-﻿using TelFlix.Services.Contracts;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using TelFlix.Services.Models.Actors;
 using System.Linq;
 using TelFlix.App.Models;
+using TelFlix.App.Models.Actors;
+using TelFlix.Services.Contracts;
 
 namespace TelFlix.App.Controllers
 {
     public class ActorsController : Controller
     {
+        private const int PageSize = 10;
+
         private readonly IActorServices actorServices;
 
         public ActorsController(IActorServices actorServices)
@@ -17,11 +18,19 @@ namespace TelFlix.App.Controllers
             this.actorServices = actorServices;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
-            var actor = actorServices.ListAllActors();
+            var actors = actorServices.ListAllActors(page, PageSize);
+            var totalActors = actorServices.Count();
 
-            return View(actor);
+            var vm = new ActorPageListingViewModel
+            {
+                Actors = actors,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(totalActors / (double)PageSize),
+            };
+
+            return View(vm);
         }
 
         public IActionResult Details(int id)

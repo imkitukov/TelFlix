@@ -24,6 +24,14 @@
     </div>
 </div>
 
+<partial name="_AddReviewPartial"  model="@{ new ReviewViewModel { MovieId = Model.Id }}" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
 
 
 

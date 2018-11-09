@@ -40,7 +40,7 @@ h1 {
     padding: 0px;
 }
 
-.close-modal {
+.close-modal-custom {
     position: absolute;
     right: -30px;
     top: 0;

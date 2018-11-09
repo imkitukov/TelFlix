@@ -26,6 +26,7 @@ namespace TelFlix.Data.Context
         public DbSet<Director> Directors { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<CreditCard> CreditCards { get; set; }
         public DbSet<MoviesActors> MoviesActors { get; set; }
         public DbSet<MoviesGenres> MoviesGenres { get; set; }
         public DbSet<MoviesDirectors> MoviesDirectors { get; set; }
@@ -45,30 +46,27 @@ namespace TelFlix.Data.Context
             // Configure default schema
             modelBuilder.HasDefaultSchema("Admin");
 
-            // Map entities to tables
-            //modelBuilder
-            //    .Entity<Actor>()
-            //    .ToTable("Actors");
+            modelBuilder
+                .Entity<Message>()
+                .HasOne(m => m.Receiver)
+                .WithMany(u => u.ReceivedMessages)
+                .HasForeignKey(u => u.ReceiverId);
 
-            //modelBuilder
-            //    .Entity<Director>()
-            //    .ToTable("Directors");
+            modelBuilder
+                .Entity<Message>()
+                .HasOne(m => m.Sender)
+                .WithMany(u => u.SentMessages)
+                .HasForeignKey(u => u.SenderId);
 
-            //modelBuilder
-            //    .Entity<Genre>()
-            //    .ToTable("Genres");
+            modelBuilder
+                .Entity<CreditCard>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.CreditCards);
 
-            //modelBuilder
-            //    .Entity<Movie>()
-            //    .ToTable("Movies");
-
-            //modelBuilder
-            //    .Entity<Review>()
-            //    .ToTable("Reviews");
-
-            //modelBuilder
-            //    .Entity<User>()
-            //    .ToTable("Users");
+            modelBuilder
+                .Entity<Purchase>()
+                .HasOne(p => p.User)
+                .WithMany(u => u.Purchases);
 
             // Configure composite primary keys for the many-to-many tables
             modelBuilder.Entity<MoviesActors>()

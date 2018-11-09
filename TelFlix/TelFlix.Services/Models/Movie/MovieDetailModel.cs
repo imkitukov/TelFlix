@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TelFlix.Data.Models;
+using TelFlix.Services.Models.Reviews;
 
 namespace TelFlix.Services.Models.Movie
 {
@@ -20,7 +21,7 @@ namespace TelFlix.Services.Models.Movie
 
         public IEnumerable<Genre> Genres { get; set; }
 
-        public IEnumerable<Review> Reviews { get; set; }
+        public IEnumerable<ReviewModel> Reviews { get; set; }
 
         public float? Rating { get; set; }
 

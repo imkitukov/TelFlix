@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using TelFlix.Data.Context;
 using TelFlix.Data.Models;
 using TelFlix.Services.Abstract;
 using TelFlix.Services.Contracts;
 using TelFlix.Services.Models.Movie;
+using TelFlix.Services.Models.Reviews;
 
 namespace TelFlix.Services
 {
@@ -51,6 +53,8 @@ namespace TelFlix.Services
         {
             return this.Context
                 .Movies
+                    .Include(m => m.Reviews)
+                        .ThenInclude(r => r.Author)
                 .Select(m => new MovieDetailModel
                 {
                     Id = m.Id,
@@ -62,7 +66,13 @@ namespace TelFlix.Services
                     MediumImageUrl = m.MediumImageUrl,
                     Rating = m.Rating,
                     ReleaseDate = m.ReleaseDate,
-                    Reviews = m.Reviews,
+                    Reviews = m.Reviews.Select(r => new ReviewModel
+                    {
+                        Id = r.Id,
+                        Author = r.Author.Email,
+                        CreatedOn = r.CreatedOn,
+                        Comment = r.Comment
+                    }).ToList(),
                     SmallImageUrl = m.SmallImageUrl,
                     Title = m.Title,
                     TrailerUrl = m.TrailerUrl

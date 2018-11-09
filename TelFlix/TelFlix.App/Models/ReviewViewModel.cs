@@ -14,5 +14,7 @@ namespace TelFlix.App.Models
         public string Comment { get; set; }
 
         public int MovieId { get; set; }
+
+        public User Author { get; set; }
     }
 }

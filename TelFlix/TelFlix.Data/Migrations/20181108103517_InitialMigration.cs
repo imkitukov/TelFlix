@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TelFlix.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -73,6 +73,9 @@ namespace TelFlix.Data.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    AccountBalance = table.Column<decimal>(nullable: false),
                     IsDeleted = table.Column<bool>(nullable: false),
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: true),
@@ -264,6 +267,94 @@ namespace TelFlix.Data.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CreditCards",
+                schema: "Admin",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    Number = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreditCards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CreditCards_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Admin",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Message",
+                schema: "Admin",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    Subject = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
+                    ReceiverId = table.Column<string>(nullable: true),
+                    SenderId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Message", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Message_AspNetUsers_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalSchema: "Admin",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Message_AspNetUsers_SenderId",
+                        column: x => x.SenderId,
+                        principalSchema: "Admin",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchase",
+                schema: "Admin",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    DeletedOn = table.Column<DateTime>(nullable: true),
+                    CreatedOn = table.Column<DateTime>(nullable: true),
+                    ModifiedOn = table.Column<DateTime>(nullable: true),
+                    Amount = table.Column<decimal>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchase", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Purchase_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Admin",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -464,6 +555,24 @@ namespace TelFlix.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CreditCards_UserId",
+                schema: "Admin",
+                table: "CreditCards",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_ReceiverId",
+                schema: "Admin",
+                table: "Message",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Message_SenderId",
+                schema: "Admin",
+                table: "Message",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MoviesActors_ActorId",
                 schema: "Admin",
                 table: "MoviesActors",
@@ -485,6 +594,12 @@ namespace TelFlix.Data.Migrations
                 name: "IX_MoviesUsers_UserId",
                 schema: "Admin",
                 table: "MoviesUsers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Purchase_UserId",
+                schema: "Admin",
+                table: "Purchase",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -523,6 +638,14 @@ namespace TelFlix.Data.Migrations
                 schema: "Admin");
 
             migrationBuilder.DropTable(
+                name: "CreditCards",
+                schema: "Admin");
+
+            migrationBuilder.DropTable(
+                name: "Message",
+                schema: "Admin");
+
+            migrationBuilder.DropTable(
                 name: "MoviesActors",
                 schema: "Admin");
 
@@ -536,6 +659,10 @@ namespace TelFlix.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "MoviesUsers",
+                schema: "Admin");
+
+            migrationBuilder.DropTable(
+                name: "Purchase",
                 schema: "Admin");
 
             migrationBuilder.DropTable(

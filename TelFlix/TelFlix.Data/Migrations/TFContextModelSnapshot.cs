@@ -171,6 +171,31 @@ namespace TelFlix.Data.Migrations
                     b.ToTable("Actors");
                 });
 
+            modelBuilder.Entity("TelFlix.Data.Models.CreditCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<int>("Number");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CreditCards");
+                });
+
             modelBuilder.Entity("TelFlix.Data.Models.Director", b =>
                 {
                     b.Property<int>("Id")
@@ -222,6 +247,37 @@ namespace TelFlix.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("TelFlix.Data.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<DateTime?>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<string>("ReceiverId");
+
+                    b.Property<string>("SenderId");
+
+                    b.Property<string>("Subject");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("TelFlix.Data.Models.Movie", b =>
@@ -336,6 +392,33 @@ namespace TelFlix.Data.Migrations
                     b.ToTable("MoviesUsers");
                 });
 
+            modelBuilder.Entity("TelFlix.Data.Models.Purchase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<DateTime?>("CreatedOn");
+
+                    b.Property<DateTime?>("DeletedOn");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<DateTime?>("ModifiedOn");
+
+                    b.Property<int>("Type");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Purchase");
+                });
+
             modelBuilder.Entity("TelFlix.Data.Models.Review", b =>
                 {
                     b.Property<int>("Id")
@@ -373,6 +456,8 @@ namespace TelFlix.Data.Migrations
 
                     b.Property<int>("AccessFailedCount");
 
+                    b.Property<decimal>("AccountBalance");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
@@ -385,7 +470,11 @@ namespace TelFlix.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
+                    b.Property<string>("FirstName");
+
                     b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -470,6 +559,24 @@ namespace TelFlix.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("TelFlix.Data.Models.CreditCard", b =>
+                {
+                    b.HasOne("TelFlix.Data.Models.User", "User")
+                        .WithMany("CreditCards")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("TelFlix.Data.Models.Message", b =>
+                {
+                    b.HasOne("TelFlix.Data.Models.User", "Receiver")
+                        .WithMany("ReceivedMessages")
+                        .HasForeignKey("ReceiverId");
+
+                    b.HasOne("TelFlix.Data.Models.User", "Sender")
+                        .WithMany("SentMessages")
+                        .HasForeignKey("SenderId");
+                });
+
             modelBuilder.Entity("TelFlix.Data.Models.MoviesActors", b =>
                 {
                     b.HasOne("TelFlix.Data.Models.Actor", "Actor")
@@ -520,6 +627,13 @@ namespace TelFlix.Data.Migrations
                         .WithMany("Favorites")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TelFlix.Data.Models.Purchase", b =>
+                {
+                    b.HasOne("TelFlix.Data.Models.User", "User")
+                        .WithMany("Purchases")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("TelFlix.Data.Models.Review", b =>

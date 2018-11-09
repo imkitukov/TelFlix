@@ -19,7 +19,7 @@ namespace TelFlix.App.Hubs
         {
             // Send a message to the admins' Inboxes
 
-            var admins = await this.userManager.GetUsersInRoleAsync("Administrator");
+            //var admins = await this.userManager.GetUsersInRoleAsync("Administrator");
 
             await this.Clients.All.SendAsync("getMessage", username, content);
         }

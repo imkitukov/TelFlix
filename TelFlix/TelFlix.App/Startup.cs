@@ -37,14 +37,14 @@ namespace TelFlix.App
             this.RegisterServices(services);
             this.RegisterInfrastructure(services);
 
-            services.AddAuthorization(options => 
+            services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireAdministratorRole", policy =>
                 {
                     policy.RequireRole("Administrator");
                 });
             });
-            
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = $"/Identity/Account/Login";
@@ -110,7 +110,7 @@ namespace TelFlix.App
         {
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<TFContext>()
-                .AddDefaultTokenProviders();                ;
+                .AddDefaultTokenProviders(); ;
 
             if (this.Environment.IsDevelopment())
             {
@@ -162,13 +162,10 @@ namespace TelFlix.App
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                  name: "areas",
-                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-                );
-            });
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                    );
 
-            app.UseMvc(routes =>
-            {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

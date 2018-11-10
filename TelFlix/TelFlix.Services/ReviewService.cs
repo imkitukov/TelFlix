@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TelFlix.Data.Context;
 using TelFlix.Data.Models;
@@ -17,14 +18,15 @@ namespace TelFlix.Services
 
         public void AddReview(string userId, int movieId, string comment)
         {
-            this.Context
+            var a = this.Context
                 .Reviews
                 .Add(new Review
                 {
                     UserId = userId,
                     MovieId = movieId,
                     Comment = comment,
-                    CreatedOn = DateTime.Now
+                    CreatedOn = DateTime.Now,
+                    Author = Context.Users.Select(x => x).Where(u => u.Id == userId).First()
                 });
 
 

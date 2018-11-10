@@ -5,7 +5,6 @@
 h1 {
     margin-bottom: 50px;
 }
-
 .inner {
     overflow: hidden;
 }
@@ -59,7 +58,6 @@ h1 {
 .movie-wrapper {
     width: 1000px;
     overflow: hidden; /* will contain if #first is longer than #second */
-    background-color: grey;
 }
 
 .actor-wrapper {

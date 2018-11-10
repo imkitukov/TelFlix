@@ -32,7 +32,7 @@ namespace TelFlix.App.Controllers
                 reviewService.AddReview(userId, id, model.Comment);
             }
 
-            return NoContent();
+            return RedirectToAction("Details", "Movies", new { id = id});
         }
     }
 }

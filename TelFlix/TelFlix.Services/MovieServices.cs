@@ -138,8 +138,19 @@ namespace TelFlix.Services
         }
 
         public IEnumerable<TopListMovieModel> GetTop5ByRating()
-        {
-            throw new System.NotImplementedException();
-        }
+                 => this.Context
+                        .Movies
+                        .OrderByDescending(m => m.Rating).Take(5)
+                        .Select(m => new TopListMovieModel
+                        {
+                            Id = m.Id,
+                            Title = m.Title,
+                            DurationInMinutes = m.DurationInMinutes,
+                            TrailerUrl = m.TrailerUrl,
+                            Rating = m.Rating,
+                            SmallImageUrl = m.SmallImageUrl,
+                            MediumImageUrl = m.MediumImageUrl
+                        });
+
     }
 }

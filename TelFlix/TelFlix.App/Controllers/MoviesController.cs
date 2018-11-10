@@ -157,7 +157,8 @@ namespace TelFlix.App.Controllers
                 return BadRequest(e.Message);
             }
 
-            return RedirectToAction(nameof(this.Details), new { id = addedMovie.Id });
+            return NoContent();
+            //return RedirectToAction(nameof(this.Details), new { id = addedMovie.Id });
         }
 
         // GET: Movies/Details/5

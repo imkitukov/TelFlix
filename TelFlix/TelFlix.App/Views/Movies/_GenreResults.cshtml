@@ -36,16 +36,16 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>
+            <th class="h6 font-weight-bold" width="30%">
                 Title
             </th>
-            <th>
-                ReleaseDate
+            <th class="h6 font-weight-bold" width="15%">
+                Release Date
             </th>
-            <th>
+            <th class="h6 font-weight-bold" width="15%">
                 Rating
             </th>
-            <th>
+            <th class="h6 font-weight-bold" width="40%">
                 Genres
             </th>
         </tr>
@@ -55,7 +55,7 @@
         {
             <tr>
                 <td>
-                    @movie.Title
+                    <a asp-action="Details" asp-route-id="@movie.Id" class="text-info">@movie.Title</a>                   
                 </td>
                 <td>
                     @movie.ReleaseDate

@@ -1,5 +1,5 @@
 ﻿@using TelFlix.Services.ViewModels.MovieViewModels
-@model TelFlix.Services.Models.Movie.ListMovieModel
+@model IEnumerable<TopListMovieModel>
 
 @{
     ViewData["Title"] = "Home";
@@ -28,81 +28,31 @@
 <h3>Top 5 Movies</h3>
 <hr>
 <div class="row justify-content-center">
-    <div class="col-md4">
-        <div class="card shadow">
-            <div class="inner">
-                <img class="card-img-top" src="images/the-matrix.jpg" alt="The Matrix Poster">
-            </div>
-            <div class="card-body text-center">
-                <h6 class="card-title">The Matrix</h6>
-                <p class="card-text"></p>
-                <!-- Button trigger modal -->                                                         https://www.youtube.com/watch?v=m8e-FF8MsqU
-                <button type="button" class="btn btn-primary video-btn" data-toggle="modal" data-src="https://www.youtube.com/embed/m8e-FF8MsqU" data-target="#videoModal">
-                    Watch
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="col-md4">
-        <div class="card shadow">
-            <div class="inner">
-                <img class="card-img-top" src="images/the-lord-of-the-rings-the-fellowship-of-the-ring.jpg" alt="The Lord Of The Rings Poster">
-            </div>
-            <div class="card-body text-center">
-                <h6 class="card-title">The Lord Of The Rings</h6>
-                <p class="card-text"></p>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary video-btn" data-toggle="modal" data-src="https://www.youtube.com/embed/V75dMMIW2B4" data-target="#videoModal">
-                    Watch
-                </button>
+    @foreach (var movie in Model)
+    {
+        <div class="col-md4">
+            <div class="card shadow">
+                <div class="inner">
+                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
+                        <img class="card-img-top" src="@movie.MediumImageUrl" alt="@movie.Title Poster">
+                    </a>
+                </div>
+                <div class="card-body text-center">
+                    <hr />
+                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
+                        <p class="card-title h6 text-primary">@movie.Title</p>
+                    </a>                  
+                    <hr />
+                    <p class="card-text"></p>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-success video-btn" data-toggle="modal" data-src="@movie.TrailerUrl" data-target="#videoModal">
+                        Watch
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md4">
-        <div class="card shadow">
-            <div class="inner">
-                <img class="card-img-top" src="images/the-departed.jpg" alt="The Departed Poster">
-            </div>
-            <div class="card-body text-center">
-                <h6 class="card-title">The Departed</h6>
-                <p class="card-text"></p>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary video-btn" data-toggle="modal" data-src="https://www.youtube.com/embed/iQpb1LoeVUc" data-target="#videoModal">
-                    Watch
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="col-md4">
-        <div class="card shadow">
-            <div class="inner">
-                <img class="card-img-top" src="images/i-robot.jpg" alt="I, Robot Poster">
-            </div>
-            <div class="card-body text-center">
-                <h6 class="card-title">I, Robot</h6>
-                <p class="card-text"></p>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary video-btn" data-toggle="modal" data-src="https://www.youtube.com/embed/rL6RRIOZyCM" data-target="#videoModal">
-                    Watch
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="col-md4">
-        <div class="card shadow">
-            <div class="inner">
-                <img class="card-img-top" src="images/october-sky.jpg" alt="October Sky Poster">
-            </div>
-            <div class="card-body text-center">
-                <h6 class="card-title">October Sky</h6>
-                <p class="card-text"></p>
-                <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary video-btn" data-toggle="modal" data-src="https://www.youtube.com/embed/zxJQgYPXjN4" data-target="#videoModal">
-                    Watch
-                </button>
-            </div>
-        </div>
-    </div>
+    }
+
 </div>
 @section Scripts {
     <script>

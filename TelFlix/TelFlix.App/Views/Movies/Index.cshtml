@@ -4,19 +4,20 @@
     ViewData["Title"] = "Movies Index";
 }
 
-<p class="control-label h4 text-primary font-weight-bold">Filter by genre</p>
 
-<div id="container">
-    <select asp-for="@Model.GenreId" asp-items="@Model.Genres" class="form-control input-sm">
-        <option value="0">--All movies--</option>
-    </select>
-
-    <br /><br />
-
-    <div id="genreResults">
-        <partial name="_GenreResults" model="@Model.SelectMovieResultViewModel" />
+<div id="form-row">
+    <p class="h4 text-primary font-weight-bold">Filter by genre</p>
+</div>
+<div id="form-row">
+    <div class="form-group">
+        <select asp-for="@Model.GenreId" asp-items="@Model.Genres" class="form-control input-sm">
+            <option value="0">--All movies--</option>
+        </select>
     </div>
 
+    <div id="genreResults" class="form-group">
+        <partial name="_GenreResults" model="@Model.SelectMovieResultViewModel" />
+    </div>
 </div>
 
 

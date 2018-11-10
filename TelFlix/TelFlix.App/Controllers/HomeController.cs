@@ -23,9 +23,9 @@ namespace TelFlix.App.Controllers
         
         public IActionResult Index()
         {
-            //var movies = this.movieServices.GetTop5ByRating();
+            var movies = this.movieServices.GetTop5ByRating();
 
-            return View();
+            return View(movies);
         }
 
         [HttpGet]

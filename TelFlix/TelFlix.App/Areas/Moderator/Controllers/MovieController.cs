@@ -72,13 +72,13 @@ namespace TelFlix.App.Areas.Moderator.Controllers
                 newGenresId,
                 genresIdsToRemove);
 
-            return NoContent();
-            //return RedirectToAction("Details", "Movies", new { Area = "", id = id });
+            return RedirectToAction("Details", "Movies", new { Area = "", id = id });
         }
 
         // GET: Movie/Delete/5
         public ActionResult Delete(int id)
         {
+
             return View();
         }
 

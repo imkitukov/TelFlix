@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TelFlix.App.HttpClients;
@@ -10,14 +9,13 @@ using TelFlix.App.Models;
 using TelFlix.App.Models.Movies;
 using TelFlix.Data.Models;
 using TelFlix.Services.Contracts;
-using TelFlix.Services.Models.Movie;
 using TelFlix.Services.Providers.Exceptions;
 
 namespace TelFlix.App.Controllers
 {
     public class MoviesController : Controller
     {
-        private const int PageSize = 2;
+        private const int PageSize = 5;
 
         private readonly TheMovieDbClient client;
         private readonly IJsonProvider jsonProvider;
@@ -41,7 +39,14 @@ namespace TelFlix.App.Controllers
         // GET: Movies
         public IActionResult Index()
         {
-            var vm = this.UpdateMovieIndexViewModel();
+            var genres = this.genresServices.GetAll();
+
+            var vm = new MovieIndexViewModel
+            {
+                Genres = new SelectList(genres, "Id", "Name"),
+                GenreId = 0,
+                SelectMovieResultViewModel = this.UpdateMovieIndexViewModel()
+            };
 
             return View(vm);
         }
@@ -55,33 +60,19 @@ namespace TelFlix.App.Controllers
             return PartialView("_GenreResults", model);
         }
 
-        //private MovieIndexViewModel LoadInitialIndexModel()
-        //{
-        //    var genres = this.genresServices.GetAll();
-
-        //    return new MovieIndexViewModel()
-        //    {
-        //        Genres = new SelectList(genres, "Id", "Name")
-        //    };
-        //}
-
-        private MovieIndexViewModel UpdateMovieIndexViewModel(int page = 1, int genreId = 0)
+        private SelectMovieResultViewModel UpdateMovieIndexViewModel(int page = 1, int genreId = 0)
         {
             var movies = this.movieService.ListAllMovies(genreId, page, PageSize);
-            var genres = this.genresServices.GetAll();
-
             var totalMoviesInGenre = this.movieService.TotalMoviesInGenre(genreId);
 
-            var model = new MovieIndexViewModel()
+            var vm = new SelectMovieResultViewModel()
             {
                 Movies = movies,
-                Genres = new SelectList(genres, "Id", "Name"),
                 CurrentPage = page,
-                TotalPages = (int)Math.Ceiling(totalMoviesInGenre / (double)PageSize),
-                GenreId = genreId
+                TotalPages = (int)Math.Ceiling(totalMoviesInGenre / (double)PageSize)
             };
 
-            return model;
+            return vm;
         }
 
         // search movie at The Movie DB
@@ -91,11 +82,9 @@ namespace TelFlix.App.Controllers
             var jsonResult = await this.client.SearchMovie(model.SearchString);
 
             var apiMoviesFound = this.jsonProvider.ExtractFoundMoviesFromSearchMovieJsonResult(jsonResult);
-
             model.ApiMovies = apiMoviesFound.Select(m => new MovieViewModel(m));
 
             var dbMoviesFound = this.movieService.SearchMovie(model.SearchString);
-
             model.DbMovies = dbMoviesFound.Select(m => new MovieViewModel(m)); ;
 
             return View(model);

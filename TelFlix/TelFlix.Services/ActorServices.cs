@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TelFlix.Data.Context;
 using TelFlix.Data.Models;
@@ -17,9 +16,16 @@ namespace TelFlix.Services
         {
         }
 
-        public IEnumerable<ListActorModel> ListAllActors(int page = 1, int pageSize = 10)
-                 => this.Context
-                        .Actors
+        public IEnumerable<ListActorModel> ListAllActors(int page = 1, int pageSize = 10, string search = "")
+        {
+            var actors = this.Context.Actors.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                actors = actors.Where(a => a.FullName.ToLower().Contains(search.ToLower()));
+            }
+
+            return actors
                         .OrderBy(a => a.FullName)
                         .Skip((page - 1) * pageSize)
                         .Take(pageSize)
@@ -31,6 +37,7 @@ namespace TelFlix.Services
                             SmallImageUrl = a.SmallImageUrl
                         })
                         .ToList();
+        }
 
         public Actor FindActorByName(string fullname)
                  => this.Context
@@ -102,6 +109,16 @@ namespace TelFlix.Services
             }
         }
 
-        public int Count() => this.Context.Actors.Count();
+        public int Count(string search = "")
+        {
+            var actors = this.Context.Actors.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                actors = actors.Where(a => a.FullName.ToLower().Contains(search.ToLower()));
+            }
+
+            return actors.Count();
+        }
     }
 }

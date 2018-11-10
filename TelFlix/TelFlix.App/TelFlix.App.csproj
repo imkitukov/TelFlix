@@ -7,9 +7,13 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Identity\Services\**" />
+    <Compile Remove="Areas\Moderator\Data\**" />
     <Content Remove="Areas\Identity\Services\**" />
+    <Content Remove="Areas\Moderator\Data\**" />
     <EmbeddedResource Remove="Areas\Identity\Services\**" />
+    <EmbeddedResource Remove="Areas\Moderator\Data\**" />
     <None Remove="Areas\Identity\Services\**" />
+    <None Remove="Areas\Moderator\Data\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Moderator\Data\" />
     <Folder Include="Areas\Regular\Data\" />
     <Folder Include="Areas\Regular\Models\" />
     <Folder Include="Views\Reviews\" />

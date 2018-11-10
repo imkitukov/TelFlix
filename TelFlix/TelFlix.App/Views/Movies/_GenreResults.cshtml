@@ -1,34 +1,51 @@
-﻿@model MovieIndexViewModel
+﻿@model SelectMovieResultViewModel
+
+@{
+    var previousDisabled = Model.CurrentPage == 1 ? "disabled" : string.Empty;
+    var nextDisabled = Model.CurrentPage == Model.TotalPages ? "disabled" : string.Empty;
+}
+
 
 <ul class="pagination">
     <li class="page-item">
-        <a class="page-link" id="prevPage" @*href="/Movies/GetGenreMovies?genre=@Model.GenreId&page=@Model.PreviousPage"*@ aria-label="Previous">
+        <a class="page-link @previousDisabled" id="prevPage" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Previous</span>
         </a>
     </li>
-
+    @if (Model.TotalPages > 1)
+    {
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(Model.CurrentPage == i ? "active" : string.Empty)">
+                <a onclick="goToPageNumber(this)" data-assigned-page="@i" class="page-link">
+                    @i
+                </a>
+            </li>
+        }
+    }
     <li class="page-item">
-        <a class="page-link" id="nextPage" @*href="/Movies/GetGenreMovies?genre=@Model.GenreId&page=@Model.NextPage"*@ aria-label="Next">
+        <a class="page-link @nextDisabled" id="nextPage" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
         </a>
     </li>
 </ul>
 
-<table class="table table-bordered">
-    <thead>
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
         <tr>
-            <th>
+            <th class="h6 font-weight-bold" width="30%">
                 Title
             </th>
-            <th>
-                ReleaseDate
+            <th class="h6 font-weight-bold" width="15%">
+                Release Date
             </th>
-            <th>
+            <th class="h6 font-weight-bold" width="15%">
                 Rating
             </th>
-            <th>
+            <th class="h6 font-weight-bold" width="40%">
                 Genres
             </th>
         </tr>
@@ -38,41 +55,46 @@
         {
             <tr>
                 <td>
-                    @movie.Title
+                    <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-link btn-info">@movie.Title</a>
                 </td>
-                <td>
-                    @movie.ReleaseDate
+                <td class="text-success">
+                    @movie.ReleaseDate.Value.ToShortDateString()
                 </td>
-                <td>
+                <td class="text-success">
                     @movie.Rating
                 </td>
-                <td>
+                <td class="text-success">
                     @(string.Join(", ", movie.Genres.Select(g => g.Name)))
                 </td>
-                <td>
-                    @*TODO add movie id*@
-                    <a asp-action="Details" asp-route-id="@movie.Id" class="btn btn-primary">Details</a>
-                    @if (User.IsInRole("Moderator"))
-                    {
+                @*TODO add movie id*@
+                @if (User.IsInRole("Moderator"))
+                {
+                    <td>
+
                         <a asp-area="Moderator" asp-controller="Movie" asp-action="Edit" asp-route-id="@movie.Id" role="button" class="btn btn-warning">Edit</a>
                         <a asp-area="Moderator" asp-controller="Movie" asp-action="Delete" asp-route-id="@movie.Id" role="button" class="btn btn-danger">Delete</a>
-                    }
-                </td>
+
+                    </td>
+                }
             </tr>
         }
     </tbody>
 </table>
 
-
 <script>
-     @*$(document).ready(function () {
-        changePage("#prevPage", @Model.PreviousPage);
-        changePage("#nextPage", @Model.NextPage);
-    });*@
+    $(document).ready(function () {
 
-    //const changePage = function (tagId, pageTarget) {
-    //    $(tagId).click(function () {
-    //        loadGenreResultsPartial(pageTarget);
-    //    });
-    //}
+        movePage("#nextPage", @Model.NextPage);
+        movePage("#prevPage", @Model.PreviousPage);
+
+        function movePage(tagId, targetPage) {
+            $(tagId).click(function () {
+                let selectedGenreId = $("#GenreId").val();
+                let url = "@Url.Action("GetGenreMovies", "Movies")?genre=" + selectedGenreId + "&page=" + targetPage;
+
+                $("#genreResults").load(url);
+            })
+        }
+    });
+
 </script>

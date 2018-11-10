@@ -6,7 +6,7 @@ namespace TelFlix.Services.Contracts
 {
     public interface IActorServices
     {
-        IEnumerable<ListActorModel> ListAllActors(int page = 1, int pageSize = 10);
+        IEnumerable<ListActorModel> ListAllActors(int page = 1, int pageSize = 10, string search = "");
 
         Actor FindActorByName(string fullname);
 
@@ -18,6 +18,6 @@ namespace TelFlix.Services.Contracts
 
         void AddActorDetails(Actor actor);
 
-        int Count();
+        int Count(string search = "");
     }
 }

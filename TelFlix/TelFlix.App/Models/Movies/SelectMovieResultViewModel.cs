@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
-using TelFlix.Services.Models.Actors;
+using TelFlix.Services.Models.Movie;
 
-namespace TelFlix.App.Models.Actors
+namespace TelFlix.App.Models.Movies
 {
-    public class ActorPageListingViewModel
+    public class SelectMovieResultViewModel
     {
-        public string Search { get; set; }
-
-        public IEnumerable<ListActorModel> Actors { get; set; }
+        public IEnumerable<ListMovieModel> Movies { get; set; }
 
         public int TotalPages { get; set; }
 

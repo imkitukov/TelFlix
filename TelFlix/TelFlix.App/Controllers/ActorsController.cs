@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
 using TelFlix.App.Models;
 using TelFlix.App.Models.Actors;
 using TelFlix.Services.Contracts;
@@ -22,6 +21,23 @@ namespace TelFlix.App.Controllers
         {
             var actors = actorServices.ListAllActors(page, PageSize);
             var totalActors = actorServices.Count();
+
+            var vm = new ActorPageListingViewModel
+            {
+                Actors = actors,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(totalActors / (double)PageSize),
+                Search = ""
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Index(ActorPageListingViewModel model, int page = 1)
+        {
+            var actors = actorServices.ListAllActors(page, PageSize, model.Search);
+            var totalActors = actorServices.Count(model.Search);
 
             var vm = new ActorPageListingViewModel
             {

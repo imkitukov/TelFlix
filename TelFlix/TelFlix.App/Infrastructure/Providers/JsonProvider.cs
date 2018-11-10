@@ -12,7 +12,7 @@ namespace TelFlix.App.Infrastructure.Providers
     {
         // release_date: "1999-03-30"
         private const string DateFormatString = "yyyy-dd-MM";
-        private const string YouTubeBaseUri = "https://www.youtube.com/watch?v=";
+        private const string YouTubeBaseUri = "https://www.youtube.com/embed/";
         private const string SmallImageBaseUri = "http://image.tmdb.org/t/p/w185";
         private const string MediumImageBaseUri = "http://image.tmdb.org/t/p/w342";
         private const string LargeImageBaseUri = "http://image.tmdb.org/t/p/w500";

@@ -27,10 +27,6 @@ namespace TelFlix.Services.Contracts
             IEnumerable<int> selectedGenresIds,
             IEnumerable<int> genresIdsToRemove);
 
-        //IEnumerable<ListMoviesByGenreViewModel> ListMoviesByGenre(string stringToSearch);
-
-        //IEnumerable<ListGenresViewModel> ListGenres();
-
-        //IEnumerable<ListMovieViewModel> ListMoviesInRange(int firstYear, int secondYear);
+        IEnumerable<TopListMovieModel> GetTop5ByRating();
     }
 }

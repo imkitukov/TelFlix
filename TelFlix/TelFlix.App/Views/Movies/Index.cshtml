@@ -4,63 +4,41 @@
     ViewData["Title"] = "Movies Index";
 }
 
-<h2>@ViewData["Title"]</h2>
 
-<div id="container">
-    <select asp-for="GenreId" asp-items="@Model.Genres">
-        <option value="0">--Select genre--</option>
-    </select>
-
-    <br /><br />
-
-    <div id="genreResults">
-        <partial name="_GenreResults" model="@Model" />
+<div id="form-row">
+    <p class="h4 text-primary font-weight-bold">Filter by genre</p>
+</div>
+<div id="form-row">
+    <div class="form-group">
+        <select asp-for="@Model.GenreId" asp-items="@Model.Genres" class="form-control input-sm">
+            <option value="0">--All movies--</option>
+        </select>
     </div>
 
+    <div id="genreResults" class="form-group">
+        <partial name="_GenreResults" model="@Model.SelectMovieResultViewModel" />
+    </div>
 </div>
 
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        const firstPage = 1;
-        reloadSelectedGenre(firstPage);
+    const firstPage = 1;
 
-        $('#genreResults' > '#prevPage' ).click(function () {
-            loadGenreResultsPartial( @Model.PreviousPage);
-             @*changePage("#prevPage", @Model.PreviousPage);*@
-        });
-
-        $('#genreResults').click('#nextPage', function () {
-             loadGenreResultsPartial( @Model.NextPage);
-
-             @*changePage("#nextPage", @Model.NextPage);*@
-        });
-    });
-
-     @*$(document).ready(function () {
-        changePage("#prevPage", @Model.PreviousPage);
-        changePage("#nextPage", @Model.NextPage);
-    });*@
-
-    const changePage = function (tagId, pageTarget) {
-        $(tagId).click(function () {
-            loadGenreResultsPartial(pageTarget);
-        });
-    }
-
-    const loadGenreResultsPartial = function (page) {
+    $("#GenreId").change(function () {
         let genreId = $("#GenreId").val();
-        let url = "@Url.Action("GetGenreMovies","Movies")?genre=" + genreId + "&page=" + page;
-        console.log(url);
+        let url = "@Url.Action("GetGenreMovies", "Movies")?genre=" + genreId + "&page=" + firstPage;
 
         $("#genreResults").load(url);
-    }
+    });
 
-    const reloadSelectedGenre = function(pageTarget) {
-        $("#GenreId").change(function () {
-             loadGenreResultsPartial(pageTarget);
-        });
+    //used in partial view pagination
+    function goToPageNumber(elem) {
+        let selectedPage = $(elem).data('assigned-page');
+        let genreId = $("#GenreId").val();
+        let url = "@Url.Action("GetGenreMovies", "Movies")?genre=" + genreId + "&page=" + selectedPage;
+
+        $("#genreResults").load(url);
     }
 
 </script>

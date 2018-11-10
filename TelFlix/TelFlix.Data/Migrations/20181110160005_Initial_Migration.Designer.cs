@@ -10,8 +10,8 @@ using TelFlix.Data.Context;
 namespace TelFlix.Data.Migrations
 {
     [DbContext(typeof(TFContext))]
-    [Migration("20181109104706_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20181110160005_Initial_Migration")]
+    partial class Initial_Migration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -265,6 +265,8 @@ namespace TelFlix.Data.Migrations
 
                     b.Property<bool>("IsDeleted");
 
+                    b.Property<bool>("IsRead");
+
                     b.Property<DateTime?>("ModifiedOn");
 
                     b.Property<string>("ReceiverId");
@@ -279,7 +281,7 @@ namespace TelFlix.Data.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("TelFlix.Data.Models.Movie", b =>
@@ -418,7 +420,7 @@ namespace TelFlix.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Purchase");
+                    b.ToTable("Purchases");
                 });
 
             modelBuilder.Entity("TelFlix.Data.Models.Review", b =>

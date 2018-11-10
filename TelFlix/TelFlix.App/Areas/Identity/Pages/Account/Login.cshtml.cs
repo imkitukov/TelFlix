@@ -94,7 +94,7 @@ namespace TelFlix.App.Areas.Identity.Pages.Account
                     {
                         logger.LogInformation("Regular user logged in.");
                         //return LocalRedirect(returnUrl);
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Home", new { Area = "" });
                     }
                 }
                 if (result.RequiresTwoFactor)

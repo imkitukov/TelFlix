@@ -8,9 +8,9 @@
 <div class="container">
     <!-- Modal -->
     <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog movie-modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-body movie-modal-body">
 
                     <button type="button" class="close close-modal-custom" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -26,7 +26,7 @@
 </div>
 <h1>Welcome to TelFlix</h1>
 <h3>Top 5 Movies</h3>
-<hr>
+<hr />
 <div class="row justify-content-center">
     <div class="col-md4">
         <div class="card shadow">
@@ -107,27 +107,16 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-
-            // Gets the video src from the data-src on each button
-
             var $videoSrc;
             $('.video-btn').click(function () {
                 $videoSrc = $(this).data("src");
             });
 
-            console.log($videoSrc);
-
-            // when the modal is opened autoplay it
             $('#videoModal').on('shown.bs.modal', function (e) {
-
-                // set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
                 $("#video").attr('src', $videoSrc + "?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1");
             })
 
-
-            // stop playing the youtube video when I close the modal
             $('#videoModal').on('hide.bs.modal', function (e) {
-                // a poor man's stop video
                 $("#video").attr('src', $videoSrc);
             })
         });

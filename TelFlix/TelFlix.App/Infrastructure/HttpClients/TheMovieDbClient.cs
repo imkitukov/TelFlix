@@ -45,7 +45,7 @@ namespace TelFlix.App.HttpClients
 
                 return response.Content.ReadAsStringAsync().Result;
             }
-            catch (HttpRequestException ex)
+            catch (HttpRequestException)
             {
 
                 //_logger.LogError($"An error occured connecting to values API {ex.ToString()}");
@@ -69,7 +69,7 @@ namespace TelFlix.App.HttpClients
 
                 return response.Content.ReadAsStringAsync().Result;
             }
-            catch (HttpRequestException ex)
+            catch (HttpRequestException)
             {
 
                 //_logger.LogError($"An error occured connecting to values API {ex.ToString()}");
@@ -91,7 +91,7 @@ namespace TelFlix.App.HttpClients
 
                 return response.Content.ReadAsStringAsync().Result;
             }
-            catch (HttpRequestException ex)
+            catch (HttpRequestException)
             {
                 //_logger.LogError($"An error occured connecting to values API {ex.ToString()}");
                 return "ERROR";
@@ -112,7 +112,7 @@ namespace TelFlix.App.HttpClients
 
                 return response.Content.ReadAsStringAsync().Result;
             }
-            catch (HttpRequestException ex)
+            catch (HttpRequestException)
             {
 
                 //_logger.LogError($"An error occured connecting to values API {ex.ToString()}");
@@ -134,7 +134,7 @@ namespace TelFlix.App.HttpClients
 
                 return response.Content.ReadAsStringAsync().Result;
             }
-            catch (HttpRequestException ex)
+            catch (HttpRequestException)
             {
 
                 //_logger.LogError($"An error occured connecting to values API {ex.ToString()}");

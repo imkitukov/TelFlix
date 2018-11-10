@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TelFlix.Data.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial_Migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -296,7 +296,7 @@ namespace TelFlix.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Message",
+                name: "Messages",
                 schema: "Admin",
                 columns: table => new
                 {
@@ -306,6 +306,7 @@ namespace TelFlix.Data.Migrations
                     DeletedOn = table.Column<DateTime>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: true),
                     ModifiedOn = table.Column<DateTime>(nullable: true),
+                    IsRead = table.Column<bool>(nullable: false),
                     Subject = table.Column<string>(nullable: true),
                     Content = table.Column<string>(nullable: true),
                     ReceiverId = table.Column<string>(nullable: true),
@@ -313,16 +314,16 @@ namespace TelFlix.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Message", x => x.Id);
+                    table.PrimaryKey("PK_Messages", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Message_AspNetUsers_ReceiverId",
+                        name: "FK_Messages_AspNetUsers_ReceiverId",
                         column: x => x.ReceiverId,
                         principalSchema: "Admin",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Message_AspNetUsers_SenderId",
+                        name: "FK_Messages_AspNetUsers_SenderId",
                         column: x => x.SenderId,
                         principalSchema: "Admin",
                         principalTable: "AspNetUsers",
@@ -331,7 +332,7 @@ namespace TelFlix.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Purchase",
+                name: "Purchases",
                 schema: "Admin",
                 columns: table => new
                 {
@@ -347,9 +348,9 @@ namespace TelFlix.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Purchase", x => x.Id);
+                    table.PrimaryKey("PK_Purchases", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Purchase_AspNetUsers_UserId",
+                        name: "FK_Purchases_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalSchema: "Admin",
                         principalTable: "AspNetUsers",
@@ -561,15 +562,15 @@ namespace TelFlix.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_ReceiverId",
+                name: "IX_Messages_ReceiverId",
                 schema: "Admin",
-                table: "Message",
+                table: "Messages",
                 column: "ReceiverId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_SenderId",
+                name: "IX_Messages_SenderId",
                 schema: "Admin",
-                table: "Message",
+                table: "Messages",
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
@@ -597,9 +598,9 @@ namespace TelFlix.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Purchase_UserId",
+                name: "IX_Purchases_UserId",
                 schema: "Admin",
-                table: "Purchase",
+                table: "Purchases",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -642,7 +643,7 @@ namespace TelFlix.Data.Migrations
                 schema: "Admin");
 
             migrationBuilder.DropTable(
-                name: "Message",
+                name: "Messages",
                 schema: "Admin");
 
             migrationBuilder.DropTable(
@@ -662,7 +663,7 @@ namespace TelFlix.Data.Migrations
                 schema: "Admin");
 
             migrationBuilder.DropTable(
-                name: "Purchase",
+                name: "Purchases",
                 schema: "Admin");
 
             migrationBuilder.DropTable(

@@ -17,11 +17,22 @@
         </p>
         <p><strong>Place of birth: </strong>@Model.PlaceOfBirth</p>
         <p><strong>Date of birth: </strong>@Model.DateOfBirth</p>
-        <p><strong>Movies:</strong></p>
+
+        @{if (Model.Movies.Count() == 1)
+            {
+                <p><strong>Movie:</strong></p>
+            }
+            else
+            {
+                <p><strong>Movies:</strong></p>
+            }
+        }
         @foreach (var movie in Model.Movies)
         {
             <p><a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">@movie.Title</a></p>
         }
+
+
 
 
         <p><strong>Something more: </strong>@Model.Biography</p>

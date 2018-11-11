@@ -63,7 +63,7 @@
                     </th>
                     <td>
                         <div>
-                            <a asp-action="Details" asp-route-id="@actor.Id" class=" btn btn-link btn-info">
+                            <a asp-action="Details" asp-route-id="@actor.Id" class="customLink btn btn-link btn-info">
                                 @actor.FullName
                             </a>
                         </div>
@@ -72,7 +72,7 @@
                     <td>
                         @foreach (var movie in actor.Movies)
                         {
-                            <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="text-success">
+                            <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id" class="customLink text-success">
                                 @movie.Title
                             </a>
                             @(movie == actor.Movies.Last() ? "" : " | ")

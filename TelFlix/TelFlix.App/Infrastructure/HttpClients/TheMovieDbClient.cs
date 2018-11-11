@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace TelFlix.App.HttpClients
 {
-    public class TheMovieDbClient 
+    public class TheMovieDbClient : ITheMovieDbClient
     {
         private const string apiKey = "207de229486742b95fba944e0d0509be";
         private readonly string ApiKeyPostFix = "?api_key={0}";
@@ -15,7 +15,7 @@ namespace TelFlix.App.HttpClients
         private const string SearchMovieUri = "search/movie{0}&query={1}";
         private const string AppendVideosPostFix = "&append_to_response=videos";
 
-        private const string ListAllGenresUri = "genre/movie/list{0}";        
+        private const string ListAllGenresUri = "genre/movie/list{0}";
         private const string CastMovieUri = "movie/{0}/credits{1}";
         private const string ActorDetailsUri = "person/{0}{1}";
 
@@ -25,7 +25,7 @@ namespace TelFlix.App.HttpClients
         {
             this.client = client;
             this.client.BaseAddress = new Uri(BaseUri);
-
+            this.client.DefaultRequestHeaders.Add("Accept", "application/json");
             this.ApiKeyPostFix = string.Format(ApiKeyPostFix, apiKey);
         }
 
@@ -103,7 +103,7 @@ namespace TelFlix.App.HttpClients
             try
             {
                 //https://api.themoviedb.org/3/movie/550/credits?api_key=207de229486742b95fba944e0d0509be
-                
+
                 string requestUri = string.Format(CastMovieUri, movieId, ApiKeyPostFix);
 
                 var response = await this.client.GetAsync(requestUri);

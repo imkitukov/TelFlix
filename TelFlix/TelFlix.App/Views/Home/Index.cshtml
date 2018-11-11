@@ -1,5 +1,4 @@
-﻿@using TelFlix.Services.ViewModels.MovieViewModels
-@model IEnumerable<TopListMovieModel>
+﻿@model IEnumerable<TopListMovieModel>
 
 @{
     ViewData["Title"] = "Home";
@@ -24,8 +23,8 @@
         </div>
     </div>
 </div>
-<h1>Welcome to TelFlix</h1>
-<h3>Top 5 Movies</h3>
+<p class="display-2 text-center">Welcome to TelFlix</p>
+<p class="display-4 text-center">Top 5 Movies</p>
 <hr>
 <div class="row justify-content-center">
     @foreach (var movie in Model)
@@ -39,9 +38,9 @@
                 </div>
                 <div class="card-body text-center">
                     <hr />
-                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
-                        <p class="card-title h6 text-primary">@movie.Title</p>
-                    </a>                  
+                    <a class="customLink" asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
+                        <p class="card-title h6 text-primary">@movie.Title.TruncateAtWord(22)</p>
+                    </a>
                     <hr />
                     <p class="card-text"></p>
                     <!-- Button trigger modal -->

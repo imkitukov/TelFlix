@@ -10,6 +10,8 @@ namespace TelFlix.Services.Models.Reviews
 
         public string Author { get; set; }
 
+        public string AuthorId { get; set; }
+
         public DateTime? CreatedOn { get; set; }
     }
 }

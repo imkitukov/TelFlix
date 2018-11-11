@@ -5,6 +5,7 @@
 h1 {
     margin-bottom: 50px;
 }
+
 .inner {
     overflow: hidden;
 }
@@ -85,4 +86,8 @@ a.disabled {
 
 .card-my-card {
     width: 1000px;
+}
+
+.customLink, .customLink:hover {
+    text-decoration: none;
 }

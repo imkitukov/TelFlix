@@ -17,7 +17,7 @@ namespace TelFlix.App.Controllers
     {
         private const int PageSize = 5;
 
-        private readonly TheMovieDbClient client;
+        private readonly ITheMovieDbClient client;
         private readonly IJsonProvider jsonProvider;
         private readonly IAddMovieService addMovieService;
         private readonly IMovieServices movieService;
@@ -26,7 +26,7 @@ namespace TelFlix.App.Controllers
 
         public MoviesController(IAddMovieService addMovieService, IMovieServices movieServices,
             IActorServices actorServices, IGenreServices genreServices,
-            TheMovieDbClient client, IJsonProvider jsonProvider)
+            ITheMovieDbClient client, IJsonProvider jsonProvider)
         {
             this.client = client;
             this.jsonProvider = jsonProvider;
@@ -62,7 +62,7 @@ namespace TelFlix.App.Controllers
 
         private SelectMovieResultViewModel UpdateMovieIndexViewModel(int page = 1, int genreId = 0)
         {
-            var movies = this.movieService.ListAllMovies(genreId, page, PageSize);
+            var movies = this.movieService.GetAllByGenre(genreId, page, PageSize);
             var totalMoviesInGenre = this.movieService.TotalMoviesInGenre(genreId);
 
             var vm = new SelectMovieResultViewModel()

@@ -19,7 +19,7 @@ namespace TelFlix.Services
             this.genreServices = genreServices;
         }
 
-        public IEnumerable<ListMovieModel> ListAllMovies(int genreId = 0, int page = 1, int pageSize = 3)
+        public IEnumerable<ListMovieModel> GetAllByGenre(int genreId = 0, int page = 1, int pageSize = 3)
         {
             var movies = this.Context
                              .Movies.AsQueryable();
@@ -58,7 +58,6 @@ namespace TelFlix.Services
             return movies.Count();
         }
 
-
         public int Count() => this.Context.Movies.Count();
 
         public MovieDetailModel GetMovieById(int id)
@@ -78,28 +77,20 @@ namespace TelFlix.Services
                     MediumImageUrl = m.MediumImageUrl,
                     Rating = m.Rating,
                     ReleaseDate = m.ReleaseDate,
-                    Reviews = m.Reviews.Select(r => new ReviewModel
-                    {
-                        Id = r.Id,
-                        Author = r.Author.Email,
-                        CreatedOn = r.CreatedOn,
-                        Comment = r.Comment
-                    }).ToList(),
+                    Reviews = m.Reviews
+                                .OrderByDescending(r => r.CreatedOn)
+                                .Select(r => new ReviewModel
+                                {
+                                    Id = r.Id,
+                                    Author = r.Author.Email,
+                                    CreatedOn = r.CreatedOn,
+                                    Comment = r.Comment
+                                }).ToList(),
                     SmallImageUrl = m.SmallImageUrl,
                     Title = m.Title,
                     TrailerUrl = m.TrailerUrl
                 })
                 .FirstOrDefault(m => m.Id == id);
-        }
-
-        public IEnumerable<Movie> ListTopTenMovies()
-        {
-            var result = this.Context.Movies
-                              .OrderByDescending(r => r.Rating)
-                              .Take(10)
-                              .ToList();
-
-            return result;
         }
 
         public IEnumerable<Movie> SearchMovie(string searchString)
@@ -151,6 +142,5 @@ namespace TelFlix.Services
                             SmallImageUrl = m.SmallImageUrl,
                             MediumImageUrl = m.MediumImageUrl
                         });
-
     }
 }

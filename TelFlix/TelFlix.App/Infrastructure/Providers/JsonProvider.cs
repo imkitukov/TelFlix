@@ -10,15 +10,15 @@ namespace TelFlix.App.Infrastructure.Providers
 {
     public class JsonProvider : IJsonProvider
     {
-        // release_date: "1999-03-30"
-        private const string DateFormatString = "yyyy-dd-MM";
         private const string YouTubeBaseUri = "https://www.youtube.com/embed/";
         private const string SmallImageBaseUri = "http://image.tmdb.org/t/p/w185";
         private const string MediumImageBaseUri = "http://image.tmdb.org/t/p/w342";
         private const string LargeImageBaseUri = "http://image.tmdb.org/t/p/w500";
         private const string DefaultActorImage = "https://ih1.redbubble.net/image.11241105.4427/ra%2Cunisex_tshirt%2Cx925%2C5e504c%3A7bf03840f4%2Cfront-c%2C217%2C190%2C210%2C230-bg%2Cf8f8f8.lite-1.jpg";
         private const string ImdbNameBaseUrl = "https://www.imdb.com/name/";
+        private const string DefaultTrailer = "https://www.youtube.com/embed/fM9wnGIlDsc";
 
+        private string[] DateTimeFormats = new string[] { "yyyy-dd-MM", "yyyy-MM-dd", };
 
         public JsonProvider()
         {
@@ -90,7 +90,7 @@ namespace TelFlix.App.Infrastructure.Providers
             DateTime releaseDate = new DateTime();
             bool isDateValid = DateTime.TryParseExact(
                     releaseDateString,
-                    DateFormatString,
+                    DateTimeFormats,
                     CultureInfo.InvariantCulture,
                     DateTimeStyles.None,
                     out releaseDate);
@@ -102,21 +102,28 @@ namespace TelFlix.App.Infrastructure.Providers
             var trailerUrl = string.Empty;
             var videos = json["videos"]["results"];
 
-            foreach (var video in videos)
+            if (videos.Any())
             {
-                if (trailerUrl != "")
+                foreach (var video in videos)
                 {
-                    break;
-                }
+                    if (trailerUrl != "")
+                    {
+                        break;
+                    }
 
-                var type = video["type"].ToString();
-                var site = video["site"].ToString();
-                var videoKey = video["key"].ToString();
+                    var type = video["type"].ToString();
+                    var site = video["site"].ToString();
+                    var videoKey = video["key"].ToString();
 
-                if (type == "Trailer" && site == "YouTube")
-                {
-                    trailerUrl = YouTubeBaseUri + videoKey;
+                    if (type == "Trailer" && site == "YouTube")
+                    {
+                        trailerUrl = YouTubeBaseUri + videoKey;
+                    }
                 }
+            }
+            else
+            {
+                trailerUrl = DefaultTrailer;
             }
 
             var movie = new Movie
@@ -191,6 +198,7 @@ namespace TelFlix.App.Infrastructure.Providers
 
         public Actor ExtractActorDetails(string actorDetailsJsonResult)
         {
+
             var json = JObject.Parse(actorDetailsJsonResult);
             var imdbKey = json["imdb_id"].ToString();
 

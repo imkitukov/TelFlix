@@ -74,7 +74,7 @@ namespace TelFlix.App
 
         private void RegisterServices(IServiceCollection services)
         {
-            services.AddHttpClient<TheMovieDbClient>();
+            services.AddHttpClient<ITheMovieDbClient, TheMovieDbClient>();
             services.AddSingleton<IJsonProvider, JsonProvider>();
 
             services.AddScoped<UserManager<User>>();

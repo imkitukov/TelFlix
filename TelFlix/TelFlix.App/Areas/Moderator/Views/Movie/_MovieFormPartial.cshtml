@@ -1,6 +1,5 @@
 ﻿@model EditMovieFormModel
 
-
 <form asp-action="Edit" method="post">
 
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -51,3 +50,8 @@
     </div>
 
 </form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

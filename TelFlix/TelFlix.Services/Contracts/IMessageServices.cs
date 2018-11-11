@@ -10,8 +10,10 @@ namespace TelFlix.Services.Contracts
 
         IEnumerable<MessageViewModel> ListSentMessages(string id, int page = 1, int pagesize = 10);
 
+        IEnumerable<MessageViewModel> GetWishlistRequests(string id);
+
         Message AddMessage(Message message);
 
-        Message DeleteMessage(int id);  
+        Message DeleteMessage(int id);
     }
 }

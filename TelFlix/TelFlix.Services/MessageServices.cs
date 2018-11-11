@@ -44,6 +44,22 @@ namespace TelFlix.Services
             return messageToDelete;
         }
 
+        public IEnumerable<MessageViewModel> GetWishlistRequests(string id)
+             => this.Context
+                    .Messages
+                    .Where(m => m.ReceiverId == id && m.Subject == "Add movie to db")
+                    .Select(m => new MessageViewModel
+                    {
+                        Id = m.Id,
+                        Receiver = m.Receiver,
+                        Sender = m.Sender,
+                        Subject = m.Subject,
+                        Content = m.Content,
+                        CreatedOn = (DateTime)m.CreatedOn
+                    })
+                    .OrderByDescending(m => m.CreatedOn)
+                    .ToList();
+
         public IEnumerable<MessageViewModel> ListReceivedMessages(string id, int page = 1, int pageSize = 10)
             => this.Context
                 .Messages

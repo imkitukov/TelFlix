@@ -41,6 +41,13 @@ namespace TelFlix.App.Controllers
                     .ListReceivedMessages(user.Id)
                     .ToList();
             }
+            else if (type == "wishlist")
+            {
+                ViewData["type"] = "Sent";
+                messages = this.messageService
+                    .GetWishlistRequests(user.Id)
+                    .ToList();
+            }
             else
             {
                 ViewData["type"] = "Sent";

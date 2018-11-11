@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using TelFlix.App.Areas.Moderator.Models.Movie;
 using TelFlix.Services.Contracts;
@@ -7,7 +6,7 @@ using TelFlix.Services.Contracts;
 namespace TelFlix.App.Areas.Moderator.Controllers
 {
     [Area("Moderator")]
-    [Authorize(Roles = "Moderator")]
+    //[Authorize(Roles = "Moderator")]
     public class MovieController : Controller
     {
         private readonly IMovieServices movieServices;
@@ -52,7 +51,6 @@ namespace TelFlix.App.Areas.Moderator.Controllers
 
         // POST: Movie/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, EditMovieFormModel model)
         {
             if (!ModelState.IsValid)
@@ -75,28 +73,19 @@ namespace TelFlix.App.Areas.Moderator.Controllers
             return RedirectToAction("Details", "Movies", new { Area = "", id = id });
         }
 
-        // GET: Movie/Delete/5
-        public ActionResult Delete(int id)
+        [HttpPost]
+        public IActionResult Delete(int id)
         {
+            var movieExists = this.movieServices.Exists(id);
 
-            return View();
+            if (!movieExists)
+            {
+                return NotFound();
+            }
+
+            this.movieServices.DeleteById(id);
+
+            return RedirectToAction("Index", "Movies", new { area = "" });
         }
-
-        //// POST: Movie/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
     }
 }

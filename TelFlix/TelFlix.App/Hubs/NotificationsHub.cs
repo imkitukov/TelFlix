@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TelFlix.Data.Models;
@@ -48,7 +47,25 @@ namespace TelFlix.App.Hubs
                     .SendAsync("pushNotification");
             }
 
-            //await this.Clients.Groups("Admins").SendAsync("getMessage", sender, content);
+            if (subject == "Add movie to db")
+            {
+                var moderators = await this.userManager.GetUsersInRoleAsync("Moderator");
+
+                foreach (var mod in moderators)
+                {
+                    var modMessage = new Message
+                    {
+                        Sender = senderUser,
+                        Receiver = mod,
+                        Subject = subject,
+                        Content = content
+                    };
+
+                    this.messageServices.AddMessage(modMessage);
+                }
+            }
+
+            await this.Clients.Groups("Moderators").SendAsync("pushNotification", sender, content);
         }
 
         public override async Task OnConnectedAsync()

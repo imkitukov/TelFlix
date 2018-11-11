@@ -32,67 +32,61 @@
     </li>
 </ul>
 
-
-<table class="table table-striped table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th class="h6 font-weight-bold" width="30%">
-                Title
-            </th>
-            <th class="h6 font-weight-bold" width="15%">
-                Release Date
-            </th>
-            <th class="h6 font-weight-bold" width="15%">
-                Rating
-            </th>
-            <th class="h6 font-weight-bold" width="40%">
-                Genres
-            </th>
-            @if (User.IsInRole("Moderator"))
-            {
-                <th>
-                </th>
-            }
-        </tr>
-    </thead>
-    <tbody class="bg-light">
-        @foreach (var movie in Model.Movies)
-        {
+@if (!Model.Movies.Any())
+{
+    <span class="display-2 text-center text-info">No movies in this genre</span>
+}
+else
+{
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
             <tr>
-                <td>
-                    <a asp-action="Details" asp-route-id="@movie.Id" class="customLink btn btn-link btn-info">@movie.Title.TruncateAtWord(30)</a>
-                </td>
-                <td class="text-success">
-                    @movie.ReleaseDate.Value.ToShortDateString()
-                </td>
-                <td class="text-success font-weight-bold">
-                    <h4>
-                        @{
-                            var badge = movie.Rating > 8 ? "badge-warning"
-                                                         : movie.Rating < 8 && movie.Rating > 4 ?
-                                                         "badge-success" : "badge-danger";
-                        }
-                        <span class="h4 badge badge-pill @badge">@movie.Rating</span>
-                    </h4>
-                </td>
-                <td class="text-success">
-                    @foreach (var genre in movie.Genres)
-                    {
-                        <span class="badge badge-pill badge-info"> @genre.Name </span>
-                    }
-                </td>
-                @*TODO add movie id*@
-                @if (User.IsInRole("Moderator"))
-                {
-                    <td>
-                        <a asp-area="Moderator" asp-controller="Movie" asp-action="Edit" asp-route-id="@movie.Id" role="button" class="btn btn-warning"><i class="fas fa-pen"></i> Edit</a>
-                        <a asp-area="Moderator" asp-controller="Movie" asp-action="Delete" asp-route-id="@movie.Id" role="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</a>
-                    </td>
-                }
+                <th class="h6 font-weight-bold" width="30%">
+                    Title
+                </th>
+                <th class="h6 font-weight-bold" width="15%">
+                    Release Date
+                </th>
+                <th class="h6 font-weight-bold" width="15%">
+                    Rating
+                </th>
+                <th class="h6 font-weight-bold" width="40%">
+                    Genres
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody class="bg-light">
+
+            @foreach (var movie in Model.Movies)
+            {
+                <tr>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@movie.Id" class="customLink btn btn-link btn-info">@movie.Title.TruncateAtWord(30)</a>
+                    </td>
+                    <td class="text-success">
+                        @movie.ReleaseDate.Value.ToShortDateString()
+                    </td>
+                    <td class="text-success font-weight-bold">
+                        <h4>
+                            @{
+                                var badge = movie.Rating > 8 ? "badge-warning"
+                                                             : movie.Rating < 8 && movie.Rating > 4 ?
+                                                             "badge-success" : "badge-danger";
+                            }
+                            <span class="h4 badge badge-pill @badge">@movie.Rating</span>
+                        </h4>
+                    </td>
+                    <td class="text-success">
+                        @foreach (var genre in movie.Genres)
+                        {
+                            <span class="badge badge-pill badge-info"> @genre.Name </span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 <script>
     $(document).ready(function () {

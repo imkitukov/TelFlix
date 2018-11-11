@@ -3,7 +3,10 @@
 $(() => {
     console.log('Hello')
 
-    const baseUrl = 'http://localhost:50183/'
+    //ivan : 9567
+    //rob : 
+    //mitko: 
+    const baseUrl = 'http://localhost:9567/'
 
     const connectionBuilder = new signalR
         .HubConnectionBuilder()
@@ -56,6 +59,16 @@ $(() => {
                 //newRow.appendChild(col4)
 
                 //document.getElementById('current-user-messages').appendChild(newRow)
+            })
+
+            $('#addToWishlist').click(() => {
+                //alert(1)
+                const receiver = 'Moderators';
+                const subject = 'Add movie to db';
+                let content = $('#movieApiId').val();
+
+                connection
+                    .invoke('SendMessage', receiver, subject, content)               
             })
         })
 })

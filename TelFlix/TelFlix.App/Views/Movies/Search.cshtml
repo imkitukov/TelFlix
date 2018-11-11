@@ -1,49 +1,34 @@
 ﻿@model SearchMovieViewModel
 
-@{
-    ViewData["Title"] = "Admin search movie page";
-}
-
-<h2>@ViewData["Title"]</h2>
-
-@*<form asp-controller="Movies" asp-action="Search" method="POST">
-
-        <p>
-            Search for: <input asp-for="SearchString" class="form-control">
-            <input type="submit" value="Search" class="btn btn-danger" />
-        </p>
-
-    </form>*@
-
 <div class="search-results">
 
-    <h1>DB results</h1>
+    <h1 class="display-4">TelFlix search results:</h1>
     @if (!Model.DbMovies.Any())
     {
-        <h1>
-            Nothing found !
-        </h1>
+        <span class="display-4 text-center text-info">
+            No movies found
+        </span>
     }
     else
     {
-        <table class="table table-bordered">
-            <thead>
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
                 <tr>
                     <th>  Title  </th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-light">
 
                 @foreach (var m in Model.DbMovies)
                 {
                     <tr>
-                        <td>
+                        <td class="text-success">
                             @m.Title
                         </td>
                         <td>
                             <a asp-controller="Movies" asp-action="Details" asp-route-id="@m.Id" class="btn btn-success">
-                                View existing movie details
+                                Go to movie
                             </a>
                         </td>
                     </tr>
@@ -53,26 +38,25 @@
 
     }
 </div>
-
+<hr />
 <div class="search-results">
-    <h1>api results</h1>
+    <h1 class="display-4">Api search results:</h1>
     @if (!Model.ApiMovies.Any())
     {
-        <h1>
-            Nothing found !
-        </h1>
+        <span class="display-4 text-center text-info">
+            No movies found
+        </span>
     }
     else
     {
-        <table class="table table-bordered">
-            <thead>
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
                 <tr>
                     <th>  Title  </th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-
+            <tbody class="bg-light">
                 @foreach (var m in Model.ApiMovies)
                 {
                     <tr>
@@ -80,9 +64,22 @@
                             @m.Title
                         </td>
                         <td>
-                            <a asp-controller="Movies" asp-action="AddToDb" asp-route-id="@m.ApiMovieId" class="btn btn-success">
-                                Add movie to our DB
-                            </a>
+                            @if (User.IsInRole("Moderator") || User.IsInRole("Admin"))
+                            {
+                                <div id="fold">
+                                    <a asp-controller="Movies" asp-action="AddToDb" asp-route-id="@m.ApiMovieId" class="btn btn-success">
+                                        <p id="fold_p">Add movie to TelFlix Database</p>
+                                    </a>
+                                </div>
+                            }
+                            else if (User.Identity.IsAuthenticated)
+                            {
+                                <form>
+                                    <input type="hidden" value="@m.ApiMovieId" id="movieApiId">
+                                    <button id="addToWishlist" type="button" class="btn btn-primary">Add to wishlist</button>
+                                </form>
+                            }
+
                         </td>
                     </tr>
                 }
@@ -91,3 +88,11 @@
 
     }
 </div>
+
+@section Scripts {
+    <script>
+        $('#addToWishlist').click(() => {
+            alert(2)
+        })
+    </script>
+}

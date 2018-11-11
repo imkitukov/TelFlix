@@ -44,7 +44,6 @@ namespace TelFlix.Services
                         .Actors
                         .FirstOrDefault(m => m.FullName == fullname);
 
-
         public ActorDetailModel FindActorById(int id)
         {
             var actor = this.Context

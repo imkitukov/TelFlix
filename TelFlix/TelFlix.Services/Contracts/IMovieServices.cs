@@ -26,5 +26,9 @@ namespace TelFlix.Services.Contracts
             IEnumerable<int> genresIdsToRemove);
 
         IEnumerable<TopListMovieModel> GetTop5ByRating();
+
+        void DeleteById(int id);
+
+        bool Exists(int id);
     }
 }

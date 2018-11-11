@@ -7,6 +7,7 @@ using TelFlix.Services.Abstract;
 using TelFlix.Services.Contracts;
 using TelFlix.Services.Models.Movie;
 using TelFlix.Services.Models.Reviews;
+using TelFlix.Services.Providers.Exceptions;
 
 namespace TelFlix.Services
 {
@@ -22,7 +23,9 @@ namespace TelFlix.Services
         public IEnumerable<ListMovieModel> GetAllByGenre(int genreId = 0, int page = 1, int pageSize = 3)
         {
             var movies = this.Context
-                             .Movies.AsQueryable();
+                             .Movies
+                             .Where(m => m.IsDeleted == false)
+                             .AsQueryable();
 
             if (genreId > 0)
             {
@@ -48,7 +51,7 @@ namespace TelFlix.Services
 
         public int TotalMoviesInGenre(int genreId)
         {
-            var movies = this.Context.Movies.AsQueryable();
+            var movies = this.Context.Movies.Where(m => m.IsDeleted == false).AsQueryable();
 
             if (genreId > 0)
             {
@@ -58,12 +61,13 @@ namespace TelFlix.Services
             return movies.Count();
         }
 
-        public int Count() => this.Context.Movies.Count();
+        public int Count() => this.Context.Movies.Count(m => m.IsDeleted == false);
 
         public MovieDetailModel GetMovieById(int id)
         {
             return this.Context
                 .Movies
+                .Where(m => m.IsDeleted == false)
                     .Include(m => m.Reviews)
                         .ThenInclude(r => r.Author)
                 .Select(m => new MovieDetailModel
@@ -131,6 +135,7 @@ namespace TelFlix.Services
         public IEnumerable<TopListMovieModel> GetTop5ByRating()
                  => this.Context
                         .Movies
+                        .Where(m => m.IsDeleted == false)
                         .OrderByDescending(m => m.Rating).Take(5)
                         .Select(m => new TopListMovieModel
                         {
@@ -142,5 +147,20 @@ namespace TelFlix.Services
                             SmallImageUrl = m.SmallImageUrl,
                             MediumImageUrl = m.MediumImageUrl
                         });
+
+        public void DeleteById(int id)
+        {
+            var movie = this.Context.Movies.FirstOrDefault(m => m.Id == id);
+
+            if (movie == null)
+            {
+                throw new InexistingEntityException(nameof(Movie), id.ToString());
+            }
+
+            movie.IsDeleted = true;
+            this.Context.SaveChanges();
+        }
+
+        public bool Exists(int id) => this.Context.Movies.Any(m => m.Id == id);
     }
 }

@@ -1,6 +1,12 @@
 ﻿@model MovieDetailModel
 
-
+@if (User.IsInRole("Moderator"))
+{
+    <p class="float-right">
+        <a asp-area="Moderator" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" role="button" class="btn btn-warning btn-lg"><i class="fas fa-pen"></i> Edit</a>
+        <a asp-area="Moderator" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" role="button" class="btn btn-danger btn-lg "><i class="fas fa-trash-alt"></i> Delete</a>
+    </p>
+}
 <h2><span class="display-4">@Model.Title  </span> <span class="h2 text-warning">(@Model.ReleaseDate.Value.Year)</span></h2>
 
 <h4><span class="badge badge-info">@Model.DurationInMinutes min. </span> | <span class="badge badge-info"> @Model.ReleaseDate.Value.ToShortDateString()</span></h4>
@@ -48,7 +54,7 @@
             <div class="card-header" id="headingOne">
                 <div class="mb-0">
                     <div data-toggle="collapse" data-target="#addComment" aria-expanded="false" aria-controls="collapseOne">
-                        <p class="h5 text-center ">Write comment <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></p>
+                        <p class="h5 text-center ">Write comment <i class="fas fa-caret-down"></i> </p>
 
                     </div>
                 </div>

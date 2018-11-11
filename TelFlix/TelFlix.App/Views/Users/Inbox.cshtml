@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newMessageModal">New Message</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newMessageModal"><i class="fas fa-envelope"></i> New Message</button>
         <a asp-controller="Users" asp-action="Inbox" asp-route-type="received" class="btn btn-success">Received</a>
         <a asp-controller="Users" asp-action="Inbox" asp-route-type="sent" class="btn btn-success">Sent</a>
     </div>
@@ -17,7 +17,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-envelope"></i> New message</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

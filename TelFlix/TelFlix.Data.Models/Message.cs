@@ -4,6 +4,8 @@ namespace TelFlix.Data.Models
 {
     public class Message : BaseEntity
     {
+        public bool IsRead { get; set; } = false;
+
         public string Subject { get; set; }
 
         public string Content { get; set; }

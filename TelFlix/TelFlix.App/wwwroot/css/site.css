@@ -1,4 +1,8 @@
-﻿.container {
+﻿/*body {
+    background: url(/images/qbkls.png)
+}*/
+
+.container {
     margin-top: 5%;
 }
 
@@ -30,12 +34,12 @@ h1 {
     margin:2rem;
 } */
 
-.modal-dialog {
+.movie-modal-dialog {
     max-width: 800px;
     margin: 30px auto;
 }
 
-.modal-body {
+.movie-modal-body {
     position: relative;
     padding: 0px;
 }

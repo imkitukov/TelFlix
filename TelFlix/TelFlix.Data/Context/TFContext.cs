@@ -26,7 +26,9 @@ namespace TelFlix.Data.Context
         public DbSet<Director> Directors { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public DbSet<CreditCard> CreditCards { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
         public DbSet<MoviesActors> MoviesActors { get; set; }
         public DbSet<MoviesGenres> MoviesGenres { get; set; }
         public DbSet<MoviesDirectors> MoviesDirectors { get; set; }

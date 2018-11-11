@@ -59,7 +59,7 @@ namespace TelFlix.App.Areas.Admin.Controllers
         }
 
         // GET: User/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
             return View();
         }
@@ -99,7 +99,7 @@ namespace TelFlix.App.Areas.Admin.Controllers
         }
 
         // GET: User/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View();
         }
@@ -107,7 +107,7 @@ namespace TelFlix.App.Areas.Admin.Controllers
         // POST: User/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit()
         {
             try
             {

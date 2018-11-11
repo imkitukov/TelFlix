@@ -15,7 +15,7 @@
 </head>
 <body>
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#"><img src="~/images/telerik.png" width="30" height="30" alt="">TelFlix</a>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"><img src="~/images/telerik.png" width="30" height="30" alt="">TelFlix</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -31,6 +31,12 @@
 
                 <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Movies" asp-action="Index">Movies</a></li>
                 <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Actors" asp-action="Index">Actors</a></li>
+
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Users" asp-action="Inbox" asp-route-type="received">Inbox <span id="messages" class="badge badge-light badge-pill">0</span></a></li>
+                }
+
 
                 @if (User.IsInRole("Administrator"))
                 {

@@ -1,6 +1,9 @@
-﻿@if (this.User.Identity.IsAuthenticated)
+﻿@if (this.User.Identity.IsAuthenticated 
+    && !this.User.IsInRole("Administrator")
+    && !this.User.IsInRole("Moderator")
+    && this.Context.Request.Path.StartsWithSegments("/Profile"))
 {
-    Layout = "_Layout";
+    Layout = "_ProfileLayout";
 }
 else
 {

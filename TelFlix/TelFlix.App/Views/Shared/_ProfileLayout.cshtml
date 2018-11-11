@@ -1,29 +1,91 @@
-﻿@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>_ProfileLayout</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewData["Title"] - TelFlix</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/site.css" />
+    @*TODO Move scripts at the bottom of layout*@
+    @*<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>*@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery-ajax-unobtrusive.js"></script>
+    <script src="https://cdn.rawgit.com/JacobLett/bootstrap4-latest/master/bootstrap-4-latest.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="v-pills-account-tab" data-toggle="pill" href="" role="tab" aria-controls="v-pills-account" aria-selected="true">Account</a>
-                    <a class="nav-link" id="v-pills-library-tab" data-toggle="pill" href="" role="tab" aria-controls="v-pills-library" aria-selected="false">Library</a>
-                    <a class="nav-link" id="v-pills-wishlist-tab" data-toggle="pill" href="" role="tab" aria-controls="v-pills-wishlist" aria-selected="false">Wishlist</a>
-                    <a class="nav-link" id="v-pills-reviews-tab" data-toggle="pill" href="" role="tab" aria-controls="v-pills-reviews" aria-selected="false">Reviews</a>
-                </div>
-            </div>
-            <div class="col-md-6">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand"><img src="~/images/telerik.png" width="30" height="30" alt="">TelFlix</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                @if (this.User.Identity.IsAuthenticated
+            && !this.User.IsInRole("Administrator")
+            && !this.User.IsInRole("Moderator"))
+                {
+                    <li class="nav-item active"><a class="nav-link" asp-area="" asp-controller="Profile" asp-action="Account">Profile</a></li>
+                }
+
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Movies" asp-action="Index">Movies</a></li>
+                <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Actors" asp-action="Index">Actors</a></li>
+
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Users" asp-action="Inbox" asp-route-type="received">Inbox <span id="messages" class="badge badge-light badge-pill">0</span></a></li>
+                }
+
+
+                @if (User.IsInRole("Administrator"))
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Users
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Index">All</a>
+                            <a class="dropdown-item" asp-area="Admin" asp-controller="Users" asp-action="Find">Find</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                }
+
+            </ul>
+            <partial name="_SearchMovies" , model="new SearchMovieViewModel()" />
+            <partial name="_LoginPartial" />
+        </div>
+    </nav>
+
+    <partial name="_CookieConsentPartial" />
+
+    <div class="row our-side-menu">
+        <div class="col-md-3">
+            <nav class="nav flex-column">
+                <a asp-controller="Profile" asp-action="Account" class="btn btn-success">Account</a>
+                <a asp-controller="Profile" asp-action="Library" class="btn btn-success">Library</a>
+                <a asp-controller="Profile" asp-action="WishList" class="btn btn-success">Wishlist</a>
+                <a asp-controller="Profile" asp-action="Reviews" class="btn btn-success">Reviews</a>
+            </nav>
+        </div>
+        <div class="col-md-6">
+            <div class="container body-content">
                 @RenderBody()
+
             </div>
         </div>
     </div>
+
+    <hr />
+    <footer>
+        <p>&copy; 2018 - TelFlix</p>
+    </footer>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/notifications.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

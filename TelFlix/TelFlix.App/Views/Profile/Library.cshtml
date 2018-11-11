@@ -1,0 +1,28 @@
+﻿@model IEnumerable<ListMovieModel>
+
+@{
+    ViewData["Title"] = "Library";
+}
+
+<h2>Library</h2>
+<hr />
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Title</th>
+            <th>Duration</th>
+            <th>Released on</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var movie in Model)
+        {
+            <tr>
+                <td>@movie.Title</td>
+                <td>@movie.Duration min.</td>
+                <td>@movie.ReleaseDate.Value.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

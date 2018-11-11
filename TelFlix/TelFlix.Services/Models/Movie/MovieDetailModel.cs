@@ -32,5 +32,7 @@ namespace TelFlix.Services.Models.Movie
         public string MediumImageUrl { get; set; }
 
         public string TrailerUrl { get; set; }
+
+        public bool IsInLibrary { get; set; }
     }
 }

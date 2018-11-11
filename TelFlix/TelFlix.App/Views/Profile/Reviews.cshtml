@@ -1,0 +1,29 @@
+﻿@model IEnumerable<ReviewModel>
+@{
+    ViewData["Title"] = "Reviews";
+}
+
+<h2>Reviews for @this.User.Identity.Name</h2>
+<hr />
+
+<table class="table table-striped table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Author</th>
+            <th>Movie</th>
+            <th>Comment</th>
+            <th>Posted on</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var review in Model)
+        {
+        <tr>
+            <td>@review.Author</td>
+            <td>@review.MovieTitle</td>
+            <td>@review.Comment</td>
+            <td>@review.CreatedOn</td>
+        </tr>
+        }
+    </tbody>
+</table>

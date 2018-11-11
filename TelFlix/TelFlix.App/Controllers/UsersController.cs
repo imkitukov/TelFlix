@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,18 +11,22 @@ using TelFlix.Services.Models.Messages;
 
 namespace TelFlix.App.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly UserManager<User> userManager;
         private readonly IMessageServices messageService;
+        private readonly IUserServices userServices;
+        private readonly IFavouritesService favouritesService;
 
-        public UsersController(UserManager<User> userManager, IMessageServices messageService)
+        public UsersController(UserManager<User> userManager, IMessageServices messageService, IUserServices userServices, IFavouritesService favouritesService)
         {
             this.userManager = userManager;
             this.messageService = messageService;
+            this.userServices = userServices;
+            this.favouritesService = favouritesService;
         }
 
-        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -58,6 +63,54 @@ namespace TelFlix.App.Controllers
             this.messageService.DeleteMessage(id);
 
             return NoContent();
+        }
+
+        public IActionResult Watch(int movieId, string type)
+        {
+            var userName = this.User.Identity.Name;
+            var userId = this.userManager.FindByEmailAsync(userName).Result.Id;
+
+            // Check user's account balance
+            var accountBalance = this.userServices.GetAccountBalanance(userId);
+
+            if (type == "rent")
+            {
+                if (accountBalance < 1.95m)
+                {
+                    // Partial view with a link to fund account
+                    return RedirectToAction("Account", "Profile", new { returnUrl = $"/Movies/Details/{movieId}" });
+                }
+
+                try
+                {
+                    this.userServices.ChargeAccount(userId, 1.95m);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+            else
+            {
+                if (accountBalance < 19.95m)
+                {
+                    // Partial view with a link to fund account
+                    return RedirectToAction("Account", "Profile");
+                }
+
+                try
+                {
+                    this.userServices.ChargeAccount(userId, 19.95m);
+                    this.favouritesService.AddMovieToFavourite(movieId, userId);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+
+            // Partial view with the modal
+            return RedirectToAction("Details", "Movies", new { id = movieId });
         }
     }
 }

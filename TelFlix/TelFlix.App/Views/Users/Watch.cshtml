@@ -1,10 +1,4 @@
-﻿@model IEnumerable<TopListMovieModel>
-
-@{
-    ViewData["Title"] = "Home";
-}
-
-<div class="container">
+﻿<div class="container">
     <!-- Modal -->
     <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog movie-modal-dialog" role="document">
@@ -24,35 +18,6 @@
     </div>
 </div>
 
-<p class="display-2 text-center">Welcome to TelFlix</p>
-<p class="display-4 text-center">Top 5 Movies</p>
-<hr>
-
-<div class="row justify-content-center">
-    @foreach (var movie in Model)
-    {
-        <div class="col-md4">
-            <div class="card shadow">
-                <div class="inner">
-                    <a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
-                        <img class="card-img-top" src="@movie.MediumImageUrl" alt="@movie.Title Poster">
-                    </a>
-                </div>
-                <div class="card-body text-center">
-                    <a class="customLink" asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
-                        <p class="card-title h6 text-primary">@movie.Title.TruncateAtWord(20)</p>
-                    </a>
-                    <p class="card-text"></p>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-success video-btn" data-toggle="modal" data-src="@movie.TrailerUrl" data-target="#videoModal">
-                        Watch
-                    </button>
-                </div>
-            </div>
-        </div>
-    }
-
-</div>
 @section Scripts {
     <script>
         $(document).ready(function () {

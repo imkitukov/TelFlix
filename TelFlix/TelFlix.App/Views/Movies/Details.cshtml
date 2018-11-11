@@ -1,6 +1,38 @@
 ﻿@model MovieDetailModel
 
+@if (User.IsInRole("Moderator"))
+{
+    <p class="float-right">
+        <a asp-area="Moderator" asp-controller="Movie" asp-action="Edit" asp-route-id="@Model.Id" role="button" class="btn btn-warning btn-lg"><i class="fas fa-pen"></i> Edit</a>
+        @Html.Hidden("movieId", "", new { id = "movieId" })
+        <button type="button" class="btn btn-sm blue deleteLead"
+                data-target="#deleteMovieModal" data-toggle="modal"
+                data-id="@Model.Id">
+            delete
+        </button>
+        <a asp-area="Moderator" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" role="button" class="btn btn-danger btn-lg "><i class="fas fa-trash-alt"></i> Delete</a>
+    </p>
+}
+else
+{
+    <p class="float-right">
+        @if (Model.IsInLibrary)
+        {
+            <button type="button" class="btn btn-success video-btn" data-toggle="modal" data-src="@Model.TrailerUrl" data-target="#videoModal">
+                Watch
+            </button>
+        }
+        else
+        {
+            <a asp-area="" asp-controller="Users" asp-action="Watch" asp-route-movieId="@Model.Id" asp-route-type="rent" role="button" class="btn btn-success btn-lg">$1.95 Rent</a>
+            <a asp-area="" asp-controller="Users" asp-action="Watch" asp-route-movieId="@Model.Id" asp-route-type="buy" role="button" class="btn btn-success btn-lg ">$19.95 Buy</a>
+        }
+    </p>
+}
 
+        <a asp-area="Moderator" asp-controller="Movie" asp-action="Delete" asp-route-id="@Model.Id" role="button" class="btn btn-danger btn-lg "><i class="fas fa-trash-alt"></i> Delete</a>
+    </p>
+}
 <h2><span class="display-4">@Model.Title  </span> <span class="h2 text-warning">(@Model.ReleaseDate.Value.Year)</span></h2>
 
 <h4><span class="badge badge-info">@Model.DurationInMinutes min. </span> | <span class="badge badge-info"> @Model.ReleaseDate.Value.ToShortDateString()</span></h4>
@@ -48,7 +80,10 @@
             <div class="card-header" id="headingOne">
                 <div class="mb-0">
                     <div data-toggle="collapse" data-target="#addComment" aria-expanded="false" aria-controls="collapseOne">
-                        <p class="h5 text-center ">Write comment <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></p>
+                        <p class="h5 text-center ">
+                            Write comment <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                        </p>
+                        <p class="h5 text-center ">Write comment <i class="fas fa-caret-down"></i> </p>
 
                     </div>
                 </div>
@@ -63,14 +98,42 @@
     </div>
 </div>
 
+<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog movie-modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body movie-modal-body">
+
+                    <button type="button" class="close close-modal-custom" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <!-- 16:9 aspect ratio -->
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="" id="video" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
+    <script>
+        $(document).ready(function () {
+            var $videoSrc;
+            $('.video-btn').click(function () {
+                $videoSrc = $(this).data("src");
+            });
+
+            $('#videoModal').on('shown.bs.modal', function (e) {
+                $("#video").attr('src', $videoSrc + "?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1");
+            })
+
+            $('#videoModal').on('hide.bs.modal', function (e) {
+                $("#video").attr('src', $videoSrc);
+            })
+        });
+    </script>
     <partial name="_ValidationScriptsPartial" />
 }
-
-
-
-
-
-
-

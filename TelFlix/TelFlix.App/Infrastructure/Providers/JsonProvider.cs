@@ -198,7 +198,6 @@ namespace TelFlix.App.Infrastructure.Providers
 
         public Actor ExtractActorDetails(string actorDetailsJsonResult)
         {
-
             var json = JObject.Parse(actorDetailsJsonResult);
             var imdbKey = json["imdb_id"].ToString();
 

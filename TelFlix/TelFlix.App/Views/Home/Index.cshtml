@@ -39,11 +39,9 @@
                     </a>
                 </div>
                 <div class="card-body text-center">
-                    <hr />
                     <a class="customLink" asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id">
-                        <p class="card-title h6 text-primary">@movie.Title.TruncateAtWord(22)</p>
+                        <p class="card-title h6 text-primary">@movie.Title.TruncateAtWord(20)</p>
                     </a>
-                    <hr />
                     <p class="card-text"></p>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-success video-btn" data-toggle="modal" data-src="@movie.TrailerUrl" data-target="#videoModal">

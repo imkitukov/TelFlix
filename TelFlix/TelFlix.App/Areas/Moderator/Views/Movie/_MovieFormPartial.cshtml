@@ -6,7 +6,7 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-row">
         <div class="form-group col-lg-7">
-            
+
             <div class="form-group">
                 <label asp-for="Title" class="control-label h4 text-primary font-weight-bold"></label>
                 <input asp-for="Title" class="form-control" />
@@ -46,10 +46,8 @@
     </div>
 
     <div class="form-group btn-group-justified">
+        <a asp-area="" asp-controller="Movies" asp-action="Index" class="btn btn-warning btn-lg">Back to Movies</a>
         <input type="submit" value="Update movie" class="btn btn-danger btn-lg" />
-        
-        <a asp-area="" asp-controller="Movies" asp-action="Index">Back to List</a>
-        
     </div>
 
 </form>

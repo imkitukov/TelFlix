@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace TelFlix.App.Controllers
 
         private readonly ITheMovieDbClient client;
         private readonly IJsonProvider jsonProvider;
+        private readonly IFavouritesService favouritesService;
+        private readonly UserManager<User> userManager;
         private readonly IAddMovieService addMovieService;
         private readonly IMovieServices movieService;
         private readonly IActorServices actorServices;
@@ -26,10 +29,12 @@ namespace TelFlix.App.Controllers
 
         public MoviesController(IAddMovieService addMovieService, IMovieServices movieServices,
             IActorServices actorServices, IGenreServices genreServices,
-            ITheMovieDbClient client, IJsonProvider jsonProvider)
+            ITheMovieDbClient client, IJsonProvider jsonProvider, IFavouritesService favouritesService, UserManager<User> userManager)
         {
             this.client = client;
             this.jsonProvider = jsonProvider;
+            this.favouritesService = favouritesService;
+            this.userManager = userManager;
             this.addMovieService = addMovieService;
             this.movieService = movieServices;
             this.actorServices = actorServices;
@@ -162,16 +167,27 @@ namespace TelFlix.App.Controllers
         }
 
         // GET: Movies/Details/5
-        public IActionResult Details(int id)
+        public IActionResult Details(int id, string returnUrl = "")
         {
-            var movie = this.movieService.GetMovieById(id);
+            var vm = this.movieService.GetMovieById(id);
+            var userId = this.userManager.FindByEmailAsync(this.User.Identity.Name).Result.Id;
+            var isInLibrary = this.favouritesService.IsInLibrary(id, userId);
 
-            if (movie == null)
+            if (vm == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            vm.IsInLibrary = isInLibrary;
+
+            if (returnUrl == string.Empty)
+            {
+                return View(vm);
+            }
+            else
+            {
+                return Redirect(returnUrl);
+            }
         }
     }
 }

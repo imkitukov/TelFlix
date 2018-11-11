@@ -1,0 +1,38 @@
+﻿<div class="container">
+    <!-- Modal -->
+    <div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog movie-modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body movie-modal-body">
+
+                    <button type="button" class="close close-modal-custom" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <!-- 16:9 aspect ratio -->
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <iframe class="embed-responsive-item" src="" id="video" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var $videoSrc;
+            $('.video-btn').click(function () {
+                $videoSrc = $(this).data("src");
+            });
+
+            $('#videoModal').on('shown.bs.modal', function (e) {
+                $("#video").attr('src', $videoSrc + "?rel=0&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1");
+            })
+
+            $('#videoModal').on('hide.bs.modal', function (e) {
+                $("#video").attr('src', $videoSrc);
+            })
+        });
+    </script>
+}

@@ -12,6 +12,8 @@ namespace TelFlix.Services.Models.Reviews
 
         public string AuthorId { get; set; }
 
+        public string MovieTitle { get; set; }
+
         public DateTime? CreatedOn { get; set; }
     }
 }

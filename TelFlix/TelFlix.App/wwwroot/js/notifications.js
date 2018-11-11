@@ -4,9 +4,9 @@ $(() => {
     console.log('Hello')
 
     //ivan : 9567
-    //rob : port
+    //rob : 50183
     //mitko: port
-    const baseUrl = 'http://localhost:9567/'
+    const baseUrl = 'http://localhost:50183/'
 
     const connectionBuilder = new signalR
         .HubConnectionBuilder()

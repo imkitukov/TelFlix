@@ -63,7 +63,7 @@ namespace TelFlix.Services
         public IEnumerable<MessageViewModel> ListReceivedMessages(string id, int page = 1, int pageSize = 10)
             => this.Context
                 .Messages
-                .Where(m => m.ReceiverId == id)
+                .Where(m => m.ReceiverId == id && m.Subject != "Add movie to db")
                 .Select(m => new MessageViewModel
                 {
                     Id = m.Id,

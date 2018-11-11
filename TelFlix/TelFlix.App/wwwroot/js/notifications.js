@@ -4,8 +4,8 @@ $(() => {
     console.log('Hello')
 
     //ivan : 9567
-    //rob : 
-    //mitko: 
+    //rob : port
+    //mitko: port
     const baseUrl = 'http://localhost:9567/'
 
     const connectionBuilder = new signalR
@@ -61,8 +61,7 @@ $(() => {
                 //document.getElementById('current-user-messages').appendChild(newRow)
             })
 
-            $('#addToWishlist').click(() => {
-                //alert(1)
+            $('.addToWishlist').click(() => {
                 const receiver = 'Moderators';
                 const subject = 'Add movie to db';
                 let content = $('#movieApiId').val();

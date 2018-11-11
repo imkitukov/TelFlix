@@ -10,8 +10,8 @@ using TelFlix.Data.Context;
 namespace TelFlix.Data.Migrations
 {
     [DbContext(typeof(TFContext))]
-    [Migration("20181111114526_Initial_Migration")]
-    partial class Initial_Migration
+    [Migration("20181111203602_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

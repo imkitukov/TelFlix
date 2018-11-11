@@ -30,24 +30,7 @@ namespace TelFlix.App.Hubs
             var senderUser = await this.userManager.FindByEmailAsync(sender);
             var receiverUser = await this.userManager.FindByEmailAsync(receiver);
 
-            var message = new Message
-            {
-                Sender = senderUser,
-                Receiver = receiverUser,
-                Subject = subject,
-                Content = content
-            };
-
-            this.messageServices.AddMessage(message);
-
-            if (ConnectedUsers.ContainsKey(receiver))
-            {
-                await this.Clients
-                    .Client(ConnectedUsers[receiver])
-                    .SendAsync("pushNotification");
-            }
-
-            if (subject == "Add movie to db")
+            if (receiver == "Moderators" && subject == "Add movie to db")
             {
                 var moderators = await this.userManager.GetUsersInRoleAsync("Moderator");
 
@@ -62,6 +45,26 @@ namespace TelFlix.App.Hubs
                     };
 
                     this.messageServices.AddMessage(modMessage);
+                }
+            }
+            // send to concrete user/receiver 
+            else
+            {
+                var message = new Message
+                {
+                    Sender = senderUser,
+                    Receiver = receiverUser,
+                    Subject = subject,
+                    Content = content
+                };
+
+                this.messageServices.AddMessage(message);
+
+                if (ConnectedUsers.ContainsKey(receiver))
+                {
+                    await this.Clients
+                        .Client(ConnectedUsers[receiver])
+                        .SendAsync("pushNotification");
                 }
             }
 

@@ -30,5 +30,7 @@ namespace TelFlix.Services.Contracts
         void DeleteById(int id);
 
         bool Exists(int id);
+
+        bool ApiIdExists(int apiId);
     }
 }

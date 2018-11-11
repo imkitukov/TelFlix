@@ -1,7 +1,5 @@
 ﻿using System;
 using TelFlix.Data.Models;
-using TelFlix.Services.Abstract;
-using TelFlix.Services.Contracts;
 
 namespace TelFlix.Services.Models.Messages
 {
@@ -18,5 +16,7 @@ namespace TelFlix.Services.Models.Messages
         public string Content { get; set; }
 
         public DateTime CreatedOn { get; set; }
+
+        public bool IsMovieAddedToDb { get; set; } = false;
     }
 }

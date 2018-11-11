@@ -18,13 +18,15 @@ namespace TelFlix.App.Controllers
         private readonly IMessageServices messageService;
         private readonly IUserServices userServices;
         private readonly IFavouritesService favouritesService;
+        private readonly IMovieServices movieServices;
 
-        public UsersController(UserManager<User> userManager, IMessageServices messageService, IUserServices userServices, IFavouritesService favouritesService)
+        public UsersController(UserManager<User> userManager, IMessageServices messageService, IUserServices userServices, IFavouritesService favouritesService, IMovieServices movieServices)
         {
             this.userManager = userManager;
             this.messageService = messageService;
             this.userServices = userServices;
             this.favouritesService = favouritesService;
+            this.movieServices = movieServices;
         }
 
         public IActionResult Index()
@@ -48,10 +50,16 @@ namespace TelFlix.App.Controllers
             }
             else if (type == "wishlist")
             {
-                ViewData["type"] = "Sent";
+                ViewData["type"] = "Received";
                 messages = this.messageService
                     .GetWishlistRequests(user.Id)
                     .ToList();
+
+                foreach (var message in messages)
+                {
+                    int movieApiId = int.Parse(message.Content);
+                    message.IsMovieAddedToDb = this.movieServices.ApiIdExists(movieApiId);
+                }
             }
             else
             {

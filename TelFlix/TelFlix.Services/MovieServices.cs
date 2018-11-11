@@ -161,6 +161,9 @@ namespace TelFlix.Services
             this.Context.SaveChanges();
         }
 
-        public bool Exists(int id) => this.Context.Movies.Any(m => m.Id == id);
+        public bool Exists(int id) => this.Context.Movies.Any(m => m.IsDeleted == false && m.Id == id);
+
+        public bool ApiIdExists(int apiId)
+            => this.Context.Movies.Any(m => m.IsDeleted == false && m.ApiMovieId == apiId);
     }
 }

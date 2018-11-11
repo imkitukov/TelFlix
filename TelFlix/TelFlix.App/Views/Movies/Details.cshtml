@@ -78,17 +78,13 @@ else
             <div class="card-header" id="headingOne">
                 <div class="mb-0">
                     <div data-toggle="collapse" data-target="#addComment" aria-expanded="false" aria-controls="collapseOne">
-                        <p class="h5 text-center ">
-                            Write comment <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                        </p>
                         <p class="h5 text-center ">Write comment <i class="fas fa-caret-down"></i> </p>
-
                     </div>
                 </div>
             </div>
             <div id="addComment" class="collapse hidden" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
-                    <partial name="_AddReviewPartial" model="@{ new ReviewViewModel { MovieId = Model.Id }}" />
+                    <partial name="../Reviews/_AddReviewPartial" model="@{ new ReviewViewModel { MovieId = Model.Id }}" />
 
                 </div>
             </div>

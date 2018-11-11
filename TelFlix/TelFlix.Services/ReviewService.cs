@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,12 @@ namespace TelFlix.Services
 {
     public class ReviewService : BaseService, IReviewService
     {
-        public ReviewService(TFContext context)
+        private readonly UserManager<User> userManager;
+
+        public ReviewService(TFContext context, UserManager<User> userManager)
             : base(context)
         {
+            this.userManager = userManager;
         }
 
         public void AddReview(string userId, int movieId, string comment)
@@ -57,6 +61,27 @@ namespace TelFlix.Services
             }
 
             return new List<ReviewModel>();
+        }
+
+        public IEnumerable<ReviewModel> GetAllByUserId(string userId)
+        {
+            var user = this.userManager.FindByIdAsync(userId).Result;
+
+            var reviews = this.Context
+                .Reviews
+                .Where(r => r.UserId == userId)
+                .Select(r => new ReviewModel
+                {
+                    Id = r.Id,
+                    Author = r.Author.Email,
+                    AuthorId = r.Author.Id,
+                    Comment = r.Comment,
+                    CreatedOn = r.CreatedOn,
+                    MovieTitle = r.Movie.Title
+                })
+                .ToList();
+
+            return reviews;
         }
     }
 }

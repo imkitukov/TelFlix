@@ -39,7 +39,6 @@
                     <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Users" asp-action="Inbox" asp-route-type="received">Inbox <span id="messages" class="badge badge-light badge-pill">0</span></a></li>
                 }
 
-
                 @if (User.IsInRole("Administrator"))
                 {
                     <li class="nav-item dropdown">
@@ -54,7 +53,6 @@
                         </div>
                     </li>
                 }
-
             </ul>
             <partial name="_SearchMovies" , model="new SearchMovieViewModel()" />
             <partial name="_LoginPartial" />
@@ -66,24 +64,27 @@
     <div class="row our-side-menu">
         <div class="col-md-3">
             <nav class="nav flex-column">
-                <a asp-controller="Profile" asp-action="Account" class="btn btn-success">Account</a>
-                <a asp-controller="Profile" asp-action="Library" class="btn btn-success">Library</a>
-                <a asp-controller="Profile" asp-action="WishList" class="btn btn-success">Wishlist</a>
-                <a asp-controller="Profile" asp-action="Reviews" class="btn btn-success">Reviews</a>
+                <a asp-controller="Profile" asp-action="Account" class="btn btn-default">Account</a>
+                <a asp-controller="Profile" asp-action="Library" class="btn btn-default">Library</a>
+                <a asp-controller="Profile" asp-action="WishList" class="btn btn-default">Wishlist</a>
+                <a asp-controller="Profile" asp-action="Reviews" class="btn btn-default">Reviews</a>
             </nav>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-7">
             <div class="container body-content">
                 @RenderBody()
-
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-9">
+            <hr />
+            <footer>
+                <p>&copy; 2018 - TelFlix</p>
+            </footer>
+        </div>
+    </div>
 
-    <hr />
-    <footer>
-        <p>&copy; 2018 - TelFlix</p>
-    </footer>
     <script src="~/lib/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/notifications.js"></script>
     @RenderSection("Scripts", required: false)

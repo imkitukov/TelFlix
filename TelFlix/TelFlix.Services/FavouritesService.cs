@@ -1,68 +1,81 @@
-﻿//using Microsoft.AspNetCore.Identity;
-//using System.Collections.Generic;
-//using System.Linq;
-//using TelFlix.Data.Models;
-//using TelFlix.Data.UnitOfWorkCore;
-//using TelFlix.Services.Abstract;
-//using TelFlix.Services.Contracts;
-//using TelFlix.Services.Providers.Exceptions;
-//using TelFlix.Services.ViewModels.MovieViewModels;
-//namespace TelFlix.Services
-//{
-//    public class FavouritesService : BaseService, IFavouritesService
-//    {
-//        public FavouritesService(IUnitOfWork unitOfWork, UserManager<User> userManager)
-//            : base(unitOfWork, userManager)
-//        {
-//        }
+﻿using System.Collections.Generic;
+using System.Linq;
+using TelFlix.Data.Context;
+using TelFlix.Data.Models;
+using TelFlix.Services.Abstract;
+using TelFlix.Services.Contracts;
+using TelFlix.Services.Models.Movie;
+using TelFlix.Services.Providers.Exceptions;
+namespace TelFlix.Services
+{
+    public class FavouritesService : BaseService, IFavouritesService
+    {
+        public FavouritesService(TFContext context)
+            : base(context)
+        {
+        }
 
-//        public IEnumerable<ListMovieViewModel> List(User user)
-//        {
-//            return this.UnitOfWork
-//                .GetRepo<MoviesUsers>()
-//                .GetAll(x => x.UserId == this.UserManager.GetUserId(user))
-//                .Select(m => new ListMovieViewModel()
-//                {
-//                    Title = m.Movie.Title,
-//                    Duration = m.Movie.DurationInMinutes,
-//                    ReleaseDate = m.Movie.ReleaseDate.Value
-//                })
-//                .ToList();
-//        }
+        //public IEnumerable<ListMovieViewModel> List(User user)
+        //{
+        //    return this.UnitOfWork
+        //        .GetRepo<MoviesUsers>()
+        //        .GetAll(x => x.UserId == this.UserManager.GetUserId(user))
+        //        .Select(m => new ListMovieViewModel()
+        //        {
+        //            Title = m.Movie.Title,
+        //            Duration = m.Movie.DurationInMinutes,
+        //            ReleaseDate = m.Movie.ReleaseDate.Value
+        //        })
+        //        .ToList();
+        //}
 
-//        public Movie AddMovieToFavourite(string movieTitle, int userId)
-//        {
-//            Movie movie = this.UnitOfWork
-//                  .GetRepo<Movie>()
-//                  .GetAll()
-//                  .FirstOrDefault(mi => mi.Title == movieTitle);
+        public Movie AddMovieToFavourite(int movieId, string userId)
+        {
+            Movie movie = this.Context
+                .Movies
+                .FirstOrDefault(mi => mi.Id == movieId);
 
-//            if (movie == null)
-//            {
-//                throw new InexistingEntityException(nameof(Movie), movieTitle);
-//            }
+            if (movie == null)
+            {
+                throw new InexistingEntityException(nameof(Movie), movieId.ToString());
+            }
 
-//            bool isAlreadyThere = this.UnitOfWork
-//                .GetRepo<MoviesUsers>()
-//                .GetAll()
-//                .Any(p => p.UserId == userId && p.MovieId == movie.Id);
+            bool isAlreadyThere = this.Context
+                .MoviesUsers
+                .Any(p => p.UserId == userId && p.MovieId == movie.Id);
 
-//            if (isAlreadyThere)
-//            {
-//                throw new EntityAlreadyExistingException(nameof(Movie), movie.Title, "favourites !");
-//            }
+            if (isAlreadyThere)
+            {
+                throw new EntityAlreadyExistingException(nameof(Movie), movie.Title, "favourites !");
+            }
 
-//            this.UnitOfWork
-//                .GetRepo<MoviesUsers>()
-//                .Add(new MoviesUsers
-//                {
-//                    MovieId = movie.Id,
-//                    UserId = userId
-//                });
+            this.Context
+                .MoviesUsers
+                .Add(new MoviesUsers
+                {
+                    MovieId = movie.Id,
+                    UserId = userId
+                });
 
-//            this.UnitOfWork.SaveChanges();
+            this.Context.SaveChanges();
 
-//            return movie;
-//        }
-//    }
-//}
+            return movie;
+        }
+
+        public bool IsInLibrary(int movieId, string userId)
+            => this.Context.MoviesUsers
+                .Any(mu => mu.UserId == userId && mu.MovieId == movieId);
+
+        public IEnumerable<ListMovieModel> GetAllFavoritesByUserId(string userId)
+            => this.Context
+                .MoviesUsers
+                .Where(mu => mu.UserId == userId)
+                .Select(x => new ListMovieModel
+                {
+                    Title = x.Movie.Title,
+                    Duration = x.Movie.DurationInMinutes,
+                    ReleaseDate = x.Movie.ReleaseDate
+                })
+                .ToList();
+    }
+}

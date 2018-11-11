@@ -6,8 +6,12 @@ namespace TelFlix.Services.Contracts
 {
     public interface IFavouritesService
     {
-        IEnumerable<ListMovieModel> List(User user);
+        //IEnumerable<ListMovieModel> List(User user);
 
-        Movie AddMovieToFavourite(string movieTitle, int userId);
+        Movie AddMovieToFavourite(int movieId, string userId);
+
+        bool IsInLibrary(int id, string userId);
+
+        IEnumerable<ListMovieModel> GetAllFavoritesByUserId(string userId);
     }
 }

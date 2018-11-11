@@ -22,7 +22,7 @@ namespace TelFlix.App.Controllers
         {
             var movies = this.movieServices.GetTop5ByRating();
 
-            return View(movies);
+             return View(movies);
         }
 
         public IActionResult About()

@@ -8,5 +8,7 @@ namespace TelFlix.Services.Contracts
         void AddReview(string userId, int movieId, string comment);
 
         IEnumerable<ReviewModel> GetAllByMovieId(int id);
+
+        IEnumerable<ReviewModel> GetAllByUserId(string userId);
     }
 }

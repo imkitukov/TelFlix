@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Linq;
 using TelFlix.App.Models;
 using TelFlix.Services.Contracts;
-using TelFlix.Services.Models.Movie;
 
 namespace TelFlix.App.Controllers
 {
@@ -20,22 +17,10 @@ namespace TelFlix.App.Controllers
             this.movieServices = movieServices;
             this.genreServices = genreServices;
         }
-        
+
         public IActionResult Index()
         {
             var movies = this.movieServices.GetTop5ByRating();
-
-            return View(movies);
-        }
-
-        [HttpGet]
-        public IActionResult SearchMovie()
-        {
-            var keyword = Request.Query["searchString"].ToString();
-
-            var movies = this.movieServices.SearchMovie(keyword);
-
-            this.ViewBag.SearchString = keyword;
 
             return View(movies);
         }

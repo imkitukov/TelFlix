@@ -1,0 +1,26 @@
+﻿@model IEnumerable<ReviewModel>
+
+@foreach (var review in Model)
+{
+    <div id="accordion">
+        <div class="card card-my-card border-secondary mb-3">
+            <div class="card-header" id="headingOne">
+                <div class="mb-0">
+                    @{ var isCollapseHidden = review == Model.First() ? "show" : "hidden";}
+                    <div data-toggle="collapse" data-target="#@review.Id" aria-expanded="false" aria-controls="collapseOne">
+                        <p class="h6">
+                            <small>Author:</small>  <span class="h6 text-success">@review.Author</span>
+                            <small class="text-muted">Posted on: <code>@review.CreatedOn</code> </small>
+                            <small class="text-muted">         click to expand</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="@review.Id" class="collapse @isCollapseHidden" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    @review.Comment
+                </div>
+            </div>
+        </div>
+    </div>
+}

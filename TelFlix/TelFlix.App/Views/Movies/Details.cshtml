@@ -1,49 +1,68 @@
 ﻿@model MovieDetailModel
 
-@{
-    ViewData["Title"] = Model.Title;
-}
 
-<h2>@ViewData["Title"] (@Model.ReleaseDate.Value.Year)</h2>
+<h2><span class="display-4">@Model.Title  </span> <span class="h2 text-warning">(@Model.ReleaseDate.Value.Year)</span></h2>
 
-<p>@Model.DurationInMinutes min. | @Model.ReleaseDate.Value.ToShortDateString()</p>
+<h4><span class="badge badge-info">@Model.DurationInMinutes min. </span> | <span class="badge badge-info"> @Model.ReleaseDate.Value.ToShortDateString()</span></h4>
 
 <div class="movie-wrapper">
     <div class="poster">
-        <img title="@Model.Title" src="@Model.MediumImageUrl" alt="@Model.Title Poster" />
+        <img class="img-responsive img-thumbnail" title="@Model.Title" src="@Model.MediumImageUrl" alt="@Model.Title Poster" />
     </div>
     <div class="details">
-        <p><strong>Rating: </strong> @Model.Rating.Value/10</p>
-        <p><strong>Actors: </strong>@(string.Join(", ", Model.Actors.Select(a => a.FullName)))</p>
+        <h4> <strong>Rating: </strong> <span class="badge badge-warning">@Model.Rating.Value/10</span></h4>
+
+        <h4>
+            <strong>Actors: </strong>
+            @foreach (var actor in Model.Actors)
+            {
+                <span class="badge badge-info">
+                    <a class="customLink text-white font-weight-light" asp-area="" asp-controller="Actors" asp-action="Details" asp-route-id="@actor.Id">@actor.FullName</a>
+                </span>
+
+            }
+        </h4>
+        <h4>
+            <strong>Genres: </strong>
+            <span class="font-weight-light">@(string.Join(", ", Model.Genres.Select(g => g.Name)))</span>
+        </h4>
         <p><strong>Released on: </strong>@Model.ReleaseDate.Value.ToShortDateString()</p>
         <p><strong>Plot: </strong>@Model.Description</p>
-        <p>
-            <strong>Genres: </strong>
-            @(string.Join(", ", Model.Genres.Select(g => g.Name)))
-        </p>
+
     </div>
 </div>
 
-@foreach (var item in Model.Reviews)
-{
-    <div id="accordion">
-        <div class="card card-my-card">
+<p class=" display-4 text-center text-primary"> Comments: </p>
+
+<div class="row">
+    <div id="reviews" class="col">
+        <partial name="../Reviews/_MovieReviewsTable.cshtml" model="@Model.Reviews" />
+    </div>
+</div>
+
+<br />
+<br />
+<div class="row">
+    <div id="accordion" class="col">
+        <div class="card card-my-card bg-light border-success mb-3">
             <div class="card-header" id="headingOne">
-                <h5 class="mb-0">
-                    <button class="btn btn-link" data-toggle="collapse" data-target="#@item.Id" aria-expanded="true" aria-controls="collapseOne">
-                        Comment from: @item.Author created On: @item.CreatedOn
-                    </button>
-                </h5>
+                <div class="mb-0">
+                    <div data-toggle="collapse" data-target="#addComment" aria-expanded="false" aria-controls="collapseOne">
+                        <p class="h5 text-center ">Write comment <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></p>
+
+                    </div>
+                </div>
             </div>
-            <div id="@item.Id" class="collapse hidden" aria-labelledby="headingOne" data-parent="#accordion">
+            <div id="addComment" class="collapse hidden" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
-                    @item.Comment
+                    <partial name="_AddReviewPartial" model="@{ new ReviewViewModel { MovieId = Model.Id }}" />
+
                 </div>
             </div>
         </div>
     </div>
-}
-<partial name="_AddReviewPartial" model="@{ new ReviewViewModel { MovieId = Model.Id }}" />
+</div>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

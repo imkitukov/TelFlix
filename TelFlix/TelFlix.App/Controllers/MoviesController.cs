@@ -86,12 +86,18 @@ namespace TelFlix.App.Controllers
         {
             var jsonResult = await this.client.SearchMovie(model.SearchString);
 
-            var apiMoviesFound = this.jsonProvider.ExtractFoundMoviesFromSearchMovieJsonResult(jsonResult);
-            model.ApiMovies = apiMoviesFound.Select(m => new MovieViewModel(m));
+            try
+            {
+                var apiMoviesFound = this.jsonProvider.ExtractFoundMoviesFromSearchMovieJsonResult(jsonResult);
+                model.ApiMovies = apiMoviesFound.Select(m => new MovieViewModel(m));
 
-            var dbMoviesFound = this.movieService.SearchMovie(model.SearchString);
-            model.DbMovies = dbMoviesFound.Select(m => new MovieViewModel(m)); ;
-
+                var dbMoviesFound = this.movieService.SearchMovie(model.SearchString);
+                model.DbMovies = dbMoviesFound.Select(m => new MovieViewModel(m)); ;
+            }
+            catch (InvalidOperationException)
+            {              
+            }
+         
             return View(model);
         }
 

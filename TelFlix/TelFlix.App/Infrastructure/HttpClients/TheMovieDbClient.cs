@@ -53,13 +53,18 @@ namespace TelFlix.App.HttpClients
             }
         }
 
-        public async Task<string> SearchMovie(string searchTerm)
+        public async Task<string> SearchMovie(string searchQuery)
         {
             try
             {
                 // https://api.themoviedb.org/3/search/movie?api_key=207de229486742b95fba944e0d0509be&query=Jack+Reacher
 
-                var searchQuery = searchTerm.Replace(" ", "+");
+                if (string.IsNullOrWhiteSpace(searchQuery))
+                {
+                    searchQuery = "";
+                }
+
+                searchQuery = searchQuery.Replace(" ", "+");
 
                 string requestUri = string.Format(SearchMovieUri, ApiKeyPostFix, searchQuery);
 

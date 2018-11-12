@@ -6,12 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Data\**" />
     <Compile Remove="Areas\Identity\Services\**" />
     <Compile Remove="Areas\Moderator\Data\**" />
+    <Content Remove="Areas\Admin\Data\**" />
     <Content Remove="Areas\Identity\Services\**" />
     <Content Remove="Areas\Moderator\Data\**" />
+    <EmbeddedResource Remove="Areas\Admin\Data\**" />
     <EmbeddedResource Remove="Areas\Identity\Services\**" />
     <EmbeddedResource Remove="Areas\Moderator\Data\**" />
+    <None Remove="Areas\Admin\Data\**" />
     <None Remove="Areas\Identity\Services\**" />
     <None Remove="Areas\Moderator\Data\**" />
   </ItemGroup>
@@ -27,10 +31,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TelFlix.Data\TelFlix.Data.csproj" />
     <ProjectReference Include="..\TelFlix.Services\TelFlix.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
   </ItemGroup>
 
   <ItemGroup>

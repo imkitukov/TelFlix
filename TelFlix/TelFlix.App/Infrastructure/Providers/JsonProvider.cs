@@ -26,6 +26,11 @@ namespace TelFlix.App.Infrastructure.Providers
 
         public IEnumerable<Movie> ExtractFoundMoviesFromSearchMovieJsonResult(string jsonAsString)
         {
+            if (jsonAsString == "ERROR")
+            {
+                throw new InvalidOperationException("Cannot search with empty title");
+            }
+
             var moviesAsJson = JObject.Parse(jsonAsString);
 
             var foundMovies = new List<Movie>();

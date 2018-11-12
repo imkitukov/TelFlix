@@ -55,11 +55,15 @@ namespace TelFlix.App.Controllers
                     .GetWishlistRequests(user.Id)
                     .ToList();
 
+                // send only message for not added movies yet
                 foreach (var message in messages)
                 {
                     int movieApiId = int.Parse(message.Content);
-                    message.IsMovieAddedToDb = this.movieServices.ApiIdExists(movieApiId);
+                    bool movieCreated = this.movieServices.ApiIdExists(movieApiId);
+                    message.IsMovieAddedToDb = movieCreated;
                 }
+
+                messages = messages.Where(m => m.IsMovieAddedToDb == false).ToList();
             }
             else
             {

@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Diagnostics;
 using TelFlix.App.Models;
 using TelFlix.Services.Contracts;
@@ -7,22 +9,27 @@ namespace TelFlix.App.Controllers
 {
     public class HomeController : Controller
     {
-        //private readonly ISeedDatabaseService seedDatabaseService;
         private readonly IMovieServices movieServices;
         private readonly IGenreServices genreServices;
+        private readonly IMemoryCache memoryCache;
 
-        public HomeController(IMovieServices movieServices, IGenreServices genreServices)
+        public HomeController(IMovieServices movieServices, IGenreServices genreServices, IMemoryCache memoryCache)
         {
-            //this.seedDatabaseService = seedDatabaseService;
             this.movieServices = movieServices;
             this.genreServices = genreServices;
+            this.memoryCache = memoryCache;
         }
 
         public IActionResult Index()
         {
             var movies = this.movieServices.GetTop5ByRating();
+            var moviesCacheEntry = this.memoryCache.GetOrCreate("TopFiveMoviesByRating", entry =>
+            {
+                entry.AbsoluteExpiration = DateTime.UtcNow.AddMinutes(15);
+                return this.movieServices.GetTop5ByRating();
+            });
 
-             return View(movies);
+            return View(movies);
         }
 
         public IActionResult About()

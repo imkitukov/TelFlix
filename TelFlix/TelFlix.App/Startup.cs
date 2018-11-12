@@ -76,7 +76,6 @@ namespace TelFlix.App
         {
             services.AddDbContext<TFContext>(options =>
             {
-
                 var connectionString = System.Environment.GetEnvironmentVariable("LocalDevDB", EnvironmentVariableTarget.User);
                 options.UseSqlServer(connectionString);
             });
@@ -91,21 +90,20 @@ namespace TelFlix.App
             services.AddScoped<RoleManager<IdentityRole>>();
             services.AddScoped<SignInManager<User>>();
 
-            services.AddTransient<IMovieServices, MovieServices>();
-            services.AddTransient<IAddMovieService, AddMovieService>();
-            services.AddTransient<IGenreServices, GenreServices>();
-            services.AddTransient<IActorServices, ActorServices>();
-            services.AddTransient<IReviewService, ReviewService>();
-            services.AddTransient<IMessageServices, MessageServices>();
-            services.AddTransient<IUserServices, UserServices>();
-            services.AddTransient<IFavouritesService, FavouritesService>();
-
-            //services.AddScoped<IModifyMovieServices, ModifyMovieServices>();
-            //services.AddScoped<ISeedDatabaseService, SeedDatabaseService>();
+            services.AddScoped<IMovieServices, MovieServices>();
+            services.AddScoped<IAddMovieService, AddMovieService>();
+            services.AddScoped<IGenreServices, GenreServices>();
+            services.AddScoped<IActorServices, ActorServices>();
+            services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IMessageServices, MessageServices>();
+            services.AddScoped<IUserServices, UserServices>();
+            services.AddScoped<IFavouritesService, FavouritesService>();
         }
 
         private void RegisterInfrastructure(IServiceCollection services)
         {
+            services.AddMemoryCache();
+
             services
                 .AddMvc(options =>
                 {
@@ -172,7 +170,7 @@ namespace TelFlix.App
             {
                 route.MapHub<NotificationsHub>("/notifications");
             });
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

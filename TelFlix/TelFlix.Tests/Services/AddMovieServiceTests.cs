@@ -17,6 +17,13 @@ namespace TelFlix.Tests.Services
     {
         private const string movieTitle = "The best movie ever!";
         private const int apiMovieIdToUse = 1;
+        private const int movieIdToUse = 1;
+        private const int actorIdToUse = 2;
+        private const int apiActorIdToUse = 12;
+        private const string actorName = "Pesho Peshov";
+        private const string actorRole = "Captain Pesho Sparrow";
+
+
         [TestMethod]
         public void AddMovie_ShouldThrow_WhenMovieIsAlreadyThere()
         {
@@ -94,29 +101,98 @@ namespace TelFlix.Tests.Services
            
             var movie = new Movie()
             {
-                Id = 1,
+                Id = movieIdToUse,
                 Title = movieTitle
             };
 
             var actorToAdd = new Actor()
             {
-                Id = 2,
-                ApiActorId = 12,
-                FullName = "Pesho Peshov"
+                Id = actorIdToUse,
+                ApiActorId = apiActorIdToUse,
+                FullName = actorName
             };
             db.Actors.Add(actorToAdd);
             db.SaveChanges();
             
             var actorsCast = new List<(Actor, string)>
             {
-                (actorToAdd, "a")
+                (actorToAdd, actorRole)
             };
 
             movieService.AddActorsToMovie(movie, actorsCast);
 
             Assert.AreEqual(1, db.MoviesActors.Count(a => a.ActorId == 2 && a.MovieId == 1));
         }
+        //[TestMethod]
+        //public void AddActorToMovie_Should_MakeConnectionsIfActorDoNotExist()
+        //{
+        //    var db = new TFContext(this.DatabaseSimulator());
+        //    var genreServicesMock = new Mock<IGenreServices>();
+        //    var actorServicesMock = new Mock<IActorServices>();
+        //    var movieService = new AddMovieService
+        //        (db, genreServicesMock.Object, actorServicesMock.Object);
 
+
+        //    var movie = new Movie()
+        //    {
+        //        Id = movieIdToUse,
+        //        Title = movieTitle
+        //    };
+
+        //    var actorToAdd = new Actor()
+        //    {
+        //        Id = actorIdToUse,
+        //        ApiActorId = apiActorIdToUse,
+        //        FullName = actorName
+        //    };
+
+        //    var actorsCast = new List<(Actor, string)>
+        //    {
+        //        (actorToAdd, actorRole)
+        //    };
+
+        //    actorServicesMock.Object.AddActor(actorToAdd);
+
+        //    movieService.AddActorsToMovie(movie, actorsCast);
+
+        //    Assert.AreEqual(1, db.MoviesActors.Count(a => a.ActorId == 2 && a.MovieId == 1));
+        //}
+        [TestMethod]
+        public void AddGenreToMovie_Should_MakeConnectionsIfGenreAlreadyExist()
+        {
+            var db = new TFContext(this.DatabaseSimulator());
+            var genreServicesMock = new Mock<IGenreServices>();
+            var actorServicesMock = new Mock<IActorServices>();
+            var movieService = new AddMovieService
+                (db, genreServicesMock.Object, actorServicesMock.Object);
+
+            var movie = new Movie()
+            {
+                Id = movieIdToUse,
+                Title = movieTitle
+            };
+
+            var genreToAdd = new Genre()
+            {
+                Id = 2,
+                Name = "Action",
+                ApiGenreId = 2
+                
+            };
+            db.Genres.Add(genreToAdd);
+            db.SaveChanges();
+
+            var genresCast= new List<(int, string)>
+            {
+                (genreToAdd.Id, genreToAdd.Name)
+            };
+
+            movieService.AddGenresToMovie(movie, genresCast);
+
+            Assert.AreEqual(1, db.MoviesGenres.Count(a => a.GenreId == 2 && a.MovieId == 1));
+
+
+        }
 
         private DbContextOptions<TFContext> DatabaseSimulator()
         {

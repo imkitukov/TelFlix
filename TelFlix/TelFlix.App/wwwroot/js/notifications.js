@@ -6,7 +6,7 @@ $(() => {
     //ivan : 9567
     //rob : 50183
     //mitko: port
-    const baseUrl = 'http://localhost:50183/'
+    const baseUrl = 'https://localhost:44379/'
 
     const connectionBuilder = new signalR
         .HubConnectionBuilder()

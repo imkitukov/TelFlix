@@ -170,15 +170,20 @@ namespace TelFlix.App.Controllers
         public IActionResult Details(int id, string returnUrl = "")
         {
             var vm = this.movieService.GetMovieById(id);
-            var userId = this.userManager.FindByEmailAsync(this.User.Identity.Name).Result.Id;
-            var isInLibrary = this.favouritesService.IsInLibrary(id, userId);
 
-            if (vm == null)
+            if (this.User.Identity.IsAuthenticated)
             {
-                return NotFound();
-            }
+                var userId = this.userManager.FindByEmailAsync(this.User.Identity.Name).Result.Id;
 
-            vm.IsInLibrary = isInLibrary;
+                var isInLibrary = this.favouritesService.IsInLibrary(id, userId);
+
+                if (vm == null)
+                {
+                    return NotFound();
+                }
+
+                vm.IsInLibrary = isInLibrary;
+            }
 
             if (returnUrl == string.Empty)
             {

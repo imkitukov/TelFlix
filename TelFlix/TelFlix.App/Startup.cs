@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -32,10 +33,17 @@ namespace TelFlix.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpsRedirection(options =>
+            {
+                options.HttpsPort = 443;
+            });
+
             this.RegisterData(services);
             this.RegisterAuthentication(services);
             this.RegisterServices(services);
             this.RegisterInfrastructure(services);
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAuthorization(options =>
             {
@@ -44,6 +52,8 @@ namespace TelFlix.App
                     policy.RequireRole("Administrator");
                 });
             });
+
+
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -54,12 +64,12 @@ namespace TelFlix.App
 
             services.AddSignalR();
 
-            //services.Configure<CookiePolicyOptions>(options =>
-            //{
-            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-            //    options.CheckConsentNeeded = context => true;
-            //    options.MinimumSameSitePolicy = SameSiteMode.None;
-            //});
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
         }
 
         private void RegisterData(IServiceCollection services)
@@ -139,7 +149,7 @@ namespace TelFlix.App
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //app.UseDatabaseMigration();
+            app.UseDatabaseMigration();
 
             if (env.IsDevelopment())
             {

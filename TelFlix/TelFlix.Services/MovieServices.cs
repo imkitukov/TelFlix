@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TelFlix.Data.Context;
 using TelFlix.Data.Models;
 using TelFlix.Services.Abstract;
@@ -165,5 +166,12 @@ namespace TelFlix.Services
 
         public bool ApiIdExists(int apiId)
             => this.Context.Movies.Any(m => m.IsDeleted == false && m.ApiMovieId == apiId);
+
+        public async Task<(int Id, string Title)> GetMovieByApiId(int addedMovieApiId)
+        {
+            var movie = await this.Context.Movies.FirstOrDefaultAsync(m => m.IsDeleted == false && m.ApiMovieId == addedMovieApiId);
+
+            return (movie.Id, movie.Title);
+        }
     }
 }

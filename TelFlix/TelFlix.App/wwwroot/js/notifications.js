@@ -69,6 +69,16 @@ $(() => {
                 connection
                     .invoke('SendMessage', receiver, subject, content)               
             })
+
+            $('.addUserMovieRequest').click(() => {
+                
+                let receiver = $('#userRequesterEmail').val();
+                const subject = 'Added to wishlist';
+                let content = $('#userRequestMovieApiId').val();
+
+                connection
+                    .invoke('SendMessage', receiver, subject, content)
+            })
         })
 })
 

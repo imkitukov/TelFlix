@@ -14,13 +14,15 @@ namespace TelFlix.App.Hubs
     {
         private readonly UserManager<User> userManager;
         private readonly IMessageServices messageServices;
+        private readonly IMovieServices movieServices;
 
         public static Dictionary<string, string> ConnectedUsers { get; set; } = new Dictionary<string, string>();
 
-        public NotificationsHub(UserManager<User> userManager, IMessageServices messageServices)
+        public NotificationsHub(UserManager<User> userManager, IMessageServices messageServices, IMovieServices movieServices)
         {
             this.userManager = userManager;
             this.messageServices = messageServices;
+            this.movieServices = movieServices;
         }
 
         public async Task SendMessage(string receiver, string subject, string content)
@@ -30,24 +32,7 @@ namespace TelFlix.App.Hubs
             var senderUser = await this.userManager.FindByEmailAsync(sender);
             var receiverUser = await this.userManager.FindByEmailAsync(receiver);
 
-            var message = new Message
-            {
-                Sender = senderUser,
-                Receiver = receiverUser,
-                Subject = subject,
-                Content = content
-            };
-
-            this.messageServices.AddMessage(message);
-
-            if (ConnectedUsers.ContainsKey(receiver))
-            {
-                await this.Clients
-                    .Client(ConnectedUsers[receiver])
-                    .SendAsync("pushNotification");
-            }
-
-            if (subject == "Add movie to db")
+            if (receiver == "Moderators" && subject == "Add movie to db")
             {
                 var moderators = await this.userManager.GetUsersInRoleAsync("Moderator");
 
@@ -62,6 +47,41 @@ namespace TelFlix.App.Hubs
                     };
 
                     this.messageServices.AddMessage(modMessage);
+                }
+            }
+            // send to concrete user/receiver 
+            else
+            {
+                var message = new Message
+                {
+                    Sender = senderUser,
+                    Receiver = receiverUser,
+                    Subject = subject,
+                    Content = content
+                };
+
+                if (subject == "Added to wishlist")
+                {
+                    int addedMovieApiId = int.Parse(message.Content);
+
+                    // trying to get movie before actually movie is added to db :/
+                    //var movie = await this.movieServices.GetMovieByApiId(addedMovieApiId);
+                    // TODO add url /movie/details/{movie.Id} to message!
+                    //string successfullyAddedMovieRequestMessageContent = $"Hey {receiver}! Movie with title <{movie.Title}> successfully added to TelFlix thanks to your request! Enjoy our site :)";
+
+                    string successfullyAddedMovieRequestMessageContent = $"Hey {receiver}! Your movie request successfully added to TelFlix! Enjoy our site :)";
+
+                    message.Subject = "Wishlist request satisfied";
+                    message.Content = successfullyAddedMovieRequestMessageContent;
+                }
+
+                this.messageServices.AddMessage(message);
+
+                if (ConnectedUsers.ContainsKey(receiver))
+                {
+                    await this.Clients
+                        .Client(ConnectedUsers[receiver])
+                        .SendAsync("pushNotification");
                 }
             }
 

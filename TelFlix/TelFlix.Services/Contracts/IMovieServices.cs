@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TelFlix.Data.Models;
 using TelFlix.Services.Models.Movie;
 
@@ -30,5 +31,9 @@ namespace TelFlix.Services.Contracts
         void DeleteById(int id);
 
         bool Exists(int id);
+
+        bool ApiIdExists(int apiId);
+
+        Task<(int Id, string Title)> GetMovieByApiId(int addedMovieApiId);
     }
 }

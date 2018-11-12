@@ -74,10 +74,8 @@
                             }
                             else if (User.Identity.IsAuthenticated)
                             {
-                                <form>
-                                    <input type="hidden" value="@m.ApiMovieId" id="movieApiId">
-                                    <button id="addToWishlist" type="button" class="btn btn-primary">Add to wishlist</button>
-                                </form>
+                                <input type="hidden" value="@m.ApiMovieId" id="movieApiId">
+                                <button type="button" class="addToWishlist btn btn-primary">Add to wishlist</button>
                             }
 
                         </td>
@@ -85,14 +83,5 @@
                 }
             </tbody>
         </table>
-
     }
 </div>
-
-@section Scripts {
-    <script>
-        $('#addToWishlist').click(() => {
-            alert(2)
-        })
-    </script>
-}

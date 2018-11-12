@@ -10,7 +10,11 @@
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#newMessageModal"><i class="fas fa-envelope"></i> New Message</button>
         <a asp-controller="Users" asp-action="Inbox" asp-route-type="received" class="btn btn-success">Received</a>
         <a asp-controller="Users" asp-action="Inbox" asp-route-type="sent" class="btn btn-success">Sent</a>
-        <a asp-controller="Users" asp-action="Inbox" asp-route-type="wishlist" class="btn btn-success">Users requests</a>
+        @if (User.IsInRole("Moderator"))
+        {
+            <a asp-controller="Users" asp-action="Inbox" asp-route-type="wishlist" class="btn btn-success">Users requests</a>
+        }
+
     </div>
 </div>
 <hr />
@@ -54,24 +58,44 @@
             <th>Subject</th>
             <th>Content</th>
             <th>@ViewData["type"]</th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="bg-white">
         @foreach (var message in Model)
         {
             <tr>
                 <td>@message.Sender.Email</td>
                 <td>@message.Subject</td>
-                <td>@message.Content</td>
+                <td>
+                    @if (message.Subject == "Add movie to db")
+                    {
+                        @: Movie ApiId:
+                    }
+                    @message.Content
+                </td>
                 <td>@message.CreatedOn</td>
                 <td>
-                    <form asp-controller="Users" asp-action="DeleteMessage" asp-route-id="@message.Id" method="post" data-ajax="true" data-ajax-success="deleteItem(this)">
-                        <button type="submit" class="btn btn-sm btn-danger d-none d-md-inline-block">
-                            Delete
-                            <i class="glyphicon glyphicon-trash text-danger"></i>
-                        </button>
-                    </form>
+                    <div class="row">
+                        <form asp-controller="Users" asp-action="DeleteMessage" asp-route-id="@message.Id" method="post" data-ajax="true" data-ajax-success="deleteItem(this)">
+                            <button type="submit" class="btn btn-sm btn-danger d-none d-md-inline-block">
+                                Delete
+                                <i class="glyphicon glyphicon-trash text-danger"></i>
+                            </button>
+                        </form>
+                        @if (message.Subject == "Add movie to db" && User.IsInRole("Moderator"))
+                        {
+                            <form asp-area="" asp-controller="Movies" asp-action="AddToDb" asp-route-id="@message.Content" method="post" data-ajax="true" data-ajax-success="deleteItem(this)">
+                                @{ string movieApiId = message.Content.Split().Last(); }
+                                <input type="hidden" value="@movieApiId" id="userRequestMovieApiId">
+                                <input type="hidden" value=@message.Sender.Email id="userRequesterEmail">
+
+                                <button type="submit" class="addUserMovieRequest btn btn-sm btn-success d-none d-md-inline-block">
+                                    <p id="fold_p">Add movie to TelFlixDb</p>
+                                </button>
+                            </form>
+                        }
+                    </div>
                 </td>
             </tr>
         }

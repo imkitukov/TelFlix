@@ -9,7 +9,7 @@
                     @{ var isCollapseHidden = review == Model.First() ? "show" : "hidden";}
                     <div data-toggle="collapse" data-target="#@review.Id" aria-expanded="false" aria-controls="collapseOne">
                         <p class="h6">
-                            <small>Author:</small>  <span class="h6 text-success">@review.Author</span>
+                            <small class="text-muted">Author:</small>  <span class="h6 text-success">@review.Author</span>
                             <small class="text-muted">Posted on: <code>@review.CreatedOn</code> </small>
                             <i class="far fa-comment float-right"></i>
                         </p>

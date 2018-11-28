@@ -1,3 +1,3 @@
 # TelFlix
 
-TelFlix  ASP Core
+Telerik Alpha Academy ASP .NET Core MVC  - Team project
